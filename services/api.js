@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://nextlevel.admin-panels.com/wp-json/wp/v2";
+const API_BASE_URL = "https://zdraveibolest.admin-panels.com/wp-json/wp/v2";
 import { cache } from "react";
 
 /**

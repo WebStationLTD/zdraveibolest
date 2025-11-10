@@ -14,7 +14,7 @@ export default async function Blog({ searchParams }) {
 
   // Fetch posts from WordPress API with caching enabled
   const response = await fetch(
-    `https://nextlevel.admin-panels.com/wp-json/wp/v2/posts?page=${currentPage}&per_page=${perPage}&_fields=id,yoast_head_json,date,slug,title,content`,
+    `https://zdraveibolest.admin-panels.com/wp-json/wp/v2/posts?page=${currentPage}&per_page=${perPage}&_fields=id,yoast_head_json,date,slug,title,content`,
     {
       next: { revalidate: 120 },
     }

@@ -75,10 +75,13 @@ export default function RootLayout({ children }) {
         <CriticalCSS />
         <link
           rel="preconnect"
-          href="https://nextlevel.admin-panels.com"
+          href="https://zdraveibolest.admin-panels.com"
           crossOrigin="anonymous"
         />
-        <link rel="dns-prefetch" href="https://nextlevel.admin-panels.com" />
+        <link
+          rel="dns-prefetch"
+          href="https://zdraveibolest.admin-panels.com"
+        />
 
         {/* Директно използване на preload тагове с правилния синтаксис */}
         <link
@@ -100,7 +103,7 @@ export default function RootLayout({ children }) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
       <body className={roboto.className}>
-        <NextTopLoader showSpinner={false} color="#129160"/>
+        <NextTopLoader showSpinner={false} color="#129160" />
         <BackToTop />
         <CallButton />
         <ImagePreloader />
