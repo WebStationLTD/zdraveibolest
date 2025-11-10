@@ -30,7 +30,7 @@ export default function Hero() {
 
           <div className="px-6 py-10">
             <h1 className="text-3xl font-semibold tracking-tight text-pretty text-gray-900 font-display">
-              "Lorem ipsum dolor sit amet"
+              "Lorem ipsum dolor sit amet тест мобилни телефони"
             </h1>
             <p className="mt-4 text-2xl font-medium font-display">
               Lorem ipsum dolor sit amet
@@ -88,7 +88,7 @@ export default function Hero() {
                     </div>
                   </div>
                   <h1 className="text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-7xl font-display">
-                    "Lorem ipsum dolor sit amet"
+                    "Lorem ipsum dolor sit amet тест лаптопи и компютри"
                   </h1>
                   <p className="mt-8 text-4xl font-medium font-display">
                     Lorem ipsum
