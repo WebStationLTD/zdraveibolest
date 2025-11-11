@@ -8,10 +8,10 @@
 
 /* Custom theme variables */
 @theme {
-  --color-teal-primary: #178D9D;
-  --color-teal-dark: #0F5F6B;
-  --color-orange-primary: #FF9642;
-  --color-orange-hover: #FF8C42;
+  --color-teal-primary: #04737d;
+  --color-teal-dark: #035057;
+  --color-orange-primary: #fd9300;
+  --color-orange-hover: #e48400;
   
   --container-80: 80%;
   --container-95: 95%;

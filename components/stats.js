@@ -19,11 +19,11 @@ export default function Stats() {
   ];
 
   return (
-    <div className="relative px-5 md:px-5 pt-0 pb-8 md:pb-12">
-      <div className="mx-auto w-full md:w-[80%]">
-        <div className="bg-[#0F5F6B] rounded-2xl md:rounded-3xl overflow-hidden">
-          <div className="px-6 md:px-8 lg:pl-0 lg:pr-0 py-10 md:py-12 lg:py-16">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 lg:gap-0">
+    <div className="relative px-5 pt-6 pb-8 md:pb-12">
+      <div className="bg-[#035057] rounded-2xl md:rounded-3xl overflow-hidden">
+        <div className="py-8 md:py-10 lg:py-12">
+          <div className="w-[90%] md:w-[80%] mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10 lg:gap-0">
               {stats.map((stat, index) => (
                 <div
                   key={index}
@@ -31,15 +31,17 @@ export default function Stats() {
                     index !== stats.length - 1
                       ? "lg:border-r lg:border-white/20"
                       : ""
-                  } ${index === 0 ? "" : "lg:pl-8 lg:pr-4"} ${
-                    index === 0 ? "lg:pr-4" : ""
+                  } ${index === 0 ? "lg:pr-8" : ""} ${
+                    index > 0 && index < stats.length - 1
+                      ? "lg:px-8"
+                      : ""
                   } ${index === stats.length - 1 ? "lg:pl-8" : ""}`}
                 >
                   <div className="flex flex-col">
-                    <span className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-2 md:mb-3">
+                    <span className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-2 lg:mb-3 leading-none">
                       {stat.number}
                     </span>
-                    <span className="text-sm md:text-base lg:text-lg text-white/90 font-normal leading-snug">
+                    <span className="text-sm md:text-base lg:text-lg text-white/95 font-normal leading-relaxed">
                       {stat.label}
                     </span>
                   </div>

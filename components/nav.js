@@ -25,7 +25,7 @@ export default function Navigation() {
   };
 
   return (
-    <div className="bg-white sticky top-0 w-full z-50">
+    <div className="bg-white sticky top-0 w-full z-50 shadow-sm">
       {/* Mobile menu */}
       <Dialog open={open} onClose={setOpen} className="relative z-40 lg:hidden">
         <DialogBackdrop
@@ -38,7 +38,7 @@ export default function Navigation() {
             className="relative flex w-full max-w-xs transform flex-col overflow-y-auto bg-white pb-12 shadow-xl transition duration-300 ease-in-out data-closed:-translate-x-full"
           >
             <div className="flex px-4 pt-5 pb-2 justify-between items-center">
-              <Link href="/" className="text-xl font-bold text-[#178D9D]">
+              <Link href="/" className="text-xl font-normal text-gray-900">
                 zdraveibolest.bg
               </Link>
               <button
@@ -58,7 +58,7 @@ export default function Navigation() {
                 <div key={page.name} className="flow-root">
                   <Link
                     href={page.href}
-                    className="-m-2 block p-2 font-medium text-gray-900"
+                    className="-m-2 block p-2 font-normal text-gray-700"
                     onClick={() => setOpen(false)}
                   >
                     {page.name}
@@ -68,7 +68,7 @@ export default function Navigation() {
               <div className="flow-root pt-4">
                 <Link
                   href="#"
-                  className="block px-6 py-3 text-center text-sm font-medium text-[#178D9D] border-2 border-[#178D9D] rounded-md hover:bg-[#178D9D] hover:text-white transition-colors"
+                  className="block px-6 py-3 text-center text-sm font-normal text-[#04737d] border-2 border-[#04737d] rounded-md hover:bg-[#04737d] hover:text-white transition-colors"
                   onClick={() => setOpen(false)}
                 >
                   Клинично изпитване
@@ -81,7 +81,7 @@ export default function Navigation() {
 
       {/* Desktop Header */}
       <header className="relative bg-white">
-        <nav aria-label="Top" className="mx-auto w-[95%] md:w-[80%] px-0">
+        <nav aria-label="Top" className="mx-auto w-[95%] md:w-[80%]">
           <div className="flex items-center justify-between h-20">
             {/* Mobile menu button */}
             <button
@@ -104,13 +104,13 @@ export default function Navigation() {
             </div>
 
             {/* Desktop Menu - Center */}
-            <div className="hidden lg:flex lg:items-center lg:justify-center lg:flex-1">
-              <div className="flex space-x-6 xl:space-x-8">
+            <div className="hidden lg:flex lg:items-center lg:justify-center lg:flex-1 lg:ml-12">
+              <div className="flex space-x-7">
                 {navigation.pages.map((page) => (
                   <Link
                     key={page.name}
                     href={page.href}
-                    className="text-sm font-normal text-gray-700 hover:text-[#178D9D] transition-colors whitespace-nowrap"
+                    className="text-sm font-normal text-gray-700 hover:text-[#04737d] transition-colors whitespace-nowrap"
                   >
                     {page.name}
                   </Link>
@@ -122,7 +122,7 @@ export default function Navigation() {
             <div className="flex items-center justify-end">
               <Link
                 href="#"
-                className="hidden lg:block px-5 xl:px-6 py-2.5 text-sm font-normal text-[#178D9D] border-2 border-[#178D9D] rounded-md hover:bg-[#178D9D] hover:text-white transition-colors whitespace-nowrap"
+                className="hidden lg:block px-6 py-2.5 text-sm font-normal text-[#04737d] border-2 border-[#04737d] rounded-md hover:bg-[#04737d] hover:text-white transition-colors whitespace-nowrap"
               >
                 Клинично изпитване
               </Link>
