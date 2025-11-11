@@ -1,0 +1,31 @@
+/* Ensure Gutenberg styles are applied */
+@import url("https://zdraveibolest.admin-panels.com/wp-includes/css/dist/block-library/style.min.css");
+
+@import "./wordpress-generated.css";
+
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* Custom theme variables */
+@theme {
+  --color-teal-primary: #178D9D;
+  --color-teal-dark: #0F5F6B;
+  --color-orange-primary: #FF9642;
+  --color-orange-hover: #FF8C42;
+  
+  --container-80: 80%;
+  --container-95: 95%;
+}
+
+/* Responsive container styles */
+@media (max-width: 767px) {
+  .responsive-container {
+    width: 95%;
+  }
+}
+
+@media (min-width: 768px) {
+  .responsive-container {
+    width: 80%;
+  }
+}

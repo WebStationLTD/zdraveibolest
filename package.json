@@ -1,0 +1,34 @@
+{
+  "name": "brd",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@headlessui/react": "^2.2.0",
+    "@heroicons/react": "^2.2.0",
+    "@mailchimp/mailchimp_marketing": "^3.0.80",
+    "@tailwindcss/postcss": "^4.0.9",
+    "@tailwindcss/typography": "^0.5.16",
+    "critters": "^0.0.23",
+    "next": "15.1.7",
+    "nextjs-toploader": "^3.8.16",
+    "postcss": "^8.5.3",
+    "react": "^19.0.0",
+    "react-cookie-consent": "^9.0.0",
+    "react-dom": "^19.0.0",
+    "react-icons": "^5.5.0",
+    "sharp": "^0.33.5",
+    "sweetalert2": "^11.17.2",
+    "tailwindcss": "^4.0.11"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "eslint": "^9",
+    "eslint-config-next": "15.1.7"
+  }
+}
