@@ -45,7 +45,7 @@ export default function Hero() {
               <img
                 src="/Hero-Element-3.svg"
                 alt=""
-                className="absolute bottom-0 left-0 w-full h-auto z-0"
+                className="absolute bottom-0 right-0 h-auto z-0"
               />
 
               {/* Decorative Orange Circles - Hero-Element-1 - Долу вляво, половината излиза (z-10) */}
