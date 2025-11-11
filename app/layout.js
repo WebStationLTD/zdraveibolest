@@ -87,17 +87,8 @@ export default function RootLayout({ children }) {
         <link
           rel="preload"
           as="image"
-          href="/hero-image-mobile.jpg"
-          type="image/jpg"
-          media="(max-width: 640px)"
-        />
-
-        <link
-          rel="preload"
-          as="image"
-          href="/hero-image-desktop.jpg"
-          type="image/jpg"
-          media="(min-width: 641px)"
+          href="/hero-woman-bg.png"
+          type="image/png"
         />
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />

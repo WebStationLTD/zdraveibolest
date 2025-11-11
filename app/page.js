@@ -39,7 +39,7 @@ export const metadata = {
     description: "Открийте нашите висококачествени бизнес услуги",
     images: [
       {
-        url: "/hero-image-desktop.jpg",
+        url: "/hero-woman-bg.png",
         width: 1200,
         height: 630,
         alt: "NextLevel Services",
@@ -52,7 +52,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "NextLevel Services - Професионални бизнес услуги",
     description: "Открийте нашите висококачествени бизнес услуги",
-    images: ["/hero-image-desktop.jpg"],
+    images: ["/hero-woman-bg.png"],
   },
 };
 

@@ -4,8 +4,7 @@ import { useEffect } from "react";
 
 // Списък с изображения, които трябва да се заредят предварително
 const CRITICAL_IMAGES = [
-  "/hero-image-mobile.jpg", // Hero изображение - мобилна версия
-  "/hero-image-desktop.jpg", // Hero изображение - десктоп версия
+  "/hero-woman-bg.png", // Hero изображение - жена
 ];
 
 /**
@@ -16,11 +15,8 @@ export default function ImagePreloader() {
   useEffect(() => {
     // Оптимизирана версия на функцията за предварително зареждане
     const preloadImages = () => {
-      // Определяме кое изображение трябва да заредим първо според устройството
-      const isMobile = window.innerWidth <= 640;
-      const priorityImage = isMobile
-        ? "/hero-image-mobile.jpg"
-        : "/hero-image-desktop.jpg";
+      // Определяме приоритетното изображение
+      const priorityImage = "/hero-woman-bg.png";
 
       // Зареждаме приоритетното изображение първо
       const loadPriorityImage = () => {
@@ -91,19 +87,6 @@ export default function ImagePreloader() {
 
     // Изпълняваме незабавно за критични изображения
     preloadImages();
-
-    // Регистрираме handler за прозореца в случай, че размерът се промени
-    const handleResize = () => {
-      // При промяна на размера на прозореца, презареждаме изображенията
-      preloadImages();
-    };
-
-    // Премахваме throttling при размер на прозореца, за да сме сигурни, че изображенията ще се заредят правилно
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
   }, []);
 
   // Този компонент не рендерира нищо във видимата част на DOM
