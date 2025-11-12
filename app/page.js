@@ -1,5 +1,6 @@
 import HeroSection from "../components/hero";
 import Stats from "../components/stats";
+import TherapeuticAreas from "../components/therapeutic-areas";
 import { WebVitals } from "./web-vitals";
 import dynamic from "next/dynamic";
 
@@ -62,6 +63,7 @@ export default function Home() {
       <WebVitals />
       <HeroSection />
       <Stats />
+      <TherapeuticAreas />
       <Incentives />
       <Team />
       <CTA />
