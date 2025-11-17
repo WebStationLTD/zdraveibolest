@@ -2,6 +2,7 @@ import HeroSection from "../components/hero";
 import Stats from "../components/stats";
 import TherapeuticAreas from "../components/therapeutic-areas";
 import VideoSection from "../components/video-section";
+import LatestBlogPosts from "../components/latest-blog-posts";
 import { WebVitals } from "./web-vitals";
 import dynamic from "next/dynamic";
 
@@ -16,9 +17,6 @@ const Newsletter = dynamic(() => import("../components/newsletter"), {
   ssr: true,
 });
 const Testimonial = dynamic(() => import("../components/testimonial"), {
-  ssr: true,
-});
-const Lastestposts = dynamic(() => import("../components/latestposts"), {
   ssr: true,
 });
 
@@ -66,13 +64,13 @@ export default function Home() {
       <Stats />
       <TherapeuticAreas />
       <VideoSection />
+      <LatestBlogPosts />
       <Incentives />
       <Team />
       <CTA />
       <Clients />
       <Newsletter />
       <Testimonial />
-      <Lastestposts />
     </>
   );
 }
