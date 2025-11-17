@@ -3,6 +3,7 @@ import Stats from "../components/stats";
 import TherapeuticAreas from "../components/therapeutic-areas";
 import VideoSection from "../components/video-section";
 import LatestBlogPosts from "../components/latest-blog-posts";
+import AboutUs from "../components/about-us";
 import { WebVitals } from "./web-vitals";
 import dynamic from "next/dynamic";
 
@@ -65,6 +66,7 @@ export default function Home() {
       <TherapeuticAreas />
       <VideoSection />
       <LatestBlogPosts />
+      <AboutUs />
       <Incentives />
       <Team />
       <CTA />
