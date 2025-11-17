@@ -1,253 +1,67 @@
-"use client";
-
-import { useState, useEffect } from "react";
-import { Pacifico } from "next/font/google";
-import useSubscribe from "../hooks/useSubscribe";
-import { FaFacebook, FaLinkedin } from "react-icons/fa";
-
-const pacifico = Pacifico({
-  subsets: ["latin", "cyrillic"],
-  weight: ["400"],
-  style: ["normal"],
-  display: "swap",
-});
-
-const navigation = {
-  solutions: [
-    { name: "Marketing", href: "#" },
-    { name: "Analytics", href: "#" },
-    { name: "Automation", href: "#" },
-    { name: "Commerce", href: "#" },
-    { name: "Insights", href: "#" },
-  ],
-  support: [
-    { name: "Submit ticket", href: "#" },
-    { name: "Documentation", href: "#" },
-    { name: "Guides", href: "#" },
-  ],
-  company: [
-    { name: "About", href: "#" },
-    { name: "Blog", href: "#" },
-    { name: "Jobs", href: "#" },
-    { name: "Press", href: "#" },
-  ],
-  legal: [
-    { name: "Terms of service", href: "#" },
-    { name: "Privacy policy", href: "#" },
-    { name: "License", href: "#" },
-  ],
-  social: [
-    {
-      name: "Facebook",
-      href: "https://www.facebook.com/example",
-      icon: FaFacebook,
-      target: "_blank",
-      rel: "noopener noreferrer",
-    },
-    {
-      name: "LinkedIn",
-      href: "https://www.linkedin.com/example",
-      icon: FaLinkedin,
-      target: "_blank",
-      rel: "noopener noreferrer",
-    },
-  ],
-};
+import Link from "next/link";
 
 export default function Footer() {
-  const [year, setYear] = useState(new Date().getFullYear());
-  const [email, setEmail] = useState("");
-  const { subscribe, loading } = useSubscribe();
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    await subscribe(email, () => setEmail(""));
-  };
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const currentYear = new Date().getFullYear();
-      if (currentYear !== year) {
-        setYear(currentYear);
-      }
-    }, 1000 * 60 * 60);
-
-    return () => clearInterval(interval);
-  }, [year]);
+  const navigation = [
+    { name: "Начало", href: "/" },
+    { name: "Терапевтични области", href: "#" },
+    { name: "Участие", href: "#" },
+    { name: "Клинични проучвания", href: "#" },
+    { name: "Форум", href: "#" },
+    { name: "Обучителен център", href: "/blog" },
+    { name: "За нас", href: "#" },
+  ];
 
   return (
-    <footer className="relative bg-white border border-t-[#eaeaea]">
-      <div className="absolute right-0 top-0 bottom-0 z-10 w-1/3 h-full flex items-center justify-center pointer-events-none">
-        <svg
-          className="absolute w-full h-full opacity-80 hidden md:block sm:viewBox-[-150_0_500_1000] md:viewBox-[-150_0_500_800] lg:viewBox-[0_0_500_800]"
-          viewBox="0 0 500 800"
-          fill="none"
-          preserveAspectRatio="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M80 0 C160 150, 340 250, 420 400 S480 600, 350 800"
-            stroke="#129160"
-            strokeWidth="1.5"
-            fill="none"
-          />
-          <path
-            d="M140 0 C180 170, 320 270, 440 420 S500 650, 320 800"
-            stroke="#129160"
-            strokeWidth="1.2"
-            opacity="0.8"
-            fill="none"
-          />
-          <path
-            d="M200 0 C200 190, 300 290, 460 440 S520 700, 290 800"
-            stroke="#129160"
-            strokeWidth="1"
-            opacity="0.6"
-            fill="none"
-          />
-        </svg>
-      </div>
-      <div className="mx-auto max-w-7xl px-6 pt-16 pb-8 sm:pt-24 lg:px-8 lg:pt-32">
-        <div className="xl:grid xl:grid-cols-3 xl:gap-8">
-          <div>
-            <img alt="" src="/next-level-logo.png" width={180} height={40} />
-          </div>
-          <div className="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
-            <div className="md:grid md:grid-cols-2 md:gap-8">
-              <div>
-                <h3 className="text-sm/6 font-semibold text-gray-900">
-                  Solutions
-                </h3>
-                <ul role="list" className="mt-6 space-y-4">
-                  {navigation.solutions.map((item) => (
-                    <li key={item.name}>
-                      <a
-                        href={item.href}
-                        className="text-sm/6 text-gray-600 hover:text-gray-900"
-                      >
-                        {item.name}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="mt-10 md:mt-0">
-                <h3 className="text-sm/6 font-semibold text-gray-900">
-                  Support
-                </h3>
-                <ul role="list" className="mt-6 space-y-4">
-                  {navigation.support.map((item) => (
-                    <li key={item.name}>
-                      <a
-                        href={item.href}
-                        className="text-sm/6 text-gray-600 hover:text-gray-900"
-                      >
-                        {item.name}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-            <div className="md:grid md:grid-cols-2 md:gap-8">
-              <div>
-                <h3 className="text-sm/6 font-semibold text-gray-900">
-                  Company
-                </h3>
-                <ul role="list" className="mt-6 space-y-4">
-                  {navigation.company.map((item) => (
-                    <li key={item.name}>
-                      <a
-                        href={item.href}
-                        className="text-sm/6 text-gray-600 hover:text-gray-900"
-                      >
-                        {item.name}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="mt-10 md:mt-0">
-                <h3 className="text-sm/6 font-semibold text-gray-900">Legal</h3>
-                <ul role="list" className="mt-6 space-y-4">
-                  {navigation.legal.map((item) => (
-                    <li key={item.name}>
-                      <a
-                        href={item.href}
-                        className="text-sm/6 text-gray-600 hover:text-gray-900"
-                      >
-                        {item.name}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="mt-16 border-t border-gray-900/10 pt-8 sm:mt-20 lg:mt-24 lg:flex lg:items-center lg:justify-between">
-          <div>
-            <h3 className="text-sm/6 font-semibold text-gray-900">
-              Абонирайте се за нашия бюлетин
-            </h3>
-            <p className="mt-2 text-sm/6 text-gray-600">
-              Получавайте ценни съвети, анализи и актуални новини директно във
-              вашата поща.
-            </p>
-          </div>
-          {loading && (
-            <div className="absolute inset-0 flex items-center justify-center bg-opacity-50 z-10 pointer-events-none">
-              <div className="w-12 h-12 border-4 border-gray-400 border-t-[#129160] rounded-full animate-spin"></div>
-            </div>
-          )}
-          <form
-            onSubmit={handleSubmit}
-            className={`mt-6 sm:flex sm:max-w-md lg:mt-0 ${
-              loading ? "opacity-50 pointer-events-none" : ""
-            }`}
-          >
-            <label htmlFor="email-address" className="sr-only">
-              Email address
-            </label>
-            <input
-              id="email-address"
-              name="email-address"
-              type="email"
-              required
-              placeholder="Въведете Вашия имейл"
-              autoComplete="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full min-w-0 rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:w-56 sm:text-sm/6"
-            />
-            <div className="mt-4 sm:mt-0 sm:ml-4 sm:shrink-0">
-              <button
-                type="submit"
-                className="flex w-full items-center justify-center rounded-md bg-[#129160] hover:bg-gray-300 cursor-pointer hover:text-[#000000] px-3 py-2 text-sm font-semibold text-black shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                Абонирайте се
-              </button>
-            </div>
-          </form>
-        </div>
-        <div className="mt-8 border-t border-gray-900/10 pt-8 md:flex md:items-center md:justify-between">
-          <div className="flex gap-x-6 md:order-2">
-            {navigation.social.map((item) => (
-              <a
+    <footer className="bg-[#035057] text-white py-12 md:py-16">
+      <div className="px-5">
+        <div className="mx-auto w-[95%] md:w-[80%]">
+          {/* Navigation Links */}
+          <nav className="flex flex-wrap justify-center gap-6 md:gap-8 mb-8 md:mb-10">
+            {navigation.map((item) => (
+              <Link
                 key={item.name}
                 href={item.href}
-                target={item.target}
-                rel={item.rel}
-                className="text-gray-600 hover:text-gray-800"
+                className="text-white hover:text-[#fd9300] transition-colors duration-200 text-sm md:text-base"
               >
-                <span className="sr-only">{item.name}</span>
-                <item.icon aria-hidden="true" className="size-6" />
-              </a>
+                {item.name}
+              </Link>
             ))}
+          </nav>
+
+          {/* Social Media Icons */}
+          <div className="flex justify-center gap-4 mb-8">
+            <Link
+              href="#"
+              className="w-10 h-10 bg-white rounded-full flex items-center justify-center hover:bg-[#fd9300] transition-all duration-200"
+              aria-label="Facebook"
+            >
+              <svg
+                className="w-5 h-5 text-[#035057]"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+              </svg>
+            </Link>
+            <Link
+              href="#"
+              className="w-10 h-10 bg-white rounded-full flex items-center justify-center hover:bg-[#fd9300] transition-all duration-200"
+              aria-label="Instagram"
+            >
+              <svg
+                className="w-5 h-5 text-[#035057]"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+              </svg>
+            </Link>
           </div>
-          <p className="mt-8 text-sm/6 text-gray-600 md:order-1 md:mt-0">
-            &copy; {year} NextLevel Theme, Inc. All rights reserved.
-          </p>
+
+          {/* Copyright */}
+          <div className="text-center text-sm text-white/80">
+            All Rights Reserved © Brand Name 2025
+          </div>
         </div>
       </div>
     </footer>
