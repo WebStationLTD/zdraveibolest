@@ -1,4 +1,4 @@
-import { getServiceBySlug } from "../../../services/services";
+import { getServiceBySlug, getServices } from "../../../services/services";
 import ProtectedContent from "../../../components/ProtectedContent";
 import Script from "next/script";
 
@@ -62,6 +62,14 @@ export default async function TherapeuticAreaPage({ params }) {
 
     if (!service || service.length === 0) {
       throw new Error("Терапевтична област не е намерена");
+    }
+
+    // Fetch всички терапевтични области за Register форма
+    let therapeuticAreas = [];
+    try {
+      therapeuticAreas = await getServices();
+    } catch (error) {
+      console.error("Error fetching therapeutic areas:", error);
     }
 
     const meta = service[0].yoast_head_json;
@@ -128,6 +136,7 @@ export default async function TherapeuticAreaPage({ params }) {
             <ProtectedContent 
               content={service[0].content.rendered} 
               previewHeight={450}
+              therapeuticAreas={therapeuticAreas}
             />
           </div>
         </div>

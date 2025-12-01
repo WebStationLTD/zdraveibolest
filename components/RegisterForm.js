@@ -2,10 +2,12 @@
 
 import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
-export default function RegisterForm({ therapeuticAreas = [], onSuccess }) {
+export default function RegisterForm({ therapeuticAreas = [], onSuccess, redirectAfterSuccess = true }) {
   const { register } = useAuth();
+  const router = useRouter();
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -90,8 +92,18 @@ export default function RegisterForm({ therapeuticAreas = [], onSuccess }) {
 
       if (result.success) {
         setSuccess(true);
-        if (onSuccess) {
-          onSuccess(result.user);
+        // Redirect to home page after 2 seconds (only if redirectAfterSuccess is true)
+        if (redirectAfterSuccess) {
+          setTimeout(() => {
+            router.push('/');
+          }, 2000);
+        } else {
+          // Close modal after 1 second if no redirect
+          setTimeout(() => {
+            if (onSuccess) {
+              onSuccess(result.user);
+            }
+          }, 1000);
         }
       } else {
         setErrors({ general: result.error || 'Регистрацията не беше успешна' });
@@ -125,7 +137,9 @@ export default function RegisterForm({ therapeuticAreas = [], onSuccess }) {
           Регистрацията е успешна!
         </h3>
         <p className="text-gray-600 mb-6">
-          Вашият акаунт беше създаден успешно. Сега можете да разгледате пълното съдържание.
+          {redirectAfterSuccess 
+            ? 'Вашият акаунт беше създаден успешно. Сега можете да разгледате пълното съдържание.'
+            : 'Вашият акаунт беше създаден успешно! Зареждаме съдържанието...'}
         </p>
       </div>
     );

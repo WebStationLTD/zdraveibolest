@@ -1,12 +1,32 @@
 "use client";
 
 import { useAuth } from '../contexts/AuthContext';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
+import { XMarkIcon } from '@heroicons/react/24/outline';
+import LoginForm from './LoginForm';
+import RegisterForm from './RegisterForm';
 
-export default function ProtectedContent({ content, previewHeight = 450 }) {
+export default function ProtectedContent({ content, previewHeight = 450, therapeuticAreas = [] }) {
   const { isAuthenticated, loading } = useAuth();
-  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
+
+  // Handle ESC key to close modals
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') {
+        if (showLoginModal) setShowLoginModal(false);
+        if (showRegisterModal) setShowRegisterModal(false);
+      }
+    };
+
+    if (showLoginModal || showRegisterModal) {
+      document.addEventListener('keydown', handleEscape);
+      return () => document.removeEventListener('keydown', handleEscape);
+    }
+  }, [showLoginModal, showRegisterModal]);
 
   if (loading) {
     return (
@@ -105,36 +125,95 @@ export default function ProtectedContent({ content, previewHeight = 450 }) {
 
           {/* CTA Buttons */}
           <div className="space-y-3">
-            <Link
-              href="/register"
+            <button
+              onClick={() => setShowRegisterModal(true)}
               className="block w-full px-6 py-3.5 bg-[#04737d] hover:bg-[#035057] text-white text-center font-medium rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl"
             >
               Регистрирай се безплатно
-            </Link>
+            </button>
             
             <button
-              onClick={() => setShowLoginPrompt(!showLoginPrompt)}
+              onClick={() => setShowLoginModal(true)}
               className="block w-full px-6 py-3 text-[#04737d] hover:bg-[#04737d]/5 text-center font-medium rounded-lg transition-colors border border-[#04737d]/30"
             >
               Вече имам акаунт
             </button>
-
-            {showLoginPrompt && (
-              <div className="mt-4 p-4 bg-[#04737d]/5 rounded-lg border border-[#04737d]/20">
-                <p className="text-sm text-gray-700 mb-3 text-center">
-                  Влезте във вашия акаунт:
-                </p>
-                <Link
-                  href="/login"
-                  className="block w-full px-6 py-2.5 bg-white hover:bg-gray-50 text-[#04737d] text-center font-medium rounded-lg transition-colors border border-[#04737d]/30"
-                >
-                  Влез в акаунта
-                </Link>
-              </div>
-            )}
           </div>
         </div>
       </div>
+
+      {/* Login Modal */}
+      <Dialog open={showLoginModal} onClose={() => {}} className="relative z-50">
+        <DialogBackdrop className="fixed inset-0 bg-black/40 backdrop-blur-sm" />
+        <div className="fixed inset-0 flex items-center justify-center p-4">
+          <DialogPanel className="mx-auto max-w-md w-full bg-white rounded-2xl shadow-2xl">
+            {/* Header */}
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <h3 className="text-2xl font-bold text-gray-900">Вход</h3>
+              <button
+                onClick={() => setShowLoginModal(false)}
+                className="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-lg hover:bg-gray-100"
+                aria-label="Затвори"
+              >
+                <XMarkIcon className="h-6 w-6" />
+              </button>
+            </div>
+            
+            {/* Form */}
+            <div className="p-6">
+              <LoginForm 
+                onSuccess={() => {
+                  setShowLoginModal(false);
+                  // Content will auto-update via auth context
+                }} 
+                redirectAfterSuccess={false}
+              />
+            </div>
+
+            {/* Footer Help Text */}
+            <div className="px-6 pb-6 text-center text-sm text-gray-500">
+              Натиснете ESC или X за затваряне
+            </div>
+          </DialogPanel>
+        </div>
+      </Dialog>
+
+      {/* Register Modal */}
+      <Dialog open={showRegisterModal} onClose={() => {}} className="relative z-50">
+        <DialogBackdrop className="fixed inset-0 bg-black/40 backdrop-blur-sm" />
+        <div className="fixed inset-0 flex items-center justify-center p-4 overflow-y-auto">
+          <DialogPanel className="mx-auto max-w-md w-full bg-white rounded-2xl shadow-2xl my-8">
+            {/* Header */}
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <h3 className="text-2xl font-bold text-gray-900">Регистрация</h3>
+              <button
+                onClick={() => setShowRegisterModal(false)}
+                className="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-lg hover:bg-gray-100"
+                aria-label="Затвори"
+              >
+                <XMarkIcon className="h-6 w-6" />
+              </button>
+            </div>
+            
+            {/* Form */}
+            <div className="p-6 max-h-[calc(100vh-200px)] overflow-y-auto">
+              <RegisterForm 
+                therapeuticAreas={therapeuticAreas}
+                onSuccess={() => {
+                  setShowRegisterModal(false);
+                  // Content will auto-update via auth context
+                }}
+                redirectAfterSuccess={false}
+              />
+            </div>
+
+            {/* Footer Help Text */}
+            <div className="px-6 pb-6 text-center text-sm text-gray-500">
+              Натиснете ESC или X за затваряне
+            </div>
+          </DialogPanel>
+        </div>
+      </Dialog>
     </div>
   );
 }

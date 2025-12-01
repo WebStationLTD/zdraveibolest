@@ -2,10 +2,12 @@
 
 import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
-export default function LoginForm({ onSuccess }) {
+export default function LoginForm({ onSuccess, redirectAfterSuccess = true }) {
   const { login } = useAuth();
+  const router = useRouter();
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -52,6 +54,10 @@ export default function LoginForm({ onSuccess }) {
       if (result.success) {
         if (onSuccess) {
           onSuccess(result.user);
+        }
+        // Redirect to home page after successful login (only if redirectAfterSuccess is true)
+        if (redirectAfterSuccess) {
+          router.push('/');
         }
       } else {
         setErrors({ general: result.error || 'Грешно потребителско име или парола' });

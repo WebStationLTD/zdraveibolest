@@ -116,61 +116,89 @@ export default async function TherapeuticAreas() {
           </div>
         </div>
 
-        <section className="relative px-5 pt-12 pb-16 md:pb-20 lg:pb-24 bg-white">
-          <div className="mx-auto w-[95%] md:w-[80%]">
-            <div className="space-y-4 md:space-y-5">
-              {/* Първите области */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-5">
-                {areas.slice(0, 10).map((area) => (
-                  <Link
-                    key={area.id}
-                    href={`/terapevtichni-oblasti/${area.slug}`}
-                    className="group relative bg-white rounded-2xl border border-[#04737d] p-6 md:p-8 hover:shadow-lg transition-all duration-300 flex flex-col items-center justify-center text-center"
-                  >
-                    {/* Icon */}
-                    <div className="mb-4 w-16 h-16 md:w-20 md:h-20 flex items-center justify-center">
-                      <img
-                        src={areaIcons[area.slug] || "/пулмология-icon.svg"}
-                        alt={area.title.rendered}
-                        className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300"
-                      />
-                    </div>
+        <section className="relative py-16 md:py-20 lg:py-24 bg-white">
+          <div className="space-y-0">
+            {areas.map((area, index) => {
+              // Determine if image should be on left or right
+              const imageOnLeft = index % 2 === 0;
+              
+              // Get excerpt from content
+              const excerpt = area.content?.rendered
+                ? area.content.rendered.replace(/<[^>]+>/g, "").substring(0, 250) + "..."
+                : "Разгледайте информация за клиничните проучвания в тази терапевтична област.";
 
-                    {/* Area Name */}
-                    <h3 className="text-base md:text-lg font-normal text-gray-900 group-hover:text-[#04737d] transition-colors">
-                      {area.title.rendered}
-                    </h3>
-                  </Link>
-                ))}
-              </div>
-
-              {/* Последните три области - Равномерно разпределени */}
-              {areas.length > 10 && (
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-5">
-                  {areas.slice(10).map((area) => (
-                    <Link
-                      key={area.id}
-                      href={`/terapevtichni-oblasti/${area.slug}`}
-                      className="group relative bg-white rounded-2xl border border-[#04737d] p-6 md:p-8 hover:shadow-lg transition-all duration-300 flex flex-col items-center justify-center text-center"
-                    >
-                      {/* Icon */}
-                      <div className="mb-4 w-16 h-16 md:w-20 md:h-20 flex items-center justify-center">
-                        <img
-                          src={areaIcons[area.slug] || "/пулмология-icon.svg"}
-                          alt={area.title.rendered}
-                          className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300"
-                        />
+              return (
+                <div 
+                  key={area.id}
+                  className="grid grid-cols-1 lg:grid-cols-2 min-h-[500px] lg:min-h-[600px]"
+                >
+                  {/* Image Column - Full Width */}
+                  <div className={`${imageOnLeft ? 'lg:order-1' : 'lg:order-2'} relative`}>
+                    <Link href={`/terapevtichni-oblasti/${area.slug}`} className="block group h-full">
+                      <div className="relative w-full h-full">
+                        {/* Background Gradient */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-[#04737d] to-[#035057] flex items-center justify-center">
+                          <img
+                            src={areaIcons[area.slug] || "/пулмология-icon.svg"}
+                            alt={area.title.rendered}
+                            className="w-32 h-32 md:w-40 md:h-40 object-contain opacity-20 group-hover:opacity-30 transition-opacity duration-300"
+                          />
+                        </div>
+                        {/* Icon Overlay */}
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <img
+                            src={areaIcons[area.slug] || "/пулмология-icon.svg"}
+                            alt={area.title.rendered}
+                            className="w-24 h-24 md:w-32 md:h-32 object-contain group-hover:scale-110 transition-transform duration-300"
+                          />
+                        </div>
                       </div>
-
-                      {/* Area Name */}
-                      <h3 className="text-base md:text-lg font-normal text-gray-900 group-hover:text-[#04737d] transition-colors">
-                        {area.title.rendered}
-                      </h3>
                     </Link>
-                  ))}
+                  </div>
+
+                  {/* Content Column */}
+                  <div className={`${imageOnLeft ? 'lg:order-2' : 'lg:order-1'} flex items-center px-6 py-12 md:px-12 lg:px-16 xl:px-20`}>
+                    <Link 
+                      href={`/terapevtichni-oblasti/${area.slug}`}
+                      className="group block w-full"
+                    >
+                      {/* Small Title */}
+                      <p className="text-xs md:text-sm font-medium tracking-wider text-[#fd9300] mb-3 uppercase">
+                        Терапевтична област
+                      </p>
+
+                      {/* Main Heading */}
+                      <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-4 group-hover:text-[#04737d] transition-colors">
+                        {area.title.rendered}
+                      </h2>
+
+                      {/* Excerpt */}
+                      <p className="text-base md:text-lg text-gray-600 mb-6 leading-relaxed">
+                        {excerpt}
+                      </p>
+
+                      {/* CTA Link */}
+                      <span className="inline-flex items-center gap-2 text-[#04737d] font-medium hover:gap-3 transition-all duration-200">
+                        Научи повече
+                        <svg 
+                          className="w-5 h-5" 
+                          fill="none" 
+                          stroke="currentColor" 
+                          viewBox="0 0 24 24"
+                        >
+                          <path 
+                            strokeLinecap="round" 
+                            strokeLinejoin="round" 
+                            strokeWidth={2} 
+                            d="M17 8l4 4m0 0l-4 4m4-4H3" 
+                          />
+                        </svg>
+                      </span>
+                    </Link>
+                  </div>
                 </div>
-              )}
-            </div>
+              );
+            })}
           </div>
         </section>
       </>

@@ -1,51 +1,46 @@
 import { fetchAPI } from "./api";
-import { cache } from "react";
 
-export const searchContent = cache(async (query) => {
-  if (!query || query.length < 3) return [];
+/**
+ * Search across all content types
+ * @param {string} query - Search query
+ * @returns {Promise<Object>} - Search results grouped by type
+ */
+export async function searchContent(query) {
+  if (!query || query.trim().length < 2) {
+    return { posts: [], pages: [], services: [] };
+  }
 
   try {
-    // Търсене в блог публикации
-    const blogPosts = await fetchAPI(`posts?search=${query}`, {
-      next: { revalidate: 60 },
-    });
+    // Search in parallel
+    const [posts, pages, services] = await Promise.all([
+      // Search blog posts
+      fetchAPI(`posts?search=${encodeURIComponent(query)}&per_page=5&_fields=id,slug,title,excerpt,date&_embed`).catch(() => []),
+      
+      // Search pages
+      fetchAPI(`pages?search=${encodeURIComponent(query)}&per_page=3&_fields=id,slug,title,excerpt&_embed`).catch(() => []),
+      
+      // Search therapeutic areas (services)
+      fetchAPI(`services?search=${encodeURIComponent(query)}&per_page=5&_fields=id,slug,title,excerpt&_embed`).catch(() => []),
+    ]);
 
-    // Търсене в CPT "members"
-    const members = await fetchAPI(`members?search=${query}`, {
-      next: { revalidate: 60 },
-    });
-
-    // Търсене в CPT "services"
-    const services = await fetchAPI(`services?search=${query}`, {
-      next: { revalidate: 60 },
-    });
-
-    // Форматиране на резултатите
-    const results = [
-      ...blogPosts.map((post) => ({
-        id: post.id,
-        title: post.title.rendered,
-        slug: post.slug,
-        excerpt: post.excerpt.rendered,
-        type: "blog",
-      })),
-      ...members.map((member) => ({
-        id: member.id,
-        title: member.title.rendered,
-        slug: member.slug,
-        type: "team",
-      })),
-      ...services.map((service) => ({
-        id: service.id,
-        title: service.title.rendered,
-        slug: service.slug,
-        type: "services",
-      })),
-    ];
-
-    return results;
+    return {
+      posts: posts || [],
+      pages: pages || [],
+      services: services || [],
+    };
   } catch (error) {
-    console.error("Search API Error:", error);
-    return [];
+    console.error('Search error:', error);
+    return { posts: [], pages: [], services: [] };
   }
-});
+}
+
+/**
+ * Get total results count
+ * @param {Object} results - Search results object
+ * @returns {number} - Total count
+ */
+export function getTotalResultsCount(results) {
+  return (results.posts?.length || 0) + 
+         (results.pages?.length || 0) + 
+         (results.services?.length || 0);
+}
