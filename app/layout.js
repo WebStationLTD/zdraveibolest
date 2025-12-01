@@ -1,5 +1,5 @@
 import { headers } from "next/headers";
-import Navigation from "../components/nav";
+import NavigationWrapper from "../components/nav-wrapper";
 import CookieConsentBanner from "../components/cookieConsentBanner";
 import Footer from "../components/footer";
 import Script from "next/script";
@@ -8,6 +8,7 @@ import { CriticalCSS } from "./critical-css";
 import BackToTop from "../components/BackToTop";
 import CallButton from "../components/CallButton";
 import NextTopLoader from "nextjs-toploader";
+import { AuthProvider } from "../contexts/AuthContext";
 import "../styles/globals.css";
 import { Lora } from "next/font/google";
 
@@ -94,14 +95,16 @@ export default function RootLayout({ children }) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
       <body className={lora.className}>
-        <NextTopLoader showSpinner={false} color="#129160" />
-        <BackToTop />
-        <CallButton />
-        <ImagePreloader />
-        <Navigation />
-        <main>{children}</main>
-        <CookieConsentBanner />
-        <Footer />
+        <AuthProvider>
+          <NextTopLoader showSpinner={false} color="#129160" />
+          <BackToTop />
+          <CallButton />
+          <ImagePreloader />
+          <NavigationWrapper />
+          <main>{children}</main>
+          <CookieConsentBanner />
+          <Footer />
+        </AuthProvider>
         <Script
           id="structured-data"
           type="application/ld+json"

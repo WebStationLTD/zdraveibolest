@@ -7,7 +7,7 @@ import { cache } from "react";
  */
 export const getServices = cache(async () => {
   return await fetchAPI(
-    "services?_fields=id,slug,yoast_head_json,date,title,content&per_page=100",
+    "services?_fields=id,slug,yoast_head_json,date,title,content&per_page=100&orderby=date&order=desc",
     {
       next: { revalidate: 60 },
     }

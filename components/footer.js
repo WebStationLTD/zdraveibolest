@@ -34,7 +34,7 @@ export default function Footer() {
               href="#"
               className="w-10 h-10 bg-white rounded-full flex items-center justify-center hover:bg-[#fd9300] transition-all duration-200"
               aria-label="Facebook"
-            >
+              >
               <svg
                 className="w-5 h-5 text-[#035057]"
                 fill="currentColor"

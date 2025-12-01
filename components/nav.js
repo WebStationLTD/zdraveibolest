@@ -5,21 +5,27 @@ import {
   Dialog,
   DialogBackdrop,
   DialogPanel,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuItems,
+  Disclosure,
+  DisclosureButton,
+  DisclosurePanel,
 } from "@headlessui/react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, XMarkIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 
-export default function Navigation() {
+export default function Navigation({ therapeuticAreas = [] }) {
   const [open, setOpen] = useState(false);
 
   const navigation = {
     pages: [
-      { name: "Начало", href: "#" },
-      { name: "Терапевтични области", href: "#" },
+      { name: "Начало", href: "/" },
       { name: "Участие", href: "#" },
       { name: "Клинични проучвания", href: "#" },
       { name: "Форум", href: "#" },
-      { name: "Обучителен център", href: "#" },
+      { name: "Обучителен център", href: "/blog" },
       { name: "За нас", href: "#" },
     ],
   };
@@ -53,18 +59,59 @@ export default function Navigation() {
             </div>
 
             {/* Mobile Links */}
-            <div className="space-y-6 px-4 py-6">
-              {navigation.pages.map((page) => (
+            <div className="space-y-4 px-4 py-6">
+              {/* Начало */}
+              <div className="flow-root">
+                <Link
+                  href="/"
+                  className="-m-2 block p-2 font-normal text-gray-700 hover:text-[#04737d] transition-colors"
+                  onClick={() => setOpen(false)}
+                >
+                  Начало
+                </Link>
+              </div>
+              
+              {/* Терапевтични области - Accordion Mobile */}
+              <Disclosure>
+                {({ open: disclosureOpen }) => (
+                  <>
+                    <DisclosureButton className="flex w-full items-center justify-between -m-2 p-2 text-gray-700 hover:text-[#04737d] transition-colors">
+                      <span className="font-normal">Терапевтични области</span>
+                      <ChevronDownIcon
+                        className={`${
+                          disclosureOpen ? 'rotate-180' : ''
+                        } h-5 w-5 transition-transform duration-200`}
+                      />
+                    </DisclosureButton>
+                    <DisclosurePanel className="mt-2 space-y-2 pl-4">
+                      {therapeuticAreas.map((area) => (
+                        <Link
+                          key={area.id}
+                          href={`/terapevtichni-oblasti/${area.slug}`}
+                          className="block py-2 text-sm text-gray-600 hover:text-[#04737d] transition-colors"
+                          onClick={() => setOpen(false)}
+                        >
+                          {area.title.rendered}
+                        </Link>
+                      ))}
+                    </DisclosurePanel>
+                  </>
+                )}
+              </Disclosure>
+
+              {/* Останалите страници */}
+              {navigation.pages.slice(1).map((page) => (
                 <div key={page.name} className="flow-root">
                   <Link
                     href={page.href}
-                    className="-m-2 block p-2 font-normal text-gray-700"
+                    className="-m-2 block p-2 font-normal text-gray-700 hover:text-[#04737d] transition-colors"
                     onClick={() => setOpen(false)}
                   >
                     {page.name}
                   </Link>
                 </div>
               ))}
+
               <div className="flow-root pt-4">
                 <Link
                   href="#"
@@ -105,8 +152,57 @@ export default function Navigation() {
 
             {/* Desktop Menu - Center */}
             <div className="hidden lg:flex lg:items-center lg:justify-center lg:flex-1 lg:ml-12">
-              <div className="flex space-x-7">
-                {navigation.pages.map((page) => (
+              <div className="flex items-center space-x-7">
+                {/* Начало */}
+                <Link
+                  href="/"
+                  className="text-sm font-normal text-gray-700 hover:text-[#04737d] transition-colors whitespace-nowrap"
+                >
+                  Начало
+                </Link>
+                
+                {/* Терапевтични области - Dropdown Desktop */}
+                <Menu as="div" className="relative">
+                  <MenuButton className="flex items-center text-sm font-normal text-gray-700 hover:text-[#04737d] transition-colors whitespace-nowrap group">
+                    Терапевтични области
+                    <ChevronDownIcon className="ml-1 h-4 w-4 group-hover:text-[#04737d] transition-all group-data-[open]:rotate-180" />
+                  </MenuButton>
+                  
+                  <MenuItems
+                    transition
+                    className="absolute left-0 z-50 mt-3 w-72 origin-top-left rounded-xl bg-white shadow-2xl ring-1 ring-black/5 transition duration-200 ease-out data-[closed]:scale-95 data-[closed]:opacity-0 focus:outline-none"
+                  >
+                    <div className="p-2 max-h-[480px] overflow-y-auto">
+                      <div className="px-3 py-2 border-b border-gray-100">
+                        <p className="text-xs font-medium text-[#04737d] tracking-wider uppercase">
+                          Изберете област
+                        </p>
+                      </div>
+                      {therapeuticAreas.map((area) => (
+                        <MenuItem key={area.id}>
+                          {({ focus }) => (
+                            <Link
+                              href={`/terapevtichni-oblasti/${area.slug}`}
+                              className={`${
+                                focus ? 'bg-[#04737d]/5 text-[#04737d]' : 'text-gray-700'
+                              } group flex items-center rounded-lg px-3 py-2.5 text-sm transition-colors`}
+                            >
+                              <div className="flex items-center">
+                                <div className={`mr-3 h-2 w-2 rounded-full ${
+                                  focus ? 'bg-[#04737d]' : 'bg-gray-300'
+                                } transition-colors`}></div>
+                                <span className="font-normal">{area.title.rendered}</span>
+                              </div>
+                            </Link>
+                          )}
+                        </MenuItem>
+                      ))}
+                    </div>
+                  </MenuItems>
+                </Menu>
+
+                {/* Останалите страници */}
+                {navigation.pages.slice(1).map((page) => (
                   <Link
                     key={page.name}
                     href={page.href}
