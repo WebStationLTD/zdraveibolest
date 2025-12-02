@@ -21,16 +21,21 @@ import SearchButton from "./SearchButton";
 export default function Navigation({ therapeuticAreas = [] }) {
   const [open, setOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [participationDropdownOpen, setParticipationDropdownOpen] = useState(false);
   const { isAuthenticated, user, logout, loading } = useAuth();
 
   const navigation = {
     pages: [
       { name: "Начало", href: "/" },
-      { name: "Участие", href: "#" },
       { name: "Обучителен център", href: "/blog" },
       { name: "За нас", href: "#" },
     ],
   };
+
+  const participationMenu = [
+    { name: "Пътят на пациента", href: "/patiat-na-patsienta" },
+    { name: "Често задавани въпроси", href: "/chesto-zadavani-vaprosi" },
+  ];
 
   return (
     <div className="bg-white sticky top-0 w-full z-50 shadow-sm">
@@ -110,6 +115,38 @@ export default function Navigation({ therapeuticAreas = [] }) {
                               </Link>
                             ))}
                           </div>
+                        </div>
+                      </DisclosurePanel>
+                    </>
+                  )}
+                </Disclosure>
+              </div>
+
+              {/* Участие - Accordion Mobile */}
+              <div className="flow-root">
+                <Disclosure>
+                  {({ open: disclosureOpen }) => (
+                    <>
+                      <DisclosureButton className="flex items-center justify-between -m-2 p-2 text-gray-700 hover:text-[#04737d] transition-colors w-auto min-w-0" style={{ width: '100%' }}>
+                        <span className="font-normal">Участие</span>
+                        <ChevronDownIcon
+                          className={`${
+                            disclosureOpen ? 'rotate-180' : ''
+                          } h-5 w-5 flex-shrink-0 transition-transform duration-200`}
+                        />
+                      </DisclosureButton>
+                      <DisclosurePanel className="mt-2 pl-4">
+                        <div className="space-y-2">
+                          {participationMenu.map((item) => (
+                            <Link
+                              key={item.name}
+                              href={item.href}
+                              className="block py-2 text-sm text-gray-600 hover:text-[#04737d] transition-colors"
+                              onClick={() => setOpen(false)}
+                            >
+                              {item.name}
+                            </Link>
+                          ))}
                         </div>
                       </DisclosurePanel>
                     </>
@@ -291,6 +328,44 @@ export default function Navigation({ therapeuticAreas = [] }) {
                           <div className="flex items-center">
                             <div className="mr-3 h-2 w-2 rounded-full bg-gray-300 group-hover:bg-[#04737d] transition-colors"></div>
                             <span className="font-normal">{area.title.rendered}</span>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Участие - Dropdown Desktop (Hover) */}
+                <div 
+                  className="relative group"
+                  onMouseEnter={() => setParticipationDropdownOpen(true)}
+                  onMouseLeave={() => setParticipationDropdownOpen(false)}
+                >
+                  <button
+                    className="flex items-center text-sm font-normal text-gray-700 hover:text-[#04737d] transition-colors whitespace-nowrap"
+                  >
+                    Участие
+                    <ChevronDownIcon className={`ml-1 h-4 w-4 hover:text-[#04737d] transition-all ${participationDropdownOpen ? 'rotate-180' : ''}`} />
+                  </button>
+                  
+                  {/* Dropdown Menu */}
+                  <div
+                    className={`absolute left-0 z-50 mt-3 w-64 origin-top-left rounded-xl bg-white shadow-2xl ring-1 ring-black/5 transition-all duration-200 ${
+                      participationDropdownOpen 
+                        ? 'opacity-100 scale-100 visible' 
+                        : 'opacity-0 scale-95 invisible'
+                    }`}
+                  >
+                    <div className="p-2">
+                      {participationMenu.map((item) => (
+                        <Link
+                          key={item.name}
+                          href={item.href}
+                          className="group flex items-center rounded-lg px-3 py-3 text-sm transition-colors text-gray-700 hover:bg-[#04737d]/5 hover:text-[#04737d]"
+                        >
+                          <div className="flex items-center">
+                            <div className="mr-3 h-2 w-2 rounded-full bg-gray-300 group-hover:bg-[#04737d] transition-colors"></div>
+                            <span className="font-normal">{item.name}</span>
                           </div>
                         </Link>
                       ))}
