@@ -116,7 +116,7 @@ export default function SearchButton() {
 
       {/* Search Dropdown */}
       {isOpen && (
-        <div className="absolute right-0 mt-3 w-[90vw] sm:w-96 origin-top-right rounded-xl bg-white shadow-2xl ring-1 ring-black/5 z-50 overflow-hidden">
+        <div className="fixed left-1/2 -translate-x-1/2 top-20 lg:absolute lg:left-auto lg:translate-x-0 lg:right-0 lg:top-auto mt-3 w-[90vw] sm:w-96 origin-top rounded-xl bg-white shadow-2xl ring-1 ring-black/5 z-50 overflow-hidden">
           {/* Search Input */}
           <div className="p-4 border-b border-gray-100">
             <div className="relative">
@@ -131,7 +131,8 @@ export default function SearchButton() {
                 }}
                 onKeyDown={handleKeyDown}
                 placeholder="Търсене в сайта..."
-                className="w-full pl-10 pr-10 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent"
+                className="pl-10 pr-10 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent w-auto min-w-0"
+                style={{ width: '100%' }}
               />
               {query && (
                 <button
@@ -179,9 +180,10 @@ export default function SearchButton() {
                       <button
                         key={service.id}
                         onClick={() => handleResultClick('service', service.slug)}
-                        className={`w-full text-left px-4 py-3 hover:bg-[#04737d]/5 transition-colors ${
+                        className={`text-left px-4 py-3 hover:bg-[#04737d]/5 transition-colors w-auto min-w-0 ${
                           selectedIndex === index ? 'bg-[#04737d]/5' : ''
                         }`}
+                        style={{ width: '100%' }}
                       >
                         <h4 className="text-sm font-medium text-gray-900 mb-1">
                           {service.title.rendered}
@@ -206,9 +208,10 @@ export default function SearchButton() {
                       <button
                         key={post.id}
                         onClick={() => handleResultClick('post', post.slug)}
-                        className={`w-full text-left px-4 py-3 hover:bg-[#04737d]/5 transition-colors ${
+                        className={`text-left px-4 py-3 hover:bg-[#04737d]/5 transition-colors w-auto min-w-0 ${
                           selectedIndex === results.services.length + index ? 'bg-[#04737d]/5' : ''
                         }`}
+                        style={{ width: '100%' }}
                       >
                         <h4 className="text-sm font-medium text-gray-900 mb-1">
                           {post.title.rendered}
@@ -233,9 +236,10 @@ export default function SearchButton() {
                       <button
                         key={page.id}
                         onClick={() => handleResultClick('page', page.slug)}
-                        className={`w-full text-left px-4 py-3 hover:bg-[#04737d]/5 transition-colors ${
+                        className={`text-left px-4 py-3 hover:bg-[#04737d]/5 transition-colors w-auto min-w-0 ${
                           selectedIndex === results.services.length + results.posts.length + index ? 'bg-[#04737d]/5' : ''
                         }`}
+                        style={{ width: '100%' }}
                       >
                         <h4 className="text-sm font-medium text-gray-900">
                           {page.title.rendered}

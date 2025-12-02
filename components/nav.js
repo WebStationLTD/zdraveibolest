@@ -74,46 +74,48 @@ export default function Navigation({ therapeuticAreas = [] }) {
               </div>
               
               {/* Терапевтични области - Accordion Mobile */}
-              <Disclosure>
-                {({ open: disclosureOpen }) => (
-                  <div className="flow-root">
-                    <DisclosureButton className="flex w-full items-center justify-between -m-2 p-2 text-gray-700 hover:text-[#04737d] transition-colors">
-                      <span className="font-normal">Терапевтични области</span>
-                      <ChevronDownIcon
-                        className={`${
-                          disclosureOpen ? 'rotate-180' : ''
-                        } h-5 w-5 transition-transform duration-200`}
-                      />
-                    </DisclosureButton>
-                    <DisclosurePanel className="mt-2 pl-4 max-h-60 overflow-y-auto">
-                      <div className="space-y-2">
-                        {/* Link to main page */}
-                        <Link
-                          href="/terapevtichni-oblasti"
-                          className="block py-2.5 px-3 text-sm font-medium text-[#04737d] bg-[#04737d]/5 hover:bg-[#04737d]/10 rounded-lg transition-colors"
-                          onClick={() => setOpen(false)}
-                        >
-                          → Всички терапевтични области
-                        </Link>
-                        
-                        <div className="pt-2 border-t border-gray-200">
-                          <p className="text-xs text-gray-500 mb-2 px-1">Или изберете конкретна:</p>
-                          {therapeuticAreas.map((area) => (
-                            <Link
-                              key={area.id}
-                              href={`/terapevtichni-oblasti/${area.slug}`}
-                              className="block py-2 text-sm text-gray-600 hover:text-[#04737d] transition-colors"
-                              onClick={() => setOpen(false)}
-                            >
-                              {area.title.rendered}
-                            </Link>
-                          ))}
+              <div className="flow-root">
+                <Disclosure>
+                  {({ open: disclosureOpen }) => (
+                    <>
+                      <DisclosureButton className="flex items-center justify-between -m-2 p-2 text-gray-700 hover:text-[#04737d] transition-colors w-auto min-w-0" style={{ width: '100%' }}>
+                        <span className="font-normal">Терапевтични области</span>
+                        <ChevronDownIcon
+                          className={`${
+                            disclosureOpen ? 'rotate-180' : ''
+                          } h-5 w-5 flex-shrink-0 transition-transform duration-200`}
+                        />
+                      </DisclosureButton>
+                      <DisclosurePanel className="mt-2 pl-4">
+                        <div className="space-y-2 max-h-60 overflow-y-auto">
+                          {/* Link to main page */}
+                          <Link
+                            href="/terapevtichni-oblasti"
+                            className="block py-2.5 px-3 text-sm font-medium text-[#04737d] bg-[#04737d]/5 hover:bg-[#04737d]/10 rounded-lg transition-colors"
+                            onClick={() => setOpen(false)}
+                          >
+                            → Всички терапевтични области
+                          </Link>
+                          
+                          <div className="pt-2 border-t border-gray-200">
+                            <p className="text-xs text-gray-500 mb-2 px-1">Или изберете конкретна:</p>
+                            {therapeuticAreas.map((area) => (
+                              <Link
+                                key={area.id}
+                                href={`/terapevtichni-oblasti/${area.slug}`}
+                                className="block py-2 text-sm text-gray-600 hover:text-[#04737d] transition-colors"
+                                onClick={() => setOpen(false)}
+                              >
+                                {area.title.rendered}
+                              </Link>
+                            ))}
+                          </div>
                         </div>
-                      </div>
-                    </DisclosurePanel>
-                  </div>
-                )}
-              </Disclosure>
+                      </DisclosurePanel>
+                    </>
+                  )}
+                </Disclosure>
+              </div>
 
               {/* Останалите страници */}
               {navigation.pages.slice(1).map((page) => (

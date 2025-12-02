@@ -13,3 +13,4 @@ export default async function NavigationWrapper() {
   return <Navigation therapeuticAreas={therapeuticAreas} />;
 }
 
+
