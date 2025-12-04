@@ -7,6 +7,9 @@ import { getContactInfo } from "../../services/contacts";
 import ContactForm from "../../components/contactForm"; // Вкарваме клиентската форма
 import Link from "next/link";
 
+// Force dynamic rendering to avoid build timeout
+export const dynamic = 'force-dynamic';
+
 export async function generateMetadata() {
   return {
     title: "Контакти - NextLevel Theme",

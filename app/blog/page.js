@@ -1,6 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 
+// Force dynamic rendering to avoid build timeout
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: "Блог - NextLevel Theme",
   description:

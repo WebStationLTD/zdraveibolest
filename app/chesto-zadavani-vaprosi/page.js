@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/react";
 import { ChevronDownIcon, PhoneIcon, EnvelopeIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 
@@ -213,8 +212,47 @@ const faqSections = [
   }
 ];
 
+// Custom Accordion Item Component
+function AccordionItem({ question, answer, accentColor, isOpen, onClick }) {
+  return (
+    <div 
+      className={`bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden border-2 ${
+        isOpen ? "border-[#04737d]/30" : "border-transparent"
+      }`}
+    >
+      <button 
+        onClick={onClick}
+        className="flex items-center justify-between w-full px-6 py-5 text-left"
+      >
+        <span className={`font-semibold text-base md:text-lg pr-4 ${
+          isOpen ? accentColor : "text-gray-900"
+        }`}>
+          {question}
+        </span>
+        <ChevronDownIcon 
+          className={`h-6 w-6 flex-shrink-0 transition-all duration-300 ${
+            isOpen 
+              ? `rotate-180 ${accentColor}` 
+              : "text-gray-400"
+          }`}
+        />
+      </button>
+      {isOpen && (
+        <div className="px-6 pb-5">
+          <div className="pt-2 border-t border-gray-100">
+            <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+              {answer}
+            </p>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function FAQPage() {
   const [activeSection, setActiveSection] = useState(0);
+  const [openQuestionIndex, setOpenQuestionIndex] = useState(null);
 
   return (
     <div className="bg-white">
@@ -244,7 +282,10 @@ export default function FAQPage() {
             {faqSections.map((section, index) => (
               <button
                 key={index}
-                onClick={() => setActiveSection(index)}
+                onClick={() => {
+                  setActiveSection(index);
+                  setOpenQuestionIndex(null); // Reset open question when changing section
+                }}
                 className={`px-6 py-4 rounded-xl font-semibold text-base md:text-lg transition-all duration-300 ${
                   activeSection === index
                     ? `${section.color} text-white shadow-xl scale-105`
@@ -260,39 +301,14 @@ export default function FAQPage() {
           <div className="max-w-4xl mx-auto">
             <div className="space-y-4">
               {faqSections[activeSection].questions.map((item, index) => (
-                <Disclosure key={index}>
-                  {({ open }) => (
-                    <div 
-                      className={`bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden border-2 ${
-                        open 
-                          ? `border-${faqSections[activeSection].color} ${faqSections[activeSection].color}/5` 
-                          : "border-transparent"
-                      }`}
-                    >
-                      <DisclosureButton className="flex items-center justify-between w-full px-6 py-5 text-left">
-                        <span className={`font-semibold text-base md:text-lg pr-4 ${
-                          open ? faqSections[activeSection].accentColor : "text-gray-900"
-                        }`}>
-                          {item.question}
-                        </span>
-                        <ChevronDownIcon 
-                          className={`h-6 w-6 flex-shrink-0 transition-all duration-300 ${
-                            open 
-                              ? `rotate-180 ${faqSections[activeSection].accentColor}` 
-                              : "text-gray-400"
-                          }`}
-                        />
-                      </DisclosureButton>
-                      <DisclosurePanel className="px-6 pb-5">
-                        <div className="pt-2 border-t border-gray-100">
-                          <p className="text-gray-700 leading-relaxed whitespace-pre-line">
-                            {item.answer}
-                          </p>
-                        </div>
-                      </DisclosurePanel>
-                    </div>
-                  )}
-                </Disclosure>
+                <AccordionItem
+                  key={index}
+                  question={item.question}
+                  answer={item.answer}
+                  accentColor={faqSections[activeSection].accentColor}
+                  isOpen={openQuestionIndex === index}
+                  onClick={() => setOpenQuestionIndex(openQuestionIndex === index ? null : index)}
+                />
               ))}
             </div>
           </div>
