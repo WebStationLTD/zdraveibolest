@@ -1,6 +1,7 @@
 import { fetchAPI } from "./api";
 
-const API_URL = process.env.NEXT_PUBLIC_WORDPRESS_API_URL?.replace('/wp-json/wp/v2', '');
+// Use environment variable or fallback to hardcoded URL
+const API_URL = process.env.NEXT_PUBLIC_WORDPRESS_API_URL?.replace('/wp-json/wp/v2', '') || 'https://zdraveibolest.admin-panels.com';
 
 /**
  * Register a new user
@@ -134,6 +135,7 @@ export function saveAuthData(token, user) {
   localStorage.setItem('auth_token', token);
   localStorage.setItem('user_data', JSON.stringify(user));
 }
+
 
 
 
