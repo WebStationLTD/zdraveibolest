@@ -1,10 +1,13 @@
 import { getServiceBySlug } from "../../../services/services";
 import { Suspense } from "react";
-import dynamic from "next/dynamic";
+import dynamicImport from "next/dynamic";
 import Script from "next/script";
 
+// Force dynamic rendering to avoid build timeout
+export const dynamic = 'force-dynamic';
+
 // Динамично зареждане на компоненти за по-добро разделяне на кода
-const ServiceContent = dynamic(
+const ServiceContent = dynamicImport(
   () => import("../../../components/ServiceContent"),
   {
     ssr: true,
@@ -13,9 +16,6 @@ const ServiceContent = dynamic(
     ),
   }
 );
-
-// Добавяне на ISR ревалидиране на всеки час
-export const revalidate = 3600;
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;

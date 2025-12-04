@@ -7,8 +7,8 @@ import AboutUs from "../components/about-us";
 import CTASection from "../components/cta-section";
 import { WebVitals } from "./web-vitals";
 
-// Добавяне на ISR ревалидиране на всеки час
-export const revalidate = 3600;
+// Force dynamic rendering to avoid build timeout
+export const dynamic = 'force-dynamic';
 
 // Добавяне на метаданни за главната страница
 export const metadata = {

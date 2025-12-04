@@ -2,6 +2,9 @@ import RegisterForm from "../../components/RegisterForm";
 import { getServices } from "../../services/services";
 import Link from "next/link";
 
+// Force dynamic rendering to avoid build timeout
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: "Регистрация - zdraveibolest.bg",
   description: "Регистрирайте се за достъп до пълната информация за клинични проучвания",

@@ -2,6 +2,9 @@ import { getPostBySlug } from "../../../services/posts";
 import { getCategories } from "../../../services/categories";
 import BlogPostContent from "../../../components/BlogPostContent";
 
+// Force dynamic rendering to avoid build timeout
+export const dynamic = 'force-dynamic';
+
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const post = await getPostBySlug(slug);

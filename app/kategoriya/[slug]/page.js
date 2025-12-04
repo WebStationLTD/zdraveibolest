@@ -3,16 +3,8 @@ import { notFound } from "next/navigation";
 import { getCategoryBySlug, getPostsByCategory, getCategories } from "../../../services/categories";
 import Script from "next/script";
 
-// ISR ревалидиране
-export const revalidate = 60;
-
-// Генериране на статични параметри
-export async function generateStaticParams() {
-  const categories = await getCategories();
-  return categories.map((cat) => ({
-    slug: cat.slug,
-  }));
-}
+// Force dynamic rendering to avoid build timeout
+export const dynamic = 'force-dynamic';
 
 // Динамични метаданни
 export async function generateMetadata({ params }) {

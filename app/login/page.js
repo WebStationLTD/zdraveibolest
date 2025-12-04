@@ -1,6 +1,9 @@
 import LoginForm from "../../components/LoginForm";
 import Link from "next/link";
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: "Вход - zdraveibolest.bg",
   description: "Влезте във вашия акаунт за достъп до пълната информация",
