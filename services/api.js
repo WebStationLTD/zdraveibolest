@@ -2,16 +2,12 @@ const API_BASE_URL = "https://zdraveibolest.admin-panels.com/wp-json/wp/v2";
 import { cache } from "react";
 
 /**
- * Universal fetch function with timeout
+ * Universal fetch function
  * @param {string} endpoint - API endpoint
  * @param {Object} options - Fetch options (optional)
- * @param {number} timeout - Timeout in milliseconds (default: 15000)
  * @returns {Promise<any>} - JSON response
  */
-export const fetchAPI = cache(async (endpoint, options = {}, timeout = 15000) => {
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), timeout);
-  
+export const fetchAPI = cache(async (endpoint, options = {}) => {
   try {
     const res = await fetch(`${API_BASE_URL}/${endpoint}`, {
       method: "GET",
@@ -19,10 +15,7 @@ export const fetchAPI = cache(async (endpoint, options = {}, timeout = 15000) =>
         "Content-Type": "application/json",
       },
       ...options,
-      signal: controller.signal,
     });
-    
-    clearTimeout(timeoutId);
 
     if (!res.ok) {
       throw new Error(`API error: ${res.status} ${res.statusText}`);
@@ -45,12 +38,7 @@ export const fetchAPI = cache(async (endpoint, options = {}, timeout = 15000) =>
       );
     }
   } catch (error) {
-    clearTimeout(timeoutId);
-    if (error.name === 'AbortError') {
-      console.error("Fetch API Timeout:", endpoint);
-    } else {
-      console.error("Fetch API Error:", error);
-    }
+    console.error("Fetch API Error:", error);
     return null;
   }
 });

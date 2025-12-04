@@ -1,22 +1,5 @@
-const API_URL = process.env.NEXT_PUBLIC_WORDPRESS_API_URL;
-
-// Helper function to fetch with timeout
-async function fetchWithTimeout(url, options = {}, timeout = 10000) {
-  const controller = new AbortController();
-  const id = setTimeout(() => controller.abort(), timeout);
-  
-  try {
-    const response = await fetch(url, {
-      ...options,
-      signal: controller.signal,
-    });
-    clearTimeout(id);
-    return response;
-  } catch (error) {
-    clearTimeout(id);
-    throw error;
-  }
-}
+// Use environment variable or fallback to hardcoded URL
+const API_URL = process.env.NEXT_PUBLIC_WORDPRESS_API_URL || "https://zdraveibolest.admin-panels.com/wp-json/wp/v2";
 
 /**
  * Взима всички категории от WordPress
@@ -24,12 +7,11 @@ async function fetchWithTimeout(url, options = {}, timeout = 10000) {
  */
 export async function getCategories() {
   try {
-    const response = await fetchWithTimeout(
+    const response = await fetch(
       `${API_URL}/categories?per_page=100&_embed&hide_empty=true`,
       {
         next: { revalidate: 60 },
-      },
-      15000
+      }
     );
 
     if (!response.ok) {
@@ -53,12 +35,11 @@ export async function getCategories() {
  */
 export async function getCategoryBySlug(slug) {
   try {
-    const response = await fetchWithTimeout(
+    const response = await fetch(
       `${API_URL}/categories?slug=${slug}`,
       {
         next: { revalidate: 60 },
-      },
-      15000
+      }
     );
 
     if (!response.ok) {
@@ -81,12 +62,11 @@ export async function getCategoryBySlug(slug) {
  */
 export async function getPostsByCategory(categoryId, perPage = 100) {
   try {
-    const response = await fetchWithTimeout(
+    const response = await fetch(
       `${API_URL}/posts?categories=${categoryId}&per_page=${perPage}&_embed&orderby=date&order=desc`,
       {
         next: { revalidate: 60 },
-      },
-      15000
+      }
     );
 
     if (!response.ok) {
@@ -106,12 +86,11 @@ export async function getPostsByCategory(categoryId, perPage = 100) {
  */
 export async function getCategoriesForNav() {
   try {
-    const response = await fetchWithTimeout(
+    const response = await fetch(
       `${API_URL}/categories?per_page=100&hide_empty=false&orderby=name&order=asc`,
       {
         next: { revalidate: 60 },
-      },
-      15000
+      }
     );
 
     if (!response.ok) {
