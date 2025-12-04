@@ -6,14 +6,12 @@ export default async function LatestBlogPosts() {
   
   try {
     posts = await getLatestPosts();
-    console.log("Fetched posts:", posts);
   } catch (error) {
     console.error("Error fetching latest posts:", error);
     return null;
   }
 
   if (!posts || posts.length === 0) {
-    console.log("No posts available");
     return null;
   }
 

@@ -2,19 +2,19 @@ import Link from "next/link";
 
 export default function TherapeuticAreas() {
   const areas = [
-    { name: "Пулмология", icon: "/пулмология-icon.svg", href: "/terapevtichni-oblasti/pulmologia" },
-    { name: "Ревматология", icon: "/ревматология-icon.svg", href: "/terapevtichni-oblasti/revmatologia" },
-    { name: "Кардиология", icon: "/кардиология-icon.svg", href: "/terapevtichni-oblasti/kardiologia" },
-    { name: "Неврология", icon: "/неврология-icon.svg", href: "/terapevtichni-oblasti/nevrologia" },
-    { name: "Нефрология", icon: "/нефрология-icon.svg", href: "/terapevtichni-oblasti/nefrologia" },
-    { name: "Гастроентерология", icon: "/гастроентерология-icon.svg", href: "/terapevtichni-oblasti/gastroenterologia" },
-    { name: "Ендокринология", icon: "/ендокринология-icon.svg", href: "/terapevtichni-oblasti/endokrinologia" },
-    { name: "Онкология", icon: "/онкология-icon.svg", href: "/terapevtichni-oblasti/onkologia" },
-    { name: "Алергология", icon: "/алергология-icon.svg", href: "/terapevtichni-oblasti/alergologia" },
-    { name: "Дерматология", icon: "/дерматология-icon.svg", href: "/terapevtichni-oblasti/dermatologia" },
-    { name: "Ранни фази", icon: "/ранни-фази-icon.svg", href: "/terapevtichni-oblasti/ranni-fazi" },
-    { name: "Хематология", icon: "/хематология-icon.svg", href: "/terapevtichni-oblasti/hematologia" },
-    { name: "Акушер-гинекология", icon: "/акушер-гинекология-icon.svg", href: "/terapevtichni-oblasti/akusher-ginekologia" },
+    { name: "Пулмология", icon: "/пулмология-icon.svg", href: "/kategoriya/пулмология" },
+    { name: "Ревматология", icon: "/ревматология-icon.svg", href: "/kategoriya/ревматология" },
+    { name: "Кардиология", icon: "/кардиология-icon.svg", href: "/kategoriya/кардиология" },
+    { name: "Неврология", icon: "/неврология-icon.svg", href: "/kategoriya/неврология" },
+    { name: "Нефрология", icon: "/нефрология-icon.svg", href: "/kategoriya/нефрология" },
+    { name: "Гастроентерология", icon: "/гастроентерология-icon.svg", href: "/kategoriya/гастроентерология" },
+    { name: "Ендокринология", icon: "/ендокринология-icon.svg", href: "/kategoriya/ендокринология" },
+    { name: "Онкология", icon: "/онкология-icon.svg", href: "/kategoriya/онкология" },
+    { name: "Алергология", icon: "/алергология-icon.svg", href: "/kategoriya/алергология" },
+    { name: "Дерматология", icon: "/дерматология-icon.svg", href: "/kategoriya/дерматология" },
+    { name: "Ранни фази", icon: "/ранни-фази-icon.svg", href: "/kategoriya/ранни-фази" },
+    { name: "Хематология", icon: "/хематология-icon.svg", href: "/kategoriya/хематология" },
+    { name: "Акушер-гинекология", icon: "/акушер-гинекология-icon.svg", href: "/kategoriya/акушер-гинекология" },
   ];
 
   return (

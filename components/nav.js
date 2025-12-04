@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import {
   Dialog,
   DialogBackdrop,
@@ -9,9 +10,6 @@ import {
   MenuButton,
   MenuItem,
   MenuItems,
-  Disclosure,
-  DisclosureButton,
-  DisclosurePanel,
 } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon, ChevronDownIcon, UserCircleIcon, ArrowRightOnRectangleIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
@@ -22,6 +20,8 @@ export default function Navigation({ therapeuticAreas = [] }) {
   const [open, setOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [participationDropdownOpen, setParticipationDropdownOpen] = useState(false);
+  const [mobileAreasOpen, setMobileAreasOpen] = useState(false);
+  const [mobileParticipationOpen, setMobileParticipationOpen] = useState(false);
   const { isAuthenticated, user, logout, loading } = useAuth();
 
   const navigation = {
@@ -40,7 +40,7 @@ export default function Navigation({ therapeuticAreas = [] }) {
   return (
     <div className="bg-white sticky top-0 w-full z-50 shadow-sm">
       {/* Mobile menu */}
-      <Dialog open={open} onClose={setOpen} className="relative z-40 lg:hidden">
+      <Dialog open={open} onClose={setOpen} className="relative z-40 xl:hidden">
         <DialogBackdrop
           transition
           className="fixed inset-0 bg-black/25 transition-opacity duration-300 ease-linear data-closed:opacity-0"
@@ -51,8 +51,15 @@ export default function Navigation({ therapeuticAreas = [] }) {
             className="relative flex w-full max-w-xs transform flex-col overflow-y-auto bg-white pb-12 shadow-xl transition duration-300 ease-in-out data-closed:-translate-x-full"
           >
             <div className="flex px-4 pt-5 pb-2 justify-between items-center">
-              <Link href="/" className="text-xl font-normal text-gray-900">
-                zdraveibolest.bg
+              <Link href="/" className="block" onClick={() => setOpen(false)}>
+                <Image
+                  src="/zdraveibolest-logo.png"
+                  alt="Здраве и Болест - Лого"
+                  width={150}
+                  height={40}
+                  className="w-auto h-10"
+                  style={{ width: 'auto' }}
+                />
               </Link>
               <button
                 type="button"
@@ -80,78 +87,65 @@ export default function Navigation({ therapeuticAreas = [] }) {
               
               {/* Терапевтични области - Accordion Mobile */}
               <div className="flow-root">
-                <Disclosure>
-                  {({ open: disclosureOpen }) => (
-                    <>
-                      <DisclosureButton className="flex items-center justify-between -m-2 p-2 text-gray-700 hover:text-[#04737d] transition-colors w-auto min-w-0" style={{ width: '100%' }}>
-                        <span className="font-normal">Терапевтични области</span>
-                        <ChevronDownIcon
-                          className={`${
-                            disclosureOpen ? 'rotate-180' : ''
-                          } h-5 w-5 flex-shrink-0 transition-transform duration-200`}
-                        />
-                      </DisclosureButton>
-                      <DisclosurePanel className="mt-2 pl-4">
-                        <div className="space-y-2 max-h-60 overflow-y-auto">
-                          {/* Link to main page */}
-                          <Link
-                            href="/terapevtichni-oblasti"
-                            className="block py-2.5 px-3 text-sm font-medium text-[#04737d] bg-[#04737d]/5 hover:bg-[#04737d]/10 rounded-lg transition-colors"
-                            onClick={() => setOpen(false)}
-                          >
-                            → Всички терапевтични области
-                          </Link>
-                          
-                          <div className="pt-2 border-t border-gray-200">
-                            <p className="text-xs text-gray-500 mb-2 px-1">Или изберете конкретна:</p>
-                            {therapeuticAreas.map((area) => (
-                              <Link
-                                key={area.id}
-                                href={`/terapevtichni-oblasti/${area.slug}`}
-                                className="block py-2 text-sm text-gray-600 hover:text-[#04737d] transition-colors"
-                                onClick={() => setOpen(false)}
-                              >
-                                {area.title.rendered}
-                              </Link>
-                            ))}
-                          </div>
-                        </div>
-                      </DisclosurePanel>
-                    </>
-                  )}
-                </Disclosure>
+                <button 
+                  onClick={() => setMobileAreasOpen(!mobileAreasOpen)}
+                  className="flex items-center justify-between -m-2 p-2 text-gray-700 hover:text-[#04737d] transition-colors w-full"
+                >
+                  <span className="font-normal">Терапевтични области</span>
+                  <ChevronDownIcon
+                    className={`${
+                      mobileAreasOpen ? 'rotate-180' : ''
+                    } h-5 w-5 flex-shrink-0 transition-transform duration-200`}
+                  />
+                </button>
+                {mobileAreasOpen && (
+                  <div className="mt-2 pl-4">
+                    <div className="space-y-2 max-h-60 overflow-y-auto">
+                      <p className="text-xs text-gray-500 mb-2 px-1">Изберете терапевтична област:</p>
+                      {therapeuticAreas.map((area) => (
+                        <Link
+                          key={area.id}
+                          href={`/kategoriya/${area.slug}`}
+                          className="block py-2 text-sm text-gray-600 hover:text-[#04737d] transition-colors"
+                          onClick={() => setOpen(false)}
+                        >
+                          {area.title.rendered}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Участие - Accordion Mobile */}
               <div className="flow-root">
-                <Disclosure>
-                  {({ open: disclosureOpen }) => (
-                    <>
-                      <DisclosureButton className="flex items-center justify-between -m-2 p-2 text-gray-700 hover:text-[#04737d] transition-colors w-auto min-w-0" style={{ width: '100%' }}>
-                        <span className="font-normal">Участие</span>
-                        <ChevronDownIcon
-                          className={`${
-                            disclosureOpen ? 'rotate-180' : ''
-                          } h-5 w-5 flex-shrink-0 transition-transform duration-200`}
-                        />
-                      </DisclosureButton>
-                      <DisclosurePanel className="mt-2 pl-4">
-                        <div className="space-y-2">
-                          {participationMenu.map((item) => (
-                            <Link
-                              key={item.name}
-                              href={item.href}
-                              className="block py-2 text-sm text-gray-600 hover:text-[#04737d] transition-colors"
-                              onClick={() => setOpen(false)}
-                            >
-                              {item.name}
-                            </Link>
-                          ))}
-                        </div>
-                      </DisclosurePanel>
-                    </>
-                  )}
-                </Disclosure>
+                <button 
+                  onClick={() => setMobileParticipationOpen(!mobileParticipationOpen)}
+                  className="flex items-center justify-between -m-2 p-2 text-gray-700 hover:text-[#04737d] transition-colors w-full"
+                >
+                  <span className="font-normal">Участие</span>
+                  <ChevronDownIcon
+                    className={`${
+                      mobileParticipationOpen ? 'rotate-180' : ''
+                    } h-5 w-5 flex-shrink-0 transition-transform duration-200`}
+                  />
+                </button>
+                {mobileParticipationOpen && (
+                  <div className="mt-2 pl-4">
+                    <div className="space-y-2">
+                      {participationMenu.map((item) => (
+                        <Link
+                          key={item.name}
+                          href={item.href}
+                          className="block py-2 text-sm text-gray-600 hover:text-[#04737d] transition-colors"
+                          onClick={() => setOpen(false)}
+                        >
+                          {item.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Останалите страници */}
@@ -247,31 +241,41 @@ export default function Navigation({ therapeuticAreas = [] }) {
 
       {/* Desktop Header */}
       <header className="relative bg-white">
-        <nav aria-label="Top" className="mx-auto w-[95%] md:w-[80%]">
+        <nav aria-label="Top" className="w-full px-4 md:px-8 lg:px-12">
           <div className="flex items-center justify-between h-20">
             {/* Mobile menu button */}
             <button
               type="button"
-              onClick={() => setOpen(true)}
-              className="relative rounded-md bg-white p-2 text-gray-700 lg:hidden"
+              onClick={() => setOpen(!open)}
+              className="relative rounded-md bg-white p-2 text-gray-700 xl:hidden z-50"
             >
               <span className="absolute -inset-0.5" />
-              <span className="sr-only">Open menu</span>
-              <Bars3Icon aria-hidden="true" className="size-6" />
+              <span className="sr-only">{open ? 'Close menu' : 'Open menu'}</span>
+              {open ? (
+                <XMarkIcon aria-hidden="true" className="size-6" />
+              ) : (
+                <Bars3Icon aria-hidden="true" className="size-6" />
+              )}
             </button>
 
             {/* Logo */}
-            <div className="flex items-center justify-start">
+            <div className="flex items-center justify-start flex-shrink-0">
               <Link href="/" className="block">
-                <span className="text-base md:text-lg font-normal text-gray-900">
-                  zdraveibolest.bg
-                </span>
+                <Image
+                  src="/zdraveibolest-logo.png"
+                  alt="Здраве и Болест - Лого"
+                  width={180}
+                  height={50}
+                  className="w-[100px] md:w-[120px] xl:w-[150px] h-auto object-contain"
+                  style={{ height: 'auto' }}
+                  priority
+                />
               </Link>
             </div>
 
             {/* Desktop Menu - Center */}
-            <div className="hidden lg:flex lg:items-center lg:justify-center lg:flex-1 lg:ml-12">
-              <div className="flex items-center space-x-7">
+            <div className="hidden xl:flex xl:items-center xl:justify-center xl:flex-1 xl:ml-4 2xl:ml-8">
+              <div className="flex items-center space-x-3 2xl:space-x-5">
                 {/* Начало */}
                 <Link
                   href="/"
@@ -286,13 +290,12 @@ export default function Navigation({ therapeuticAreas = [] }) {
                   onMouseEnter={() => setDropdownOpen(true)}
                   onMouseLeave={() => setDropdownOpen(false)}
                 >
-                  <Link
-                    href="/terapevtichni-oblasti"
+                  <button
                     className="flex items-center text-sm font-normal text-gray-700 hover:text-[#04737d] transition-colors whitespace-nowrap"
                   >
                     Терапевтични области
                     <ChevronDownIcon className={`ml-1 h-4 w-4 hover:text-[#04737d] transition-all ${dropdownOpen ? 'rotate-180' : ''}`} />
-                  </Link>
+                  </button>
                   
                   {/* Dropdown Menu */}
                   <div
@@ -303,26 +306,16 @@ export default function Navigation({ therapeuticAreas = [] }) {
                     }`}
                   >
                     <div className="p-2 max-h-[480px] overflow-y-auto">
-                      {/* View All Link */}
-                      <Link
-                        href="/terapevtichni-oblasti"
-                        className="block px-3 py-3 border-b border-gray-100 hover:bg-[#04737d]/5 rounded-lg transition-colors mb-1"
-                      >
-                        <p className="text-sm font-medium text-[#04737d] hover:text-[#035057]">
-                          → Всички терапевтични области
-                        </p>
-                      </Link>
-                      
                       {/* Individual Areas */}
                       <div className="px-3 py-2 border-b border-gray-100">
                         <p className="text-xs font-medium text-gray-500 tracking-wider uppercase">
-                          Или изберете конкретна област
+                          Изберете терапевтична област
                         </p>
                       </div>
                       {therapeuticAreas.map((area) => (
                         <Link
                           key={area.id}
-                          href={`/terapevtichni-oblasti/${area.slug}`}
+                          href={`/kategoriya/${area.slug}`}
                           className="group flex items-center rounded-lg px-3 py-2.5 text-sm transition-colors text-gray-700 hover:bg-[#04737d]/5 hover:text-[#04737d]"
                         >
                           <div className="flex items-center">
@@ -392,11 +385,11 @@ export default function Navigation({ therapeuticAreas = [] }) {
             </div>
 
             {/* CTA & Auth Buttons - Desktop */}
-            <div className="hidden lg:flex items-center justify-end gap-3">
+            <div className="hidden xl:flex items-center justify-end gap-2">
               {/* CTA Button */}
               <Link
                 href="#"
-                className="px-6 py-2.5 text-sm font-normal text-[#04737d] border-2 border-[#04737d] rounded-md hover:bg-[#04737d] hover:text-white transition-colors whitespace-nowrap"
+                className="px-3 2xl:px-4 py-2 text-xs 2xl:text-sm font-normal text-[#04737d] border-2 border-[#04737d] rounded-md hover:bg-[#04737d] hover:text-white transition-colors whitespace-nowrap"
               >
                 Клинично изпитване
               </Link>
@@ -411,9 +404,9 @@ export default function Navigation({ therapeuticAreas = [] }) {
                     <>
                       {/* User Menu Dropdown */}
                       <Menu as="div" className="relative">
-                        <MenuButton className="flex items-center gap-2 px-3 py-2 hover:bg-gray-50 rounded-lg transition-colors">
+                        <MenuButton className="flex items-center gap-1 2xl:gap-2 p-2 2xl:px-3 2xl:py-2 hover:bg-gray-50 rounded-lg transition-colors">
                           <UserCircleIcon className="h-6 w-6 text-[#04737d]" />
-                          <span className="text-sm font-normal text-gray-700">
+                          <span className="hidden 2xl:inline text-sm font-normal text-gray-700">
                             {user.first_name || user.username}
                           </span>
                           <ChevronDownIcon className="h-4 w-4 text-gray-500" />
@@ -456,18 +449,20 @@ export default function Navigation({ therapeuticAreas = [] }) {
                       {/* Login Button */}
                       <Link
                         href="/login"
-                        className="flex items-center gap-1.5 px-4 py-2 text-sm font-normal text-gray-700 hover:text-[#04737d] hover:bg-[#04737d]/5 rounded-lg transition-colors"
+                        className="flex items-center justify-center gap-1.5 p-2 2xl:px-4 2xl:py-2 text-sm font-normal text-gray-700 hover:text-[#04737d] hover:bg-[#04737d]/5 rounded-lg transition-colors"
+                        title="Вход"
                       >
                         <ArrowRightOnRectangleIcon className="h-5 w-5" />
-                        Вход
+                        <span className="hidden 2xl:inline">Вход</span>
                       </Link>
                       {/* Register Button */}
                       <Link
                         href="/register"
-                        className="flex items-center gap-1.5 px-4 py-2 text-sm font-normal text-white bg-[#04737d] hover:bg-[#035057] rounded-lg transition-colors"
+                        className="flex items-center justify-center gap-1.5 p-2 2xl:px-4 2xl:py-2 text-sm font-normal text-white bg-[#04737d] hover:bg-[#035057] rounded-lg transition-colors"
+                        title="Регистрация"
                       >
                         <UserCircleIcon className="h-5 w-5" />
-                        Регистрация
+                        <span className="hidden 2xl:inline">Регистрация</span>
                       </Link>
                     </>
                   )}

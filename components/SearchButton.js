@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 export default function SearchButton() {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState({ posts: [], pages: [], services: [] });
+  const [results, setResults] = useState({ posts: [], pages: [], categories: [] });
   const [isSearching, setIsSearching] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const searchRef = useRef(null);
@@ -19,7 +19,7 @@ export default function SearchButton() {
   // Debounced search
   useEffect(() => {
     if (query.trim().length < 2) {
-      setResults({ posts: [], pages: [], services: [] });
+      setResults({ posts: [], pages: [], categories: [] });
       return;
     }
 
@@ -61,7 +61,7 @@ export default function SearchButton() {
 
   // Keyboard navigation
   const allResults = [
-    ...results.services.map(s => ({ ...s, type: 'service' })),
+    ...results.categories.map(c => ({ ...c, type: 'category' })),
     ...results.posts.map(p => ({ ...p, type: 'post' })),
     ...results.pages.map(p => ({ ...p, type: 'page' })),
   ];
@@ -79,8 +79,8 @@ export default function SearchButton() {
     } else if (e.key === 'Enter' && allResults[selectedIndex]) {
       e.preventDefault();
       const result = allResults[selectedIndex];
-      const url = result.type === 'service' 
-        ? `/terapevtichni-oblasti/${result.slug}`
+      const url = result.type === 'category' 
+        ? `/kategoriya/${result.slug}`
         : result.type === 'post'
         ? `/blog/${result.slug}`
         : `/${result.slug}`;
@@ -91,8 +91,8 @@ export default function SearchButton() {
   };
 
   const handleResultClick = (type, slug) => {
-    const url = type === 'service' 
-      ? `/terapevtichni-oblasti/${slug}`
+    const url = type === 'category' 
+      ? `/kategoriya/${slug}`
       : type === 'post'
       ? `/blog/${slug}`
       : `/${slug}`;
@@ -138,7 +138,7 @@ export default function SearchButton() {
                 <button
                   onClick={() => {
                     setQuery('');
-                    setResults({ posts: [], pages: [], services: [] });
+                    setResults({ posts: [], pages: [], categories: [] });
                     inputRef.current?.focus();
                   }}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
@@ -170,28 +170,28 @@ export default function SearchButton() {
               </div>
             ) : (
               <div className="py-2">
-                {/* Therapeutic Areas */}
-                {results.services.length > 0 && (
+                {/* Терапевтични области (Categories) */}
+                {results.categories.length > 0 && (
                   <div className="mb-3">
                     <p className="px-4 py-2 text-xs font-medium text-[#04737d] tracking-wider uppercase bg-[#04737d]/5">
                       Терапевтични области
                     </p>
-                    {results.services.map((service, index) => (
+                    {results.categories.map((category, index) => (
                       <button
-                        key={service.id}
-                        onClick={() => handleResultClick('service', service.slug)}
+                        key={category.id}
+                        onClick={() => handleResultClick('category', category.slug)}
                         className={`text-left px-4 py-3 hover:bg-[#04737d]/5 transition-colors w-auto min-w-0 ${
                           selectedIndex === index ? 'bg-[#04737d]/5' : ''
                         }`}
                         style={{ width: '100%' }}
                       >
                         <h4 className="text-sm font-medium text-gray-900 mb-1">
-                          {service.title.rendered}
+                          {category.name}
                         </h4>
-                        {service.excerpt?.rendered && (
-                          <p className="text-xs text-gray-600 line-clamp-1"
-                             dangerouslySetInnerHTML={{ __html: service.excerpt.rendered }}
-                          />
+                        {category.description && (
+                          <p className="text-xs text-gray-600 line-clamp-1">
+                            {category.description}
+                          </p>
                         )}
                       </button>
                     ))}
@@ -202,20 +202,20 @@ export default function SearchButton() {
                 {results.posts.length > 0 && (
                   <div className="mb-3">
                     <p className="px-4 py-2 text-xs font-medium text-[#fd9300] tracking-wider uppercase bg-[#fd9300]/5">
-                      Обучителен център
+                      Статии
                     </p>
                     {results.posts.map((post, index) => (
                       <button
                         key={post.id}
                         onClick={() => handleResultClick('post', post.slug)}
                         className={`text-left px-4 py-3 hover:bg-[#04737d]/5 transition-colors w-auto min-w-0 ${
-                          selectedIndex === results.services.length + index ? 'bg-[#04737d]/5' : ''
+                          selectedIndex === results.categories.length + index ? 'bg-[#04737d]/5' : ''
                         }`}
                         style={{ width: '100%' }}
                       >
-                        <h4 className="text-sm font-medium text-gray-900 mb-1">
-                          {post.title.rendered}
-                        </h4>
+                        <h4 className="text-sm font-medium text-gray-900 mb-1"
+                            dangerouslySetInnerHTML={{ __html: post.title.rendered }}
+                        />
                         {post.excerpt?.rendered && (
                           <p className="text-xs text-gray-600 line-clamp-1"
                              dangerouslySetInnerHTML={{ __html: post.excerpt.rendered }}
@@ -237,13 +237,13 @@ export default function SearchButton() {
                         key={page.id}
                         onClick={() => handleResultClick('page', page.slug)}
                         className={`text-left px-4 py-3 hover:bg-[#04737d]/5 transition-colors w-auto min-w-0 ${
-                          selectedIndex === results.services.length + results.posts.length + index ? 'bg-[#04737d]/5' : ''
+                          selectedIndex === results.categories.length + results.posts.length + index ? 'bg-[#04737d]/5' : ''
                         }`}
                         style={{ width: '100%' }}
                       >
-                        <h4 className="text-sm font-medium text-gray-900">
-                          {page.title.rendered}
-                        </h4>
+                        <h4 className="text-sm font-medium text-gray-900"
+                            dangerouslySetInnerHTML={{ __html: page.title.rendered }}
+                        />
                       </button>
                     ))}
                   </div>
@@ -263,4 +263,3 @@ export default function SearchButton() {
     </div>
   );
 }
-

@@ -1,126 +1,19 @@
 import Link from "next/link";
 import PatientJourneyContactForm from "../../components/PatientJourneyContactForm";
+import StepsCarousel from "../../components/StepsCarousel";
 import { 
   PhoneIcon, 
   EnvelopeIcon, 
-  ChatBubbleLeftRightIcon,
-  UserGroupIcon,
-  ClipboardDocumentCheckIcon,
-  HeartIcon,
-  BeakerIcon,
-  CalendarDaysIcon,
-  DocumentCheckIcon,
-  ChartBarIcon,
-  CheckCircleIcon,
   SparklesIcon,
   ShieldCheckIcon,
-  CurrencyEuroIcon
+  CurrencyEuroIcon,
+  HeartIcon
 } from "@heroicons/react/24/outline";
 
 export const metadata = {
   title: "Пътят на пациента - Как протича участието в клинично изпитване",
   description: "Научете повече за стъпките в клиничното изпитване - от първия контакт до финалното посещение. Прозрачен и сигурен процес за вашето участие.",
 };
-
-const steps = [
-  {
-    number: "01",
-    title: "Първа стъпка – свързване с нас",
-    icon: PhoneIcon,
-    color: "bg-[#04737d]",
-    description: [
-      "Може би сте научили за проучването от вашия лекар, интернет или приятел.",
-      "Ако проявите интерес, достатъчно е да попълните кратката форма за контакт или да ни се обадите.",
-      "Нашият екип ще ви насочи и ще отговори на всички ваши въпроси."
-    ]
-  },
-  {
-    number: "02",
-    title: "Разговор с координатор",
-    icon: ChatBubbleLeftRightIcon,
-    color: "bg-[#fd9300]",
-    description: [
-      "Наш координатор ще се свърже с вас за кратък разговор.",
-      "Ще обсъдим вашето здравословно състояние и дали проучването е подходящо за вас.",
-      "Това е моментът да зададете всички въпроси и спокойно да попитате за всичко, което ви интересува."
-    ]
-  },
-  {
-    number: "03",
-    title: "Посещение и информирано съгласие",
-    icon: DocumentCheckIcon,
-    color: "bg-[#04737d]",
-    description: [
-      "В клиничния център ще получите ясна и подробна информация за целта на проучването, как протича и какви нови лекарства или терапии ще бъдат изследвани.",
-      "Вие решавате дали да участвате, като подписвате информирано съгласие – документ, който ви гарантира, че участието е доброволно и че винаги можете да се откажете."
-    ]
-  },
-  {
-    number: "04",
-    title: "Начални медицински изследвания",
-    icon: BeakerIcon,
-    color: "bg-[#fd9300]",
-    description: [
-      "Това включва стандартни тестове – кръв, урина, измервания и разговор с лекар, за да сме сигурни, че проучването е подходящо и безопасно за вас.",
-      "Това е важна стъпка, защото само ако всичко е наред, ще имате възможност да получите подходяща терапия."
-    ]
-  },
-  {
-    number: "05",
-    title: "Официално включване",
-    icon: ClipboardDocumentCheckIcon,
-    color: "bg-[#04737d]",
-    description: [
-      "След успешните изследвания започва вашето участие.",
-      "В зависимост от проучването може да получите иновативно лекарство или терапия, която още не е налична на пазара.",
-      "Това е шанс да имате достъп до лечение, което може да бъде по-ефективно от сегашните стандартни методи."
-    ]
-  },
-  {
-    number: "06",
-    title: "Редовни посещения",
-    icon: CalendarDaysIcon,
-    color: "bg-[#fd9300]",
-    description: [
-      "През целия период ще идвате при нас на редовни визити.",
-      "Там ще получавате лечение, ще ви правим изследвания и ще разговаряме за вашето състояние.",
-      "Нашият екип ще е до вас, за да следи внимателно ефекта от терапията и да гарантира вашата безопасност."
-    ]
-  },
-  {
-    number: "07",
-    title: "Вашата роля",
-    icon: UserGroupIcon,
-    color: "bg-[#04737d]",
-    description: [
-      "От вас се очаква:",
-      "• да идвате на уговорените визити,",
-      "• да спазвате указанията на лекаря,",
-      "• да споделяте открито как се чувствате,",
-      "• да съхранявате и връщате лекарството (ако получавате за вкъщи).",
-      "Най-важното е да сте честни и открити – вашият опит е безценен за успеха на проучването."
-    ]
-  },
-  {
-    number: "08",
-    title: "Финално посещение",
-    icon: ChartBarIcon,
-    color: "bg-[#fd9300]",
-    description: [
-      "В края на проучването имате последна среща.",
-      "Правим обобщаващи изследвания, връщате останали лекарства (ако има такива) и заедно обсъждаме следващите стъпки за вашето здраве."
-    ]
-  },
-  {
-    number: "09",
-    title: "Проследяване",
-    icon: HeartIcon,
-    color: "bg-[#04737d]",
-    description: [
-      "В някои проучвания има и допълнителни телефонни разговори или визити след края, за да се събере информация как се чувствате дългосрочно."
-    ]
-  }
-];
 
 const benefits = [
   {
@@ -169,7 +62,7 @@ export default function PatientJourneyPage() {
 
       {/* Steps Section */}
       <section className="py-16 md:py-24 bg-gray-50">
-        <div className="mx-auto w-[95%] md:w-[80%]">
+        <div className="mx-auto w-[95%] md:w-[85%]">
           <div className="text-center mb-12 md:mb-16">
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
               Как протича участието?
@@ -179,45 +72,8 @@ export default function PatientJourneyPage() {
             </p>
           </div>
 
-          {/* Steps Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {steps.map((step, index) => {
-              const Icon = step.icon;
-              return (
-                <div 
-                  key={index}
-                  className="group relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-100"
-                >
-                  {/* Step Number Badge */}
-                  <div className={`absolute -top-4 -right-4 ${step.color} text-white w-16 h-16 rounded-2xl flex items-center justify-center font-bold text-xl shadow-lg rotate-12 group-hover:rotate-0 transition-transform duration-300`}>
-                    {step.number}
-                  </div>
-
-                  {/* Icon */}
-                  <div className={`${step.color} w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                    <Icon className="h-8 w-8 text-white" />
-                  </div>
-
-                  {/* Title */}
-                  <h3 className="text-xl font-bold text-gray-900 mb-4 leading-tight">
-                    {step.title}
-                  </h3>
-
-                  {/* Description */}
-                  <div className="space-y-3">
-                    {step.description.map((text, i) => (
-                      <p key={i} className="text-gray-600 leading-relaxed text-sm">
-                        {text}
-                      </p>
-                    ))}
-                  </div>
-
-                  {/* Decorative Bottom Element */}
-                  <div className={`absolute bottom-0 left-0 right-0 h-1 ${step.color} rounded-b-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300`}></div>
-                </div>
-              );
-            })}
-          </div>
+          {/* Steps Carousel Component */}
+          <StepsCarousel />
         </div>
       </section>
 

@@ -43,8 +43,8 @@ export default function AboutUs() {
         {/* Right: Image - Full Height with Rounded Left Corners */}
         <div className="relative h-[400px] lg:h-auto">
           <img
-            src="/menu-hero-image.jpg"
-            alt="Медицински екип"
+            src="/who-we-are.jpg"
+            alt="Кои сме ние - Нашият екип"
             className="absolute inset-0 w-full h-full object-cover rounded-2xl lg:rounded-l-3xl lg:rounded-r-none"
             loading="lazy"
           />

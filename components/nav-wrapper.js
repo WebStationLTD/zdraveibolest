@@ -1,17 +1,21 @@
 import Navigation from "./nav";
-import { getServices } from "../services/services";
+import { getCategoriesForNav } from "../services/categories";
 
 export default async function NavigationWrapper() {
   let therapeuticAreas = [];
 
   try {
-    therapeuticAreas = await getServices();
+    const categories = await getCategoriesForNav();
+    // Форматираме категориите да имат същата структура като преди
+    therapeuticAreas = categories.map(cat => ({
+      id: cat.id,
+      title: { rendered: cat.name },
+      slug: cat.slug,
+      count: cat.count,
+    }));
   } catch (error) {
-    console.error("Error fetching therapeutic areas for navigation:", error);
+    console.error("Error fetching categories for navigation:", error);
   }
 
   return <Navigation therapeuticAreas={therapeuticAreas} />;
 }
-
-
-
