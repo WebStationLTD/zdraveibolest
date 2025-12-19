@@ -11,10 +11,8 @@ export function WebVitals() {
         const observer = new PerformanceObserver((list) => {
           const entries = list.getEntries();
           entries.forEach((entry) => {
-            // Извежда LCP метрика в конзолата
+            // Изпращане на LCP метрика към Google Analytics, ако е налично
             if (entry.entryType === "largest-contentful-paint") {
-              console.log(`LCP: ${Math.round(entry.startTime)}ms`);
-              // Изпращане на събитие за Google Analytics, ако е налично
               if (window.gtag) {
                 window.gtag("event", "web_vitals", {
                   event_category: "Web Vitals",
@@ -56,13 +54,15 @@ export function measureLCP() {
       const entries = entryList.getEntries();
       const lastEntry = entries[entries.length - 1];
 
-      console.log("LCP измерване:", {
-        time: lastEntry.startTime,
-        element: lastEntry.element,
-        url: window.location.href,
-        size: lastEntry.size,
-        id: lastEntry.id,
-      });
+      // LCP measurement tracking
+      if (window.gtag && lastEntry) {
+        window.gtag("event", "lcp_measurement", {
+          event_category: "Performance",
+          event_label: "LCP",
+          value: Math.round(lastEntry.startTime),
+          non_interaction: true,
+        });
+      }
     });
 
     lcpObserver.observe({ type: "largest-contentful-paint", buffered: true });

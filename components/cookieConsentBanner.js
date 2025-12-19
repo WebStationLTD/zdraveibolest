@@ -41,10 +41,10 @@ const CookieConsentBanner = () => {
         borderRadius: "6px",
       }}
       onAccept={() => {
-        console.log("Потребителят е приел бисквитките");
+        // Cookie accepted
       }}
       onDecline={() => {
-        console.log("Потребителят е отказал бисквитките");
+        // Cookie declined
       }}
     >
       <p className="text-sm md:text-base">

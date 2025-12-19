@@ -24,7 +24,6 @@ export default function LazyImageObserver() {
       // Маркираме атрибут на изображението, че е заредено
       if (targetElement) {
         targetElement.setAttribute("data-lcp-loaded", "true");
-        console.log("LCP изображението е заредено успешно!", targetElement.id);
       }
     };
 
@@ -73,13 +72,6 @@ export default function LazyImageObserver() {
           const lcpObserver = new PerformanceObserver((list) => {
             const entries = list.getEntries();
             const lastEntry = entries[entries.length - 1];
-
-            // Регистрираме LCP метрика
-            console.log(
-              "LCP Measurement:",
-              Math.round(lastEntry.startTime),
-              "ms"
-            );
 
             // Проверяваме дали елементът съвпада с нашия LCP елемент
             if (lastEntry.element && lastEntry.element.id === targetId) {

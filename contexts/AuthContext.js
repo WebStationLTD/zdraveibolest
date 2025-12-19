@@ -64,7 +64,6 @@ export function AuthProvider({ children }) {
             errorMessage.includes("expired") ||
             errorMessage.includes("jwt_auth_invalid_token")
           ) {
-            console.log("Token expired, logging out...");
             apiLogout();
             setUser(null);
             setIsAuthenticated(false);
