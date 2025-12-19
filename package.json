@@ -15,7 +15,7 @@
     "@tailwindcss/postcss": "^4.0.9",
     "@tailwindcss/typography": "^0.5.16",
     "critters": "^0.0.23",
-    "next": "15.1.7",
+    "next": "^15.1.9",
     "nextjs-toploader": "^3.8.16",
     "postcss": "^8.5.3",
     "react": "^19.0.0",
@@ -29,6 +29,6 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "eslint": "^9",
-    "eslint-config-next": "15.1.7"
+    "eslint-config-next": "^15.1.9"
   }
 }

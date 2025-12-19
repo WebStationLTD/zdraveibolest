@@ -166,7 +166,7 @@ export default function SearchButton() {
               </div>
             ) : totalResults === 0 ? (
               <div className="p-6 text-center text-gray-500 text-sm">
-                Няма намерени резултати за "{query}"
+                Няма намерени резултати за &ldquo;{query}&rdquo;
               </div>
             ) : (
               <div className="py-2">
