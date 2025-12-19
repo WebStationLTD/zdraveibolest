@@ -254,7 +254,7 @@ export default function Navigation({ therapeuticAreas = [] }) {
               {open ? (
                 <XMarkIcon aria-hidden="true" className="size-6" />
               ) : (
-                <Bars3Icon aria-hidden="true" className="size-6" />
+              <Bars3Icon aria-hidden="true" className="size-6" />
               )}
             </button>
 
@@ -386,7 +386,7 @@ export default function Navigation({ therapeuticAreas = [] }) {
 
             {/* CTA & Auth Buttons - Desktop */}
             <div className="hidden xl:flex items-center justify-end gap-2">
-              {/* CTA Button */}
+            {/* CTA Button */}
               <Link
                 href="#"
                 className="px-3 2xl:px-4 py-2 text-xs 2xl:text-sm font-normal text-[#04737d] border-2 border-[#04737d] rounded-md hover:bg-[#04737d] hover:text-white transition-colors whitespace-nowrap"

@@ -96,14 +96,14 @@ export default function RootLayout({ children }) {
       </head>
       <body className={lora.className}>
         <AuthProvider>
-          <NextTopLoader showSpinner={false} color="#129160" />
-          <BackToTop />
-          <CallButton />
-          <ImagePreloader />
+        <NextTopLoader showSpinner={false} color="#129160" />
+        <BackToTop />
+        <CallButton />
+        <ImagePreloader />
           <NavigationWrapper />
-          <main>{children}</main>
-          <CookieConsentBanner />
-          <Footer />
+        <main>{children}</main>
+        <CookieConsentBanner />
+        <Footer />
         </AuthProvider>
         <Script
           id="structured-data"
