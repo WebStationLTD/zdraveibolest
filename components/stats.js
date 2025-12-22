@@ -1,20 +1,20 @@
 export default function Stats() {
   const stats = [
     {
-      number: "12",
-      label: "години опит",
-    },
-    {
       number: "13",
       label: "терапевтични области",
     },
     {
-      number: "25",
-      label: "lorem ipsum dolor",
+      number: "100%",
+      label: "проверена информация",
     },
     {
-      number: "120",
-      label: "lorem ipsum dolor",
+      number: "80+",
+      label: "специалисти",
+    },
+    {
+      number: "1",
+      label: "мисия здраве,чрез знание и подкрепа",
     },
   ];
 
@@ -32,9 +32,7 @@ export default function Stats() {
                       ? "lg:border-r lg:border-white/20"
                       : ""
                   } ${index === 0 ? "lg:pr-8" : ""} ${
-                    index > 0 && index < stats.length - 1
-                      ? "lg:px-8"
-                      : ""
+                    index > 0 && index < stats.length - 1 ? "lg:px-8" : ""
                   } ${index === stats.length - 1 ? "lg:pl-8" : ""}`}
                 >
                   <div className="flex flex-col">
@@ -54,4 +52,3 @@ export default function Stats() {
     </div>
   );
 }
-

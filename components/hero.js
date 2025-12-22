@@ -17,14 +17,12 @@ export default function Hero() {
 
                 {/* Main heading */}
                 <h1 className="text-3xl md:text-4xl lg:text-[2.65rem] font-bold text-white mb-5 md:mb-6 leading-tight">
-                  Клиничните проучвания – пътят към новите терапии
+                  Всичко за здравето и болестите – на разбираем език
                 </h1>
 
                 {/* Description */}
                 <p className="text-base md:text-base lg:text-[1.05rem] text-white/95 mb-8 md:mb-9 leading-relaxed">
-                  Всеки нов медикамент, медицинско изделие или терапия преминава
-                  през клинични проучвания, за да бъде доказано, че е безопасен
-                  и ефективен.
+                  Нашата мисия е да направим медицината човешка и достъпна.
                 </p>
 
                 {/* CTA Button */}
