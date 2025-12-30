@@ -15,6 +15,11 @@ export default function VideoSection() {
               Защо да се регистрираме?
             </h2>
 
+            <p className="text-xs md:text-sm font-normal tracking-[0.2em] text-[#04737d] mb-4">
+              Регистрирай се и наблюдавай развитието на медицината и получи
+              пълен достъп до сайта.
+            </p>
+
             {/* Decorative Line */}
             <div className="w-16 h-1 bg-[#04737d] rounded-full"></div>
           </div>
@@ -64,4 +69,3 @@ export default function VideoSection() {
     </section>
   );
 }
-

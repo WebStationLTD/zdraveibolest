@@ -19,7 +19,7 @@ export async function getCategories() {
     }
 
     const categories = await response.json();
-    
+
     // Филтрираме "Uncategorized" категорията
     return categories.filter(cat => cat.slug !== 'uncategorized');
   } catch (error) {

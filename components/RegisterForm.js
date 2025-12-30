@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { getPostsByCategory } from '../services/posts';
 
 export default function RegisterForm({ therapeuticAreas = [], onSuccess, redirectAfterSuccess = true }) {
   const { register } = useAuth();
@@ -16,14 +17,47 @@ export default function RegisterForm({ therapeuticAreas = [], onSuccess, redirec
     first_name: '',
     last_name: '',
     therapeutic_area: '',
+    disease: '', // Specific disease/article slug
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [availableArticles, setAvailableArticles] = useState([]);
+  const [loadingArticles, setLoadingArticles] = useState(false);
+
+  // Load articles when therapeutic area changes
+  useEffect(() => {
+    const loadArticles = async () => {
+      if (!formData.therapeutic_area) {
+        setAvailableArticles([]);
+        return;
+      }
+
+      setLoadingArticles(true);
+      try {
+        const articles = await getPostsByCategory(formData.therapeutic_area);
+        setAvailableArticles(articles);
+      } catch (error) {
+        console.error('Error loading articles:', error);
+        setAvailableArticles([]);
+      } finally {
+        setLoadingArticles(false);
+      }
+    };
+
+    loadArticles();
+  }, [formData.therapeutic_area]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    
+    // If therapeutic area changes, reset disease selection
+    if (name === 'therapeutic_area') {
+      setFormData(prev => ({ ...prev, [name]: value, disease: '' }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
+    
     // Clear error for this field
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
@@ -88,6 +122,7 @@ export default function RegisterForm({ therapeuticAreas = [], onSuccess, redirec
         first_name: formData.first_name,
         last_name: formData.last_name,
         therapeutic_area: formData.therapeutic_area,
+        disease: formData.disease, // Optional: specific article/disease
       });
 
       if (result.success) {
@@ -298,7 +333,7 @@ export default function RegisterForm({ therapeuticAreas = [], onSuccess, redirec
           <option value="">Изберете терапевтична област</option>
           {therapeuticAreas.map((area) => (
             <option key={area.id} value={area.slug}>
-              {area.title.rendered}
+              {area.name || area.title?.rendered}
             </option>
           ))}
         </select>
@@ -308,6 +343,62 @@ export default function RegisterForm({ therapeuticAreas = [], onSuccess, redirec
         <p className="mt-2 text-xs text-gray-500">
           Тази информация ни помага да Ви предоставим по-качествена и персонализирана информация за клиничните проучвания, които могат да Ви бъдат полезни.
         </p>
+      </div>
+
+      {/* Disease/Article Select - Cascading (shown only when therapeutic area is selected) */}
+      <div
+        className={`overflow-hidden transition-all duration-500 ease-in-out ${
+          formData.therapeutic_area 
+            ? 'max-h-96 opacity-100' 
+            : 'max-h-0 opacity-0'
+        }`}
+      >
+        <div className="transform transition-transform duration-500 ease-out">
+          <label htmlFor="disease" className="block text-sm font-medium text-gray-700 mb-1">
+            Изберете конкретна статия от интерес
+          </label>
+          
+          {loadingArticles ? (
+            <div className="w-full px-4 py-2.5 border border-gray-300 rounded-lg bg-gray-50 flex items-center justify-center">
+              <div className="flex items-center space-x-2">
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-[#04737d] border-r-transparent"></div>
+                <span className="text-sm text-gray-600">Зареждане на статии...</span>
+              </div>
+            </div>
+          ) : (
+            <>
+              <select
+                id="disease"
+                name="disease"
+                value={formData.disease}
+                onChange={handleChange}
+                disabled={!formData.therapeutic_area || availableArticles.length === 0}
+                className={`w-full px-4 py-2.5 border ${
+                  errors.disease ? 'border-red-300' : 'border-gray-300'
+                } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent transition-colors bg-white disabled:bg-gray-50 disabled:cursor-not-allowed`}
+              >
+                <option value="">
+                  {availableArticles.length === 0 
+                    ? 'Няма налични статии в тази област' 
+                    : 'Изберете статия (по желание)'}
+                </option>
+                {availableArticles.map((article) => (
+                  <option key={article.id} value={article.slug}>
+                    {article.title.rendered}
+                  </option>
+                ))}
+              </select>
+              {errors.disease && (
+                <p className="mt-1 text-sm text-red-600">{errors.disease}</p>
+              )}
+              {availableArticles.length > 0 && (
+                <p className="mt-2 text-xs text-gray-500">
+                  Изборът на конкретна статия е по желание и ще ни помогне да персонализираме информацията специално за Вас.
+                </p>
+              )}
+            </>
+          )}
+        </div>
       </div>
 
       {/* Submit Button */}

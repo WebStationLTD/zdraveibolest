@@ -7,7 +7,6 @@ import AboutUs from "../components/about-us";
 import CTASection from "../components/cta-section";
 import StickyQuickRegisterWrapper from "../components/StickyQuickRegisterWrapper";
 import { WebVitals } from "./web-vitals";
-import { getCategories } from "../services/categories";
 
 // Force dynamic rendering to avoid build timeout
 export const dynamic = 'force-dynamic';
@@ -40,18 +39,10 @@ export const metadata = {
 };
 
 export default async function Home() {
-  // Fetch categories for the sticky form
-  let categories = [];
-  try {
-    categories = await getCategories();
-  } catch (error) {
-    console.error("Error fetching categories:", error);
-  }
-
   return (
     <>
       <WebVitals />
-      <StickyQuickRegisterWrapper categories={categories} />
+      <StickyQuickRegisterWrapper />
       <HeroSection />
       <Stats />
       <TherapeuticAreas />

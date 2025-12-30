@@ -5,7 +5,7 @@ import { useAuth } from '../contexts/AuthContext';
 import Link from 'next/link';
 import { ChevronDownIcon, ChevronUpIcon, XMarkIcon } from '@heroicons/react/24/outline';
 
-export default function StickyQuickRegister({ categories = [] }) {
+export default function StickyQuickRegister() {
   const { isAuthenticated, quickRegister, loading: authLoading } = useAuth();
   const [isOpen, setIsOpen] = useState(true);
   const [isMinimized, setIsMinimized] = useState(false);
@@ -18,7 +18,6 @@ export default function StickyQuickRegister({ categories = [] }) {
     email: '',
     phone: '',
     password: '',
-    disease: '',
     privacy_consent: false,
   });
 
@@ -62,7 +61,6 @@ export default function StickyQuickRegister({ categories = [] }) {
         email: formData.email,
         phone: formData.phone,
         password: formData.password,
-        disease: formData.disease,
       });
 
       if (result.success) {
@@ -95,7 +93,7 @@ export default function StickyQuickRegister({ categories = [] }) {
         {/* Minimize/Maximize Toggle */}
         <button
           onClick={() => setIsMinimized(!isMinimized)}
-          className="absolute -right-3 top-4 w-6 h-6 bg-[#04737d] rounded-full flex items-center justify-center text-white shadow-lg hover:bg-[#035057] transition-colors"
+          className="absolute -right-3 top-14 w-6 h-6 bg-[#04737d] rounded-full flex items-center justify-center text-white shadow-lg hover:bg-[#035057] transition-colors"
           aria-label={isMinimized ? 'Разгъни' : 'Сгъни'}
         >
           {isMinimized ? (
@@ -235,27 +233,6 @@ export default function StickyQuickRegister({ categories = [] }) {
                       )}
                     </button>
                   </div>
-                </div>
-
-                {/* Disease Select (Optional) */}
-                <div>
-                  <label htmlFor="quick_disease" className="block text-xs font-medium text-gray-700 mb-1">
-                    Заболяване<span className="text-red-500">*</span>
-                  </label>
-                  <select
-                    id="quick_disease"
-                    name="disease"
-                    value={formData.disease}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent bg-white appearance-none cursor-pointer"
-                  >
-                    <option value="">Изберете заболяване</option>
-                    {categories.map(cat => (
-                      <option key={cat.id || cat.slug} value={cat.slug || cat.name}>
-                        {cat.name || cat.title?.rendered}
-                      </option>
-                    ))}
-                  </select>
                 </div>
 
                 {/* Privacy Consent */}

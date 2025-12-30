@@ -2,7 +2,7 @@ import LoginForm from "../../components/LoginForm";
 import Link from "next/link";
 
 // Force dynamic rendering
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Вход - zdraveibolest.bg",
@@ -15,17 +15,8 @@ export default function LoginPage() {
       <div className="max-w-md mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <Link href="/" className="inline-block mb-6">
-            <span className="text-2xl font-bold text-[#04737d]">
-              zdraveibolest.bg
-            </span>
-          </Link>
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">
-            Вход
-          </h2>
-          <p className="text-gray-600">
-            Влезте във вашия акаунт
-          </p>
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">Вход</h2>
+          <p className="text-gray-600">Влезте във вашия акаунт</p>
         </div>
 
         {/* Form Card */}
@@ -36,8 +27,3 @@ export default function LoginPage() {
     </div>
   );
 }
-
-
-
-
-

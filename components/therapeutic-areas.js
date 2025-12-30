@@ -2,19 +2,71 @@ import Link from "next/link";
 
 export default function TherapeuticAreas() {
   const areas = [
-    { name: "Пулмология", icon: "/пулмология-icon.svg", href: "/kategoriya/пулмология" },
-    { name: "Ревматология", icon: "/ревматология-icon.svg", href: "/kategoriya/ревматология" },
-    { name: "Кардиология", icon: "/кардиология-icon.svg", href: "/kategoriya/кардиология" },
-    { name: "Неврология", icon: "/неврология-icon.svg", href: "/kategoriya/неврология" },
-    { name: "Нефрология", icon: "/нефрология-icon.svg", href: "/kategoriya/нефрология" },
-    { name: "Гастроентерология", icon: "/гастроентерология-icon.svg", href: "/kategoriya/гастроентерология" },
-    { name: "Ендокринология", icon: "/ендокринология-icon.svg", href: "/kategoriya/ендокринология" },
-    { name: "Онкология", icon: "/онкология-icon.svg", href: "/kategoriya/онкология" },
-    { name: "Алергология", icon: "/алергология-icon.svg", href: "/kategoriya/алергология" },
-    { name: "Дерматология", icon: "/дерматология-icon.svg", href: "/kategoriya/дерматология" },
-    { name: "Ранни фази", icon: "/ранни-фази-icon.svg", href: "/kategoriya/ранни-фази" },
-    { name: "Хематология", icon: "/хематология-icon.svg", href: "/kategoriya/хематология" },
-    { name: "Акушер-гинекология", icon: "/акушер-гинекология-icon.svg", href: "/kategoriya/акушер-гинекология" },
+    {
+      name: "Пулмология",
+      icon: "/пулмология-icon.svg",
+      href: "/kategoriya/пулмология",
+    },
+    {
+      name: "Ревматология",
+      icon: "/ревматология-icon.svg",
+      href: "/kategoriya/ревматология",
+    },
+    {
+      name: "Кардиология",
+      icon: "/кардиология-icon.svg",
+      href: "/kategoriya/кардиология",
+    },
+    {
+      name: "Неврология",
+      icon: "/неврология-icon.svg",
+      href: "/kategoriya/неврология",
+    },
+    {
+      name: "Нефрология",
+      icon: "/нефрология-icon.svg",
+      href: "/kategoriya/нефрология",
+    },
+    {
+      name: "Гастроентерология",
+      icon: "/гастроентерология-icon.svg",
+      href: "/kategoriya/гастроентерология",
+    },
+    {
+      name: "Ендокринология",
+      icon: "/ендокринология-icon.svg",
+      href: "/kategoriya/ендокринология",
+    },
+    {
+      name: "Онкология",
+      icon: "/онкология-icon.svg",
+      href: "/kategoriya/онкология",
+    },
+    {
+      name: "Алергология",
+      icon: "/алергология-icon.svg",
+      href: "/kategoriya/алергология",
+    },
+    {
+      name: "Дерматология",
+      icon: "/дерматология-icon.svg",
+      href: "/kategoriya/дерматология",
+    },
+    {
+      name: "Ранни фази",
+      icon: "/ранни-фази-icon.svg",
+      href: "/kategoriya/ранни-фази",
+    },
+    {
+      name: "Хематология",
+      icon: "/хематология-icon.svg",
+      href: "/kategoriya/хематология",
+    },
+    {
+      name: "Акушер-гинекология",
+      icon: "/акушер-гинекология-icon.svg",
+      href: "/kategoriya/акушер-гинекология",
+    },
   ];
 
   return (
@@ -23,8 +75,9 @@ export default function TherapeuticAreas() {
         {/* Section Header */}
         <div className="text-center mb-12 md:mb-16">
           {/* Small Title */}
-          <p className="text-xs md:text-sm font-normal tracking-[0.2em] text-[#04737d] mb-4 uppercase">
-            КРАТЪК ТЕКСТ
+          <p className="text-xs md:text-sm font-normal tracking-[0.2em] text-[#04737d] mb-4">
+            Ключовите здравни области, върху които се фокусираме, за да
+            предложим надеждна и научно обоснована информация
           </p>
 
           {/* Main Heading */}
@@ -94,4 +147,3 @@ export default function TherapeuticAreas() {
     </section>
   );
 }
-
