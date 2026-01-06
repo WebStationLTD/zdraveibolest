@@ -3,11 +3,12 @@
 
 @import "./wordpress-generated.css";
 
-@import "tailwindcss";
-@plugin "@tailwindcss/typography";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* Custom theme variables */
-@theme {
+:root {
   --color-teal-primary: #04737d;
   --color-teal-dark: #035057;
   --color-orange-primary: #fd9300;
