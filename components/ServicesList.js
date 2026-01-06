@@ -13,6 +13,7 @@ export default function ServicesList({ services }) {
   const [visibleServices, setVisibleServices] = useState([]);
   const serviceRefs = useRef({});
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     if (!services || services.length === 0) return;
 
@@ -37,11 +38,12 @@ export default function ServicesList({ services }) {
       }
     });
 
-    // Първоначално показваме първите 2 услуги без lazy loading
+    // Первоначально показваме първите 2 услуги без lazy loading
     setVisibleServices([0, 1]);
 
     return () => {
-      Object.values(serviceRefs.current).forEach((ref) => {
+      const refs = serviceRefs.current;
+      Object.values(refs).forEach((ref) => {
         if (ref) {
           observer.unobserve(ref);
         }
@@ -49,6 +51,7 @@ export default function ServicesList({ services }) {
       observer.disconnect();
     };
   }, [services]);
+  /* eslint-enable react-hooks/exhaustive-deps */
 
   // Помощна функция за задаване на референция
   const setServiceRef = (el, index) => {
