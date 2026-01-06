@@ -9,14 +9,6 @@ const compat = new FlatCompat({
   baseDirectory: __dirname,
 });
 
-const eslintConfig = [
-  ...compat.extends("next/core-web-vitals"),
-  {
-    rules: {
-      // Disable rules that might cause serialization issues
-      '@next/next/no-html-link-for-pages': 'off',
-    },
-  },
-];
+const eslintConfig = [...compat.extends("next/core-web-vitals")];
 
 export default eslintConfig;

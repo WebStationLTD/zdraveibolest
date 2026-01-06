@@ -25,6 +25,8 @@ export default function ImagePreloader() {
         img.importance = "high";
 
         img.onload = () => {
+          console.log(`Priority image preloaded: ${priorityImage}`);
+
           // След като приоритетното изображение е заредено, маркираме го
           if (window.performance && window.performance.mark) {
             window.performance.mark("priority-image-loaded");
@@ -44,7 +46,7 @@ export default function ImagePreloader() {
           img
             .decode()
             .then(() => {
-              // Image decoded successfully
+              console.log(`Priority image decoded: ${priorityImage}`);
             })
             .catch((err) => {
               console.warn(
@@ -67,7 +69,7 @@ export default function ImagePreloader() {
           img.importance = "low";
 
           img.onload = () => {
-            // Image preloaded
+            console.log(`Secondary image preloaded: ${imageSrc}`);
           };
 
           if ("decode" in img) {

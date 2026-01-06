@@ -1,5 +1,5 @@
 import { getPostBySlug } from "../../../services/posts";
-import { getCategories } from "../../../services/categories";
+import { getServices } from "../../../services/services";
 import BlogPostContent from "../../../components/BlogPostContent";
 
 // Force dynamic rendering to avoid build timeout
@@ -28,9 +28,9 @@ export async function generateMetadata({ params }) {
 export default async function PostPage({ params }) {
   try {
     const { slug } = await params;
-    const [post, categories] = await Promise.all([
+    const [post, therapeuticAreas] = await Promise.all([
       getPostBySlug(slug),
-      getCategories()
+      getServices()
     ]);
 
     if (!post || post.length === 0) {
@@ -40,13 +40,6 @@ export default async function PostPage({ params }) {
     const meta = post[0].yoast_head_json;
     const ogImage =
       meta?.og_image && meta.og_image.length > 0 ? meta.og_image[0].url : "";
-
-    // Форматираме категориите за RegisterForm
-    const therapeuticAreas = categories.map(cat => ({
-      id: cat.id,
-      title: { rendered: cat.name },
-      slug: cat.slug,
-    }));
 
     return (
       <>

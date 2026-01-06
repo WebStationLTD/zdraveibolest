@@ -13,6 +13,7 @@ export default function StickyQuickRegister() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [countdown, setCountdown] = useState(5); // For closing countdown
   
   const [formData, setFormData] = useState({
     email: '',
@@ -20,6 +21,24 @@ export default function StickyQuickRegister() {
     password: '',
     privacy_consent: false,
   });
+
+  // Countdown effect
+  useEffect(() => {
+    let timer;
+    if (success && countdown > 0) {
+      timer = setTimeout(() => {
+        setCountdown(countdown - 1);
+      }, 1000);
+    }
+    return () => clearTimeout(timer);
+  }, [success, countdown]);
+
+  // Close effect (separate from countdown to avoid setState in render)
+  useEffect(() => {
+    if (success && countdown === 0) {
+      setIsOpen(false);
+    }
+  }, [success, countdown]);
 
   // Don't show if user is already authenticated
   if (isAuthenticated || authLoading) {
@@ -65,9 +84,7 @@ export default function StickyQuickRegister() {
 
       if (result.success) {
         setSuccess(true);
-        setTimeout(() => {
-          setIsOpen(false);
-        }, 3000);
+        // No manual close here, useEffect handles it
       } else {
         setError(result.error || 'Регистрацията не беше успешна');
       }
@@ -136,7 +153,7 @@ export default function StickyQuickRegister() {
             </div>
 
             {success ? (
-              // Success State with Login prompt
+              // Success State
               <div className="text-center py-4">
                 <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
                   <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -144,18 +161,29 @@ export default function StickyQuickRegister() {
                   </svg>
                 </div>
                 <h4 className="text-base font-bold text-gray-900 mb-2">
-                  Регистрацията е успешна!
+                  Регистрацията е успешна! 🎉
                 </h4>
                 <p className="text-xs text-gray-600 mb-4">
-                  Вече имате акаунт. Вече сте влезли в системата и можете да разглеждате съдържанието.
+                  Вашият акаунт беше създаден успешно.
                 </p>
-                <Link 
-                  href="/"
-                  onClick={() => setIsOpen(false)}
-                  className="inline-block w-full py-2.5 bg-[#04737d] hover:bg-[#035057] text-white font-medium rounded-lg transition-colors text-sm text-center"
-                >
-                  Към началната страница
-                </Link>
+                <div className="bg-green-50 border border-green-200 text-green-800 px-3 py-2 rounded-lg relative mb-4">
+                  <div className="flex items-center">
+                    <svg
+                      className="h-4 w-4 text-green-500 mr-2"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                      <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                    </svg>
+                    <span className="block sm:inline text-xs">
+                      Изпратихме ви welcome email с данни за вход и полезна информация.
+                    </span>
+                  </div>
+                </div>
+                <p className="text-xs text-gray-500">
+                  Формата ще се затвори след {countdown} секунди...
+                </p>
               </div>
             ) : (
               // Form

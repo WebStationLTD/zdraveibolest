@@ -1,66 +1,270 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { useAuth } from '../contexts/AuthContext';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { getPostsByCategory } from '../services/posts';
+import { useState, useEffect } from "react";
+import { useAuth } from "../contexts/AuthContext";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
-export default function RegisterForm({ therapeuticAreas = [], onSuccess, redirectAfterSuccess = true }) {
+// Slug-овете от WordPress API съвпадат директно с ключовете в DISEASES_BY_AREA - не е нужно mapping или normalization!
+
+/**
+ * Предефиниран списък със заболявания по терапевтични области
+ * Ключовете съвпадат ТОЧНО с WordPress slug-овете от API
+ */
+const DISEASES_BY_AREA = {
+  "akusher-ginekologia": [
+    "Лейомиома на матката (маточни миоми)",
+    "Ендометриоза – тазова",
+    "Аденомиоза",
+    "Синдром на поликистозните яйчници (PCOS)",
+    "Хиперменорея",
+    "Дисменорея",
+    "Аменорея",
+    "Бактериална вагиноза",
+    "Вулвовагинална кандидоза",
+    "HPV инфекция",
+    "Цервикална дисплазия (CIN I–III)",
+    "Инфертилитет – женски фактор",
+    "Прееклампсия",
+    "Гестационен диабет",
+    "Преждевременно раждане",
+  ],
+  alergologia: [
+    "Сезонен алергичен ринит",
+    "Целогодишен алергичен ринит",
+    "Алергична бронхиална астма",
+    "Атопичен дерматит",
+    "Ангиоедем (оток на Квинке)",
+    "Хронична спонтанна уртикария",
+    "Физикална уртикария",
+    "Анафилактична реакция",
+    "Хранителна алергия – IgE-медиирана",
+    "Лекарствена алергия",
+    "Алергия към ужилвания от насекоми",
+    "Алергичен конюнктивит",
+    "Контактен алергичен дерматит",
+  ],
+  pulmologia: [
+    "Бронхиална астма",
+    "ХОББ – GOLD I–IV",
+    "Хроничен бронхит",
+    "Емфизем",
+    "Пневмония – бактериална",
+    "Пневмония – вирусна",
+    "Интерстициална белодробна фиброза",
+    "Идиопатична белодробна фиброза",
+    "Обструктивна сънна апнея",
+    "Белодробна хипертония",
+    "Бронхоекстазии",
+    "Туберкулоза – белодробна",
+  ],
+  kardiologia: [
+    "Артериална хипертония",
+    "Исхемична болест на сърцето",
+    "Стабилна стенокардия",
+    "Нестабилна стенокардия",
+    "Остър миокарден инфаркт",
+    "Хронична сърдечна недостатъчност",
+    "Предсърдно мъждене",
+    "Суправентрикуларни тахикардии",
+    "Камерни аритмии",
+    "Дилатативна кардиомиопатия",
+    "Хипертрофична кардиомиопатия",
+    "Аортна стеноза",
+    "Митрална регургитация",
+  ],
+  gastroenterologia: [
+    "Остър гастрит",
+    "Хроничен гастрит",
+    "Helicobacter pylori инфекция",
+    "ГЕРБ",
+    "Язва на стомаха",
+    "Язва на дванадесетопръстника",
+    "Синдром на раздразненото черво",
+    "Болест на Крон",
+    "Улцерозен колит",
+    "Чернодробна стеатоза (NAFLD)",
+    "Неалкохолен стеатохепатит (NASH)",
+    "Хроничен хепатит B",
+    "Хроничен хепатит C",
+    "Жлъчнокаменна болест",
+    "Хроничен панкреатит",
+  ],
+  nefrologia: [
+    "Хронично бъбречно заболяване",
+    "Остър бъбречен увреда",
+    "Диабетна нефропатия",
+    "Хипертонична нефропатия",
+    "Гломерулонефрит",
+    "Пиелонефрит",
+    "Поликистозна бъбречна болест",
+    "Нефролитиаза",
+    "Нефротичен синдром",
+  ],
+  nevrologia: [
+    "Исхемичен инсулт",
+    "Хеморагичен инсулт",
+    "Мигрена",
+    "Епилепсия",
+    "Болест на Паркинсон",
+    "Алцхаймерова болест",
+    "Множествена склероза – RRMS",
+    "Множествена склероза – прогресивна форма",
+    "Полиневропатия",
+    "Радикулопатия",
+    "Дискова херния",
+  ],
+  revmatologia: [
+    "Ревматоиден артрит",
+    "Остеоартрит",
+    "Анкилозиращ спондилит",
+    "Псориатичен артрит",
+    "Подагра",
+    "Системен лупус еритематозус",
+    "Синдром на Сьогрен",
+    "Васкулити – ANCA-асоциирани",
+    "Остеопороза",
+  ],
+  hematologia: [
+    "Желязодефицитна анемия",
+    "Мегалобластна анемия",
+    "Апластична анемия",
+    "Хронична лимфоцитна левкемия",
+    "Остра миелоидна левкемия",
+    "Ходжкинов лимфом",
+    "Неходжкинов лимфом",
+    "Множествен миелом",
+    "Тромбоцитопения",
+    "Тромбофилия",
+    "Хемофилия",
+    "Полицитемия вера",
+  ],
+  onkologia: [
+    "Карцином на млечната жлеза",
+    "Недребноклетъчен рак на белия дроб",
+    "Дребноклетъчен рак на белия дроб",
+    "Колоректален карцином",
+    "Простатен карцином",
+    "Овариален карцином",
+    "Цервикален карцином",
+    "Хепатоцелуларен карцином",
+    "Панкреасен аденокарцином",
+    "Меланом",
+    "Рак на бъбрека",
+    "Рак на пикочния мехур",
+  ],
+  endokrinologia: [
+    "Захарен диабет тип 1",
+    "Захарен диабет тип 2",
+    "Предиабет (Инсулинова резистентност)",
+    "Хипотиреоидизъм",
+    "Хипертиреоидизъм",
+    "Тиреоидит на Хашимото",
+    "Базедова болест",
+    "Нодуларна гуша",
+    "Затлъстяване",
+    "Метаболитен синдром",
+    "Хиперпаратиреоидизъм",
+    "Остеопороза",
+    "Хипофизен аденом",
+  ],
+  dermatologia: [
+    "Атопичен дерматит",
+    "Псориазис вулгарис",
+    "Акне вулгарис",
+    "Розацея",
+    "Себореен дерматит",
+    "Контактен дерматит",
+    "Уртикария",
+    "Гъбични кожни инфекции",
+    "Херпес симплекс",
+    "Херпес зостер",
+    "Меланом",
+    "Базоцелуларен карцином",
+  ],
+};
+
+/**
+ * Намира списък със заболявания на база slug от WordPress
+ * @param {string} slug - Slug на терапевтична област от WordPress API
+ * @returns {Array} - Масив със заболявания
+ */
+const getDiseasesByAreaSlug = (slug) => {
+  if (!slug) return [];
+
+  // Slug-овете от WordPress съвпадат директно с ключовете в DISEASES_BY_AREA
+  return DISEASES_BY_AREA[slug] || [];
+};
+
+export default function RegisterForm({
+  therapeuticAreas = [],
+  onSuccess,
+  redirectAfterSuccess = true,
+}) {
   const { register } = useAuth();
   const router = useRouter();
   const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    first_name: '',
-    last_name: '',
-    therapeutic_area: '',
-    disease: '', // Specific disease/article slug
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    first_name: "",
+    last_name: "",
+    therapeutic_area: "",
+    disease: "",
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [availableArticles, setAvailableArticles] = useState([]);
-  const [loadingArticles, setLoadingArticles] = useState(false);
+  const [availableDiseases, setAvailableDiseases] = useState([]);
+  const [countdown, setCountdown] = useState(4); // For redirect countdown
 
-  // Load articles when therapeutic area changes
+  // Countdown effect
   useEffect(() => {
-    const loadArticles = async () => {
-      if (!formData.therapeutic_area) {
-        setAvailableArticles([]);
-        return;
-      }
+    let timer;
+    if (success && redirectAfterSuccess && countdown > 0) {
+      timer = setTimeout(() => {
+        setCountdown(countdown - 1);
+      }, 1000);
+    }
+    return () => clearTimeout(timer);
+  }, [success, redirectAfterSuccess, countdown]);
 
-      setLoadingArticles(true);
-      try {
-        const articles = await getPostsByCategory(formData.therapeutic_area);
-        setAvailableArticles(articles);
-      } catch (error) {
-        console.error('Error loading articles:', error);
-        setAvailableArticles([]);
-      } finally {
-        setLoadingArticles(false);
-      }
-    };
+  // Redirect effect (separate from countdown to avoid setState in render)
+  useEffect(() => {
+    if (success && redirectAfterSuccess && countdown === 0) {
+      router.push("/");
+    }
+  }, [success, redirectAfterSuccess, countdown, router]);
 
-    loadArticles();
-  }, [formData.therapeutic_area]);
+  // Modal close effect
+  useEffect(() => {
+    let timer;
+    if (success && !redirectAfterSuccess) {
+      timer = setTimeout(() => {
+        if (onSuccess) {
+          onSuccess();
+        }
+      }, 3000);
+    }
+    return () => clearTimeout(timer);
+  }, [success, redirectAfterSuccess, onSuccess]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    
-    // If therapeutic area changes, reset disease selection
-    if (name === 'therapeutic_area') {
-      setFormData(prev => ({ ...prev, [name]: value, disease: '' }));
-    } else {
-      setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    // Ако се променя терапевтичната област, актуализираме списъка със заболявания
+    if (name === "therapeutic_area") {
+      const diseases = getDiseasesByAreaSlug(value);
+      setAvailableDiseases(diseases);
+      // Нулираме избраното заболяване при смяна на областта
+      setFormData((prev) => ({ ...prev, disease: "" }));
     }
-    
+
     // Clear error for this field
     if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: '' }));
+      setErrors((prev) => ({ ...prev, [name]: "" }));
     }
   };
 
@@ -68,37 +272,37 @@ export default function RegisterForm({ therapeuticAreas = [], onSuccess, redirec
     const newErrors = {};
 
     if (!formData.username.trim()) {
-      newErrors.username = 'Потребителското име е задължително';
+      newErrors.username = "Потребителското име е задължително";
     } else if (formData.username.length < 3) {
-      newErrors.username = 'Потребителското име трябва да е минимум 3 символа';
+      newErrors.username = "Потребителското име трябва да е минимум 3 символа";
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = 'Имейлът е задължителен';
+      newErrors.email = "Имейлът е задължителен";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Невалиден имейл адрес';
+      newErrors.email = "Невалиден имейл адрес";
     }
 
     if (!formData.first_name.trim()) {
-      newErrors.first_name = 'Името е задължително';
+      newErrors.first_name = "Името е задължително";
     }
 
     if (!formData.last_name.trim()) {
-      newErrors.last_name = 'Фамилията е задължителна';
+      newErrors.last_name = "Фамилията е задължителна";
     }
 
     if (!formData.password) {
-      newErrors.password = 'Паролата е задължителна';
+      newErrors.password = "Паролата е задължителна";
     } else if (formData.password.length < 6) {
-      newErrors.password = 'Паролата трябва да е минимум 6 символа';
+      newErrors.password = "Паролата трябва да е минимум 6 символа";
     }
 
     if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Паролите не съвпадат';
+      newErrors.confirmPassword = "Паролите не съвпадат";
     }
 
     if (!formData.therapeutic_area) {
-      newErrors.therapeutic_area = 'Моля, изберете терапевтична област';
+      newErrors.therapeutic_area = "Моля, изберете терапевтична област";
     }
 
     setErrors(newErrors);
@@ -122,29 +326,17 @@ export default function RegisterForm({ therapeuticAreas = [], onSuccess, redirec
         first_name: formData.first_name,
         last_name: formData.last_name,
         therapeutic_area: formData.therapeutic_area,
-        disease: formData.disease, // Optional: specific article/disease
+        disease: formData.disease,
       });
 
       if (result.success) {
         setSuccess(true);
-        // Redirect to home page after 2 seconds (only if redirectAfterSuccess is true)
-        if (redirectAfterSuccess) {
-          setTimeout(() => {
-            router.push('/');
-          }, 2000);
-        } else {
-          // Close modal after 1 second if no redirect
-          setTimeout(() => {
-            if (onSuccess) {
-              onSuccess(result.user);
-            }
-          }, 1000);
-        }
+        // No manual redirect/close here, useEffect handles it
       } else {
-        setErrors({ general: result.error || 'Регистрацията не беше успешна' });
+        setErrors({ general: result.error || "Регистрацията не беше успешна" });
       }
     } catch (error) {
-      setErrors({ general: 'Възникна грешка. Моля, опитайте отново.' });
+      setErrors({ general: "Възникна грешка. Моля, опитайте отново." });
     } finally {
       setLoading(false);
     }
@@ -169,13 +361,31 @@ export default function RegisterForm({ therapeuticAreas = [], onSuccess, redirec
           </svg>
         </div>
         <h3 className="text-2xl font-bold text-gray-900 mb-2">
-          Регистрацията е успешна!
+          Регистрацията е успешна! 🎉
         </h3>
-        <p className="text-gray-600 mb-6">
-          {redirectAfterSuccess 
-            ? 'Вашият акаунт беше създаден успешно. Сега можете да разгледате пълното съдържание.'
-            : 'Вашият акаунт беше създаден успешно! Зареждаме съдържанието...'}
+        <p className="text-gray-600 mb-4">
+          Вашият акаунт беше създаден успешно.
         </p>
+        <div className="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg relative mb-6">
+          <div className="flex items-center">
+            <svg
+              className="h-5 w-5 text-green-500 mr-2"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+              <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+            </svg>
+            <span className="block sm:inline">
+              Изпратихме ви welcome email с данни за вход и полезна информация.
+            </span>
+          </div>
+        </div>
+        {redirectAfterSuccess && (
+          <p className="text-sm text-gray-500">
+            Пренасочване след {countdown} секунди...
+          </p>
+        )}
       </div>
     );
   }
@@ -191,7 +401,10 @@ export default function RegisterForm({ therapeuticAreas = [], onSuccess, redirec
       {/* First Name & Last Name - Row */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="first_name" className="block text-sm font-medium text-gray-700 mb-1">
+          <label
+            htmlFor="first_name"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
             Име <span className="text-red-500">*</span>
           </label>
           <input
@@ -201,7 +414,7 @@ export default function RegisterForm({ therapeuticAreas = [], onSuccess, redirec
             value={formData.first_name}
             onChange={handleChange}
             className={`w-full px-4 py-2.5 border ${
-              errors.first_name ? 'border-red-300' : 'border-gray-300'
+              errors.first_name ? "border-red-300" : "border-gray-300"
             } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent transition-colors`}
             placeholder="Вашето име"
           />
@@ -211,7 +424,10 @@ export default function RegisterForm({ therapeuticAreas = [], onSuccess, redirec
         </div>
 
         <div>
-          <label htmlFor="last_name" className="block text-sm font-medium text-gray-700 mb-1">
+          <label
+            htmlFor="last_name"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
             Фамилия <span className="text-red-500">*</span>
           </label>
           <input
@@ -221,7 +437,7 @@ export default function RegisterForm({ therapeuticAreas = [], onSuccess, redirec
             value={formData.last_name}
             onChange={handleChange}
             className={`w-full px-4 py-2.5 border ${
-              errors.last_name ? 'border-red-300' : 'border-gray-300'
+              errors.last_name ? "border-red-300" : "border-gray-300"
             } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent transition-colors`}
             placeholder="Вашата фамилия"
           />
@@ -233,7 +449,10 @@ export default function RegisterForm({ therapeuticAreas = [], onSuccess, redirec
 
       {/* Username */}
       <div>
-        <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">
+        <label
+          htmlFor="username"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
           Потребителско име <span className="text-red-500">*</span>
         </label>
         <input
@@ -243,7 +462,7 @@ export default function RegisterForm({ therapeuticAreas = [], onSuccess, redirec
           value={formData.username}
           onChange={handleChange}
           className={`w-full px-4 py-2.5 border ${
-            errors.username ? 'border-red-300' : 'border-gray-300'
+            errors.username ? "border-red-300" : "border-gray-300"
           } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent transition-colors`}
           placeholder="Изберете потребителско име"
         />
@@ -254,7 +473,10 @@ export default function RegisterForm({ therapeuticAreas = [], onSuccess, redirec
 
       {/* Email */}
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+        <label
+          htmlFor="email"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
           Имейл адрес <span className="text-red-500">*</span>
         </label>
         <input
@@ -264,7 +486,7 @@ export default function RegisterForm({ therapeuticAreas = [], onSuccess, redirec
           value={formData.email}
           onChange={handleChange}
           className={`w-full px-4 py-2.5 border ${
-            errors.email ? 'border-red-300' : 'border-gray-300'
+            errors.email ? "border-red-300" : "border-gray-300"
           } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent transition-colors`}
           placeholder="your@email.com"
         />
@@ -276,7 +498,10 @@ export default function RegisterForm({ therapeuticAreas = [], onSuccess, redirec
       {/* Password & Confirm Password - Row */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+          <label
+            htmlFor="password"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
             Парола <span className="text-red-500">*</span>
           </label>
           <input
@@ -286,7 +511,7 @@ export default function RegisterForm({ therapeuticAreas = [], onSuccess, redirec
             value={formData.password}
             onChange={handleChange}
             className={`w-full px-4 py-2.5 border ${
-              errors.password ? 'border-red-300' : 'border-gray-300'
+              errors.password ? "border-red-300" : "border-gray-300"
             } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent transition-colors`}
             placeholder="Минимум 6 символа"
           />
@@ -296,7 +521,10 @@ export default function RegisterForm({ therapeuticAreas = [], onSuccess, redirec
         </div>
 
         <div>
-          <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
+          <label
+            htmlFor="confirmPassword"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
             Потвърди парола <span className="text-red-500">*</span>
           </label>
           <input
@@ -306,20 +534,26 @@ export default function RegisterForm({ therapeuticAreas = [], onSuccess, redirec
             value={formData.confirmPassword}
             onChange={handleChange}
             className={`w-full px-4 py-2.5 border ${
-              errors.confirmPassword ? 'border-red-300' : 'border-gray-300'
+              errors.confirmPassword ? "border-red-300" : "border-gray-300"
             } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent transition-colors`}
             placeholder="Повторете паролата"
           />
           {errors.confirmPassword && (
-            <p className="mt-1 text-sm text-red-600">{errors.confirmPassword}</p>
+            <p className="mt-1 text-sm text-red-600">
+              {errors.confirmPassword}
+            </p>
           )}
         </div>
       </div>
 
       {/* Therapeutic Area Select */}
       <div>
-        <label htmlFor="therapeutic_area" className="block text-sm font-medium text-gray-700 mb-1">
-          За коя болест проявявате интерес? <span className="text-red-500">*</span>
+        <label
+          htmlFor="therapeutic_area"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
+          За коя болест проявявате интерес?{" "}
+          <span className="text-red-500">*</span>
         </label>
         <select
           id="therapeutic_area"
@@ -327,13 +561,13 @@ export default function RegisterForm({ therapeuticAreas = [], onSuccess, redirec
           value={formData.therapeutic_area}
           onChange={handleChange}
           className={`w-full px-4 py-2.5 border ${
-            errors.therapeutic_area ? 'border-red-300' : 'border-gray-300'
+            errors.therapeutic_area ? "border-red-300" : "border-gray-300"
           } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent transition-colors bg-white`}
         >
           <option value="">Изберете терапевтична област</option>
           {therapeuticAreas.map((area) => (
             <option key={area.id} value={area.slug}>
-              {area.name || area.title?.rendered}
+              {area.title.rendered}
             </option>
           ))}
         </select>
@@ -341,64 +575,49 @@ export default function RegisterForm({ therapeuticAreas = [], onSuccess, redirec
           <p className="mt-1 text-sm text-red-600">{errors.therapeutic_area}</p>
         )}
         <p className="mt-2 text-xs text-gray-500">
-          Тази информация ни помага да Ви предоставим по-качествена и персонализирана информация за клиничните проучвания, които могат да Ви бъдат полезни.
+          Тази информация ни помага да Ви предоставим по-качествена и
+          персонализирана информация за клиничните проучвания, които могат да Ви
+          бъдат полезни.
         </p>
       </div>
 
-      {/* Disease/Article Select - Cascading (shown only when therapeutic area is selected) */}
+      {/* Disease Select (Cascading - shows only when therapeutic area is selected) */}
       <div
         className={`overflow-hidden transition-all duration-500 ease-in-out ${
-          formData.therapeutic_area 
-            ? 'max-h-96 opacity-100' 
-            : 'max-h-0 opacity-0'
+          availableDiseases.length > 0
+            ? "max-h-40 opacity-100"
+            : "max-h-0 opacity-0"
         }`}
       >
-        <div className="transform transition-transform duration-500 ease-out">
-          <label htmlFor="disease" className="block text-sm font-medium text-gray-700 mb-1">
-            Изберете конкретна статия от интерес
-          </label>
-          
-          {loadingArticles ? (
-            <div className="w-full px-4 py-2.5 border border-gray-300 rounded-lg bg-gray-50 flex items-center justify-center">
-              <div className="flex items-center space-x-2">
-                <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-[#04737d] border-r-transparent"></div>
-                <span className="text-sm text-gray-600">Зареждане на статии...</span>
-              </div>
-            </div>
-          ) : (
-            <>
-              <select
-                id="disease"
-                name="disease"
-                value={formData.disease}
-                onChange={handleChange}
-                disabled={!formData.therapeutic_area || availableArticles.length === 0}
-                className={`w-full px-4 py-2.5 border ${
-                  errors.disease ? 'border-red-300' : 'border-gray-300'
-                } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent transition-colors bg-white disabled:bg-gray-50 disabled:cursor-not-allowed`}
-              >
-                <option value="">
-                  {availableArticles.length === 0 
-                    ? 'Няма налични статии в тази област' 
-                    : 'Изберете статия (по желание)'}
+        {availableDiseases.length > 0 && (
+          <div>
+            <label
+              htmlFor="disease"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Изберете конкретно заболяване (по избор)
+            </label>
+            <select
+              id="disease"
+              name="disease"
+              value={formData.disease}
+              onChange={handleChange}
+              className={`w-full px-4 py-2.5 border ${
+                errors.disease ? "border-red-300" : "border-gray-300"
+              } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent transition-colors bg-white`}
+            >
+              <option value="">Изберете заболяване</option>
+              {availableDiseases.map((disease, index) => (
+                <option key={index} value={disease}>
+                  {disease}
                 </option>
-                {availableArticles.map((article) => (
-                  <option key={article.id} value={article.slug}>
-                    {article.title.rendered}
-                  </option>
-                ))}
-              </select>
-              {errors.disease && (
-                <p className="mt-1 text-sm text-red-600">{errors.disease}</p>
-              )}
-              {availableArticles.length > 0 && (
-                <p className="mt-2 text-xs text-gray-500">
-                  Изборът на конкретна статия е по желание и ще ни помогне да персонализираме информацията специално за Вас.
-                </p>
-              )}
-            </>
-          )}
-        </div>
+              ))}
+            </select>
+            {errors.disease && (
+              <p className="mt-1 text-sm text-red-600">{errors.disease}</p>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Submit Button */}
@@ -407,16 +626,18 @@ export default function RegisterForm({ therapeuticAreas = [], onSuccess, redirec
         disabled={loading}
         className="w-full px-6 py-3 bg-[#04737d] hover:bg-[#035057] text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {loading ? 'Регистрация...' : 'Регистрирай се'}
+        {loading ? "Регистрация..." : "Регистрирай се"}
       </button>
 
       <p className="text-center text-sm text-gray-600">
-        Вече имате акаунт?{' '}
-        <Link href="/login" className="text-[#04737d] hover:text-[#035057] font-medium">
+        Вече имате акаунт?{" "}
+        <Link
+          href="/login"
+          className="text-[#04737d] hover:text-[#035057] font-medium"
+        >
           Влезте тук
         </Link>
       </p>
     </form>
   );
 }
-

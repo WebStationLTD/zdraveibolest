@@ -1,6 +1,5 @@
 import { fetchAPI } from "./api";
 import { cache } from "react";
-import { getCategoryBySlug, getPostsByCategory as getPostsByCategoryId } from "./categories";
 
 /**
  * Get single post by slug
@@ -22,35 +21,3 @@ export const getLatestPosts = cache(async () => {
     "posts?per_page=3&_embed"
   );
 });
-
-/**
- * Get posts by category slug
- * @param {string} categorySlug - Category slug
- * @returns {Promise<Array>} - List of posts in the category (with only id, slug, title)
- */
-export const getPostsByCategory = async (categorySlug) => {
-  try {
-    // First, get the category by slug
-    const category = await getCategoryBySlug(categorySlug);
-    
-    if (!category) {
-      console.error(`Category not found: ${categorySlug}`);
-      return [];
-    }
-    
-    // Then, get all posts in this category
-    const posts = await getPostsByCategoryId(category.id, 100);
-    
-    // Return only necessary fields for the select dropdown
-    return posts.map(post => ({
-      id: post.id,
-      slug: post.slug,
-      title: {
-        rendered: post.title?.rendered || post.title
-      }
-    }));
-  } catch (error) {
-    console.error("Error fetching posts by category:", error);
-    return [];
-  }
-};

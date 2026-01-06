@@ -169,6 +169,16 @@ export default function Navigation({ therapeuticAreas = [] }) {
                 </div>
               </div>
 
+              <div className="flow-root pt-4 border-t border-gray-200">
+                <Link
+                  href="#"
+                  className="block px-6 py-3 text-center text-sm font-normal text-[#04737d] border-2 border-[#04737d] rounded-md hover:bg-[#04737d] hover:text-white transition-colors"
+                  onClick={() => setOpen(false)}
+                >
+                  Клинично изпитване
+                </Link>
+              </div>
+
               {/* Auth Buttons - Mobile */}
               <div className="border-t border-gray-200 pt-4 mt-4 space-y-3">
                 {!loading && (
@@ -374,8 +384,19 @@ export default function Navigation({ therapeuticAreas = [] }) {
               </div>
             </div>
 
-            {/* Auth Buttons - Desktop */}
+            {/* CTA & Auth Buttons - Desktop */}
             <div className="hidden xl:flex items-center justify-end gap-2">
+            {/* CTA Button */}
+              <Link
+                href="#"
+                className="px-3 2xl:px-4 py-2 text-xs 2xl:text-sm font-normal text-[#04737d] border-2 border-[#04737d] rounded-md hover:bg-[#04737d] hover:text-white transition-colors whitespace-nowrap"
+              >
+                Клинично изпитване
+              </Link>
+
+              {/* Separator */}
+              <div className="h-6 w-px bg-gray-300"></div>
+              
               {/* Auth Buttons */}
               {!loading && (
                 <>

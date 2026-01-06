@@ -10,18 +10,12 @@ const API_URL = process.env.NEXT_PUBLIC_WORDPRESS_API_URL?.replace('/wp-json/wp/
  */
 export async function registerUser(userData) {
   try {
-    // Always add site_member role for new registrations
-    const dataWithRole = {
-      ...userData,
-      role: 'site_member'
-    };
-    
     const response = await fetch(`${API_URL}/wp-json/zdravei/v1/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(dataWithRole),
+      body: JSON.stringify(userData),
     });
 
     const data = await response.json();
@@ -33,113 +27,6 @@ export async function registerUser(userData) {
     return data;
   } catch (error) {
     console.error('Registration error:', error);
-    throw error;
-  }
-}
-
-/**
- * Quick register with minimal fields (email as username, phone, password)
- * @param {Object} userData - User registration data
- * @returns {Promise<Object>} - Registration response
- */
-export async function quickRegisterUser(userData) {
-  try {
-    const dataWithRole = {
-      username: userData.email, // Email is also username
-      email: userData.email,
-      password: userData.password,
-      phone: userData.phone,
-      disease: userData.disease || '',
-      role: 'site_member'
-    };
-    
-    const response = await fetch(`${API_URL}/wp-json/zdravei/v1/register`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(dataWithRole),
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.message || 'Registration failed');
-    }
-
-    return data;
-  } catch (error) {
-    console.error('Quick registration error:', error);
-    throw error;
-  }
-}
-
-/**
- * Update user profile with additional health info
- * @param {Object} profileData - Extended profile data
- * @param {string} token - Auth token
- * @returns {Promise<Object>} - Update response
- */
-export async function updateUserProfile(profileData, token) {
-  try {
-    if (!token || typeof token !== 'string' || token.trim() === '') {
-      throw new Error('Не сте влезли в системата. Моля, влезте отново.');
-    }
-    
-    // Използваме custom header X-Auth-Token вместо Authorization
-    const response = await fetch(`${API_URL}/wp-json/zdravei/v1/update-profile`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Auth-Token': token,
-      },
-      body: JSON.stringify(profileData),
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.message || 'Грешка при обновяване на профила');
-    }
-
-    return data;
-  } catch (error) {
-    console.error('Profile update error:', error);
-    throw error;
-  }
-}
-
-/**
- * Submit clinical trial inquiry form
- * @param {Object} formData - Form data with health info
- * @param {string} token - Auth token
- * @returns {Promise<Object>} - Submission response
- */
-export async function submitClinicalTrialInquiry(formData, token) {
-  try {
-    if (!token || typeof token !== 'string' || token.trim() === '') {
-      throw new Error('Не сте влезли в системата. Моля, влезте отново.');
-    }
-    
-    // Използваме custom header X-Auth-Token вместо Authorization
-    const response = await fetch(`${API_URL}/wp-json/zdravei/v1/clinical-trial-inquiry`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Auth-Token': token,
-      },
-      body: JSON.stringify(formData),
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.message || 'Грешка при изпращане на заявката');
-    }
-
-    return data;
-  } catch (error) {
-    console.error('Clinical trial inquiry error:', error);
     throw error;
   }
 }
@@ -179,18 +66,12 @@ export async function loginUser(username, password) {
  * @returns {Promise<Object>} - User data
  */
 export async function validateToken(token) {
-  // Ако няма токен, връщаме null (не е грешка - потребителят просто не е логнат)
-  if (!token || typeof token !== 'string' || token.trim() === '') {
-    return null;
-  }
-  
   try {
-    // Използваме custom header X-Auth-Token вместо Authorization за да избегнем JWT плъгина
     const response = await fetch(`${API_URL}/wp-json/zdravei/v1/validate`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Auth-Token': token,
+        'Authorization': `Bearer ${token}`,
       },
     });
 
