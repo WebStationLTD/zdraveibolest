@@ -1,41 +1,45 @@
 import Link from "next/link";
 import PatientJourneyContactForm from "../../components/PatientJourneyContactForm";
 import StepsCarousel from "../../components/StepsCarousel";
-import { 
-  PhoneIcon, 
-  EnvelopeIcon, 
+import {
+  PhoneIcon,
+  EnvelopeIcon,
   SparklesIcon,
   ShieldCheckIcon,
   CurrencyEuroIcon,
-  HeartIcon
+  HeartIcon,
 } from "@heroicons/react/24/outline";
 
 export const metadata = {
   title: "Пътят на пациента - Как протича участието в клинично изпитване",
-  description: "Научете повече за стъпките в клиничното изпитване - от първия контакт до финалното посещение. Прозрачен и сигурен процес за вашето участие.",
+  description:
+    "Научете повече за стъпките в клиничното изпитване - от първия контакт до финалното посещение. Прозрачен и сигурен процес за вашето участие.",
 };
 
 const benefits = [
   {
     icon: SparklesIcon,
     title: "Иновативно лечение",
-    description: "Получавате шанс за съвременно и иновативно лечение, което може да предложи по-добър контрол върху заболяването."
+    description:
+      "Получавате шанс за съвременно и иновативно лечение, което може да предложи по-добър контрол върху заболяването.",
   },
   {
     icon: ShieldCheckIcon,
     title: "Специализирана грижа",
-    description: "През цялото време сте под грижите на специализиран екип, който следи внимателно вашето здраве."
+    description:
+      "През цялото време сте под грижите на специализиран екип, който следи внимателно вашето здраве.",
   },
   {
     icon: CurrencyEuroIcon,
     title: "Реимбурсация",
-    description: "Компенсация за вашето време, усилия и транспортни разходи."
+    description: "Компенсация за вашето време, усилия и транспортни разходи.",
   },
   {
     icon: HeartIcon,
     title: "Помагате на другите",
-    description: "С вашето участие помагате за напредъка на медицината и допринасяте за по-добро бъдещо лечение на хора със същото заболяване."
-  }
+    description:
+      "С вашето участие помагате за напредъка на медицината и допринасяте за по-добро бъдещо лечение на хора със същото заболяване.",
+  },
 ];
 
 export default function PatientJourneyPage() {
@@ -48,14 +52,15 @@ export default function PatientJourneyPage() {
           <div className="absolute top-10 left-10 w-72 h-72 bg-white rounded-full blur-3xl"></div>
           <div className="absolute bottom-10 right-10 w-96 h-96 bg-[#fd9300] rounded-full blur-3xl"></div>
         </div>
-        
+
         <div className="relative mx-auto w-[95%] md:w-[80%] text-center">
           <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-6 leading-tight">
             Пътят на пациента
           </h1>
           <p className="text-lg md:text-xl text-white/90 max-w-3xl mx-auto leading-relaxed">
-            Научете повече за стъпките в клиничното изпитване - от първия контакт до финалното посещение. 
-            Прозрачен и сигурен процес за вашето участие.
+            Научете повече за стъпките в клиничното изпитване - от първия
+            контакт до финалното посещение. Прозрачен и сигурен процес за вашето
+            участие.
           </p>
         </div>
       </section>
@@ -68,7 +73,8 @@ export default function PatientJourneyPage() {
               Как протича участието?
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Всяка стъпка е внимателно планирана за вашата безопасност и комфорт
+              Всяка стъпка е внимателно планирана за вашата безопасност и
+              комфорт
             </p>
           </div>
 
@@ -97,7 +103,7 @@ export default function PatientJourneyPage() {
             {benefits.map((benefit, index) => {
               const Icon = benefit.icon;
               return (
-                <div 
+                <div
                   key={index}
                   className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 text-center"
                 >
@@ -142,12 +148,10 @@ export default function PatientJourneyPage() {
               {/* Content */}
               <div className="relative z-10">
                 <div className="text-center mb-10 md:mb-12">
-                  <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-white mb-4 md:mb-6 leading-tight">
-                    Намерете клиничното изпитване за вас или помогнете на други хора
-                  </h2>
-                  <p className="text-base md:text-lg text-white/90 max-w-2xl mx-auto">
-                    Регистрирайте се като попълните кратка контактна форма, а ние ще се свържем с Вас.
-                  </p>
+                  <h3 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-white mb-4 md:mb-6 leading-tight">
+                    Регистрирай се и получи достъп до най-новите възможности за
+                    лечение и информация за заболявания
+                  </h3>
                 </div>
 
                 {/* Contact Form */}
@@ -167,21 +171,27 @@ export default function PatientJourneyPage() {
 
                 {/* Alternative: Direct Contact Info */}
                 <div className="mt-8 text-center">
-                  <p className="text-white/80 text-sm mb-4">Или се свържете директно с нас:</p>
+                  <p className="text-white/80 text-sm mb-4">
+                    Или се свържете директно с нас:
+                  </p>
                   <div className="flex flex-wrap items-center justify-center gap-6">
-                    <a 
-                      href="tel:+359000000000" 
+                    <a
+                      href="tel:+359000000000"
                       className="flex items-center gap-2 text-white hover:text-[#fd9300] transition-colors"
                     >
                       <PhoneIcon className="h-5 w-5" />
-                      <span className="text-sm font-medium">+359 XX XXX XXXX</span>
+                      <span className="text-sm font-medium">
+                        +359 XX XXX XXXX
+                      </span>
                     </a>
-                    <a 
-                      href="mailto:info@example.com" 
+                    <a
+                      href="mailto:info@example.com"
                       className="flex items-center gap-2 text-white hover:text-[#fd9300] transition-colors"
                     >
                       <EnvelopeIcon className="h-5 w-5" />
-                      <span className="text-sm font-medium">info@example.com</span>
+                      <span className="text-sm font-medium">
+                        info@example.com
+                      </span>
                     </a>
                   </div>
                 </div>
@@ -203,4 +213,3 @@ export default function PatientJourneyPage() {
     </div>
   );
 }
-

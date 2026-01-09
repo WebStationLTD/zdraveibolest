@@ -1,26 +1,42 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { useAuth } from '../contexts/AuthContext';
-import Link from 'next/link';
-import { ChevronDownIcon, ChevronUpIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { useState, useEffect } from "react";
+import { useAuth } from "../contexts/AuthContext";
+import Link from "next/link";
+import {
+  ChevronDownIcon,
+  ChevronUpIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 
 export default function StickyQuickRegister() {
   const { isAuthenticated, quickRegister, loading: authLoading } = useAuth();
+  // State for controlling form visibility with delay
+  const [isVisible, setIsVisible] = useState(false);
   const [isOpen, setIsOpen] = useState(true);
   const [isMinimized, setIsMinimized] = useState(false);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [countdown, setCountdown] = useState(5); // For closing countdown
-  
+
   const [formData, setFormData] = useState({
-    email: '',
-    phone: '',
-    password: '',
+    email: "",
+    phone: "",
+    password: "",
     privacy_consent: false,
   });
+
+  // Delayed visibility effect - show form after 7-8 seconds (7500ms)
+  useEffect(() => {
+    const delayTimer = setTimeout(() => {
+      setIsVisible(true);
+    }, 7500); // 7.5 seconds delay
+
+    // Cleanup function to clear timeout if component unmounts
+    return () => clearTimeout(delayTimer);
+  }, []); // Empty dependency array - runs only once on mount
 
   // Countdown effect
   useEffect(() => {
@@ -40,32 +56,34 @@ export default function StickyQuickRegister() {
     }
   }, [success, countdown]);
 
-  // Don't show if user is already authenticated
-  if (isAuthenticated || authLoading) {
+  // Don't show if user is already authenticated, auth is loading, or visibility delay hasn't passed
+  if (isAuthenticated || authLoading || !isVisible) {
     return null;
   }
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === "checkbox" ? checked : value,
     }));
-    setError('');
+    setError("");
   };
 
   const validateForm = () => {
-    if (!formData.email.trim()) return 'Имейлът е задължителен';
-    if (!/\S+@\S+\.\S+/.test(formData.email)) return 'Невалиден имейл адрес';
-    if (!formData.password) return 'Паролата е задължителна';
-    if (formData.password.length < 6) return 'Паролата трябва да е минимум 6 символа';
-    if (!formData.privacy_consent) return 'Трябва да се съгласите с политиката за поверителност';
+    if (!formData.email.trim()) return "Имейлът е задължителен";
+    if (!/\S+@\S+\.\S+/.test(formData.email)) return "Невалиден имейл адрес";
+    if (!formData.password) return "Паролата е задължителна";
+    if (formData.password.length < 6)
+      return "Паролата трябва да е минимум 6 символа";
+    if (!formData.privacy_consent)
+      return "Трябва да се съгласите с политиката за поверителност";
     return null;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     const validationError = validateForm();
     if (validationError) {
       setError(validationError);
@@ -73,7 +91,7 @@ export default function StickyQuickRegister() {
     }
 
     setLoading(true);
-    setError('');
+    setError("");
 
     try {
       const result = await quickRegister({
@@ -86,10 +104,10 @@ export default function StickyQuickRegister() {
         setSuccess(true);
         // No manual close here, useEffect handles it
       } else {
-        setError(result.error || 'Регистрацията не беше успешна');
+        setError(result.error || "Регистрацията не беше успешна");
       }
     } catch (err) {
-      setError('Възникна грешка. Моля, опитайте отново.');
+      setError("Възникна грешка. Моля, опитайте отново.");
     } finally {
       setLoading(false);
     }
@@ -102,16 +120,16 @@ export default function StickyQuickRegister() {
 
   return (
     <div className="fixed left-0 top-1/2 -translate-y-1/2 z-40 hidden lg:block">
-      <div 
+      <div
         className={`bg-white rounded-r-2xl shadow-2xl border border-l-0 border-gray-200 transition-all duration-300 ${
-          isMinimized ? 'w-12' : 'w-[280px]'
+          isMinimized ? "w-12" : "w-[280px]"
         }`}
       >
         {/* Minimize/Maximize Toggle */}
         <button
           onClick={() => setIsMinimized(!isMinimized)}
           className="absolute -right-3 top-14 w-6 h-6 bg-[#04737d] rounded-full flex items-center justify-center text-white shadow-lg hover:bg-[#035057] transition-colors"
-          aria-label={isMinimized ? 'Разгъни' : 'Сгъни'}
+          aria-label={isMinimized ? "Разгъни" : "Сгъни"}
         >
           {isMinimized ? (
             <ChevronDownIcon className="w-4 h-4 rotate-[-90deg]" />
@@ -123,9 +141,9 @@ export default function StickyQuickRegister() {
         {isMinimized ? (
           // Minimized State - Vertical Text
           <div className="py-8 px-2 flex flex-col items-center justify-center">
-            <span 
+            <span
               className="text-[#04737d] font-semibold text-sm whitespace-nowrap"
-              style={{ writingMode: 'vertical-rl', textOrientation: 'mixed' }}
+              style={{ writingMode: "vertical-rl", textOrientation: "mixed" }}
             >
               Бърза регистрация
             </span>
@@ -145,19 +163,27 @@ export default function StickyQuickRegister() {
             {/* Header */}
             <div className="mb-4 pr-6">
               <h3 className="text-base font-bold text-gray-900 leading-tight">
-                Намерете клиничното изпитване за вас или помогнете на други хора:
+                Регистрирай се и получи достъп до най-новите възможности за
+                лечение и информация за заболявания
               </h3>
-              <p className="text-xs text-gray-500 mt-1">
-                Регистрирайте се през кратка контактна форма, а ние ще се свържем с Вас.
-              </p>
             </div>
 
             {success ? (
               // Success State
               <div className="text-center py-4">
                 <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  <svg
+                    className="w-6 h-6 text-green-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 13l4 4L19 7"
+                    />
                   </svg>
                 </div>
                 <h4 className="text-base font-bold text-gray-900 mb-2">
@@ -177,7 +203,8 @@ export default function StickyQuickRegister() {
                       <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
                     </svg>
                     <span className="block sm:inline text-xs">
-                      Изпратихме ви welcome email с данни за вход и полезна информация.
+                      Изпратихме ви welcome email с данни за вход и полезна
+                      информация.
                     </span>
                   </div>
                 </div>
@@ -196,7 +223,10 @@ export default function StickyQuickRegister() {
 
                 {/* Email */}
                 <div>
-                  <label htmlFor="quick_email" className="block text-xs font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="quick_email"
+                    className="block text-xs font-medium text-gray-700 mb-1"
+                  >
                     Имейл<span className="text-red-500">*</span>
                   </label>
                   <input
@@ -213,7 +243,10 @@ export default function StickyQuickRegister() {
 
                 {/* Phone */}
                 <div>
-                  <label htmlFor="quick_phone" className="block text-xs font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="quick_phone"
+                    className="block text-xs font-medium text-gray-700 mb-1"
+                  >
                     Телефон
                   </label>
                   <input
@@ -230,7 +263,10 @@ export default function StickyQuickRegister() {
 
                 {/* Password */}
                 <div>
-                  <label htmlFor="quick_password" className="block text-xs font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="quick_password"
+                    className="block text-xs font-medium text-gray-700 mb-1"
+                  >
                     Парола<span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
@@ -250,13 +286,38 @@ export default function StickyQuickRegister() {
                       className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
                     >
                       {showPassword ? (
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
+                          />
                         </svg>
                       ) : (
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                          />
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                          />
                         </svg>
                       )}
                     </button>
@@ -273,11 +334,20 @@ export default function StickyQuickRegister() {
                     onChange={handleChange}
                     className="mt-0.5 w-4 h-4 text-[#04737d] border-gray-300 rounded focus:ring-[#04737d] cursor-pointer flex-shrink-0"
                   />
-                  <label htmlFor="quick_privacy" className="text-[10px] text-gray-500 leading-tight">
-                    Съгласен съм личните ми данни да бъдат обработвани за целите на регистрация в базата данни за клинични проучвания, съгласно{' '}
-                    <Link href="/privacy-policy" className="text-[#04737d] hover:underline">
+                  <label
+                    htmlFor="quick_privacy"
+                    className="text-[10px] text-gray-500 leading-tight"
+                  >
+                    Съгласен съм личните ми данни да бъдат обработвани за целите
+                    на регистрация в базата данни за клинични проучвания,
+                    съгласно{" "}
+                    <Link
+                      href="/privacy-policy"
+                      className="text-[#04737d] hover:underline"
+                    >
                       Политика за поверителност
-                    </Link>.
+                    </Link>
+                    .
                   </label>
                 </div>
 
@@ -287,7 +357,7 @@ export default function StickyQuickRegister() {
                   disabled={loading}
                   className="w-full py-3 bg-[#f5a524] hover:bg-[#e09000] text-white font-semibold rounded-full transition-all duration-200 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {loading ? 'Регистрация...' : 'Регистрация'}
+                  {loading ? "Регистрация..." : "Регистрация"}
                 </button>
               </form>
             )}
@@ -297,4 +367,3 @@ export default function StickyQuickRegister() {
     </div>
   );
 }
-
