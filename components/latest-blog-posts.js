@@ -3,7 +3,7 @@ import { getLatestPosts } from "../services/posts";
 
 export default async function LatestBlogPosts() {
   let posts = [];
-  
+
   try {
     posts = await getLatestPosts();
   } catch (error) {
@@ -18,19 +18,19 @@ export default async function LatestBlogPosts() {
   // Helper function to get featured image
   const getFeaturedImage = (post) => {
     const media = post?._embedded?.["wp:featuredmedia"]?.[0];
-    
+
     if (media?.source_url) {
       return media.source_url;
     }
-    
+
     if (media?.media_details?.sizes?.large?.source_url) {
       return media.media_details.sizes.large.source_url;
     }
-    
+
     if (media?.media_details?.sizes?.medium_large?.source_url) {
       return media.media_details.sizes.medium_large.source_url;
     }
-    
+
     return "/placeholder.webp";
   };
 
@@ -42,7 +42,9 @@ export default async function LatestBlogPosts() {
     }
     // Fallback - check categories array
     if (post?.categories?.length > 0 && post?._embedded?.["wp:term"]?.[0]) {
-      const category = post._embedded["wp:term"][0].find(term => term.id === post.categories[0]);
+      const category = post._embedded["wp:term"][0].find(
+        (term) => term.id === post.categories[0]
+      );
       return category?.name || "";
     }
     return "";
@@ -60,7 +62,7 @@ export default async function LatestBlogPosts() {
 
           {/* Main Heading */}
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-            Обучителен център
+            Здравна информация
           </h2>
 
           {/* Decorative Line */}
@@ -90,11 +92,7 @@ export default async function LatestBlogPosts() {
 
               {/* Category Badge - Top Left */}
               <div className="absolute top-6 left-6 flex items-center gap-2 bg-[#04737d]/40 backdrop-blur-md px-4 py-2 rounded-xl">
-                <img
-                  src="/News-tag-icon.svg"
-                  alt=""
-                  className="w-4 h-4"
-                />
+                <img src="/News-tag-icon.svg" alt="" className="w-4 h-4" />
                 <span className="text-white text-sm font-normal">
                   {getCategoryName(posts[0])}
                 </span>
@@ -168,4 +166,3 @@ export default async function LatestBlogPosts() {
     </section>
   );
 }
-

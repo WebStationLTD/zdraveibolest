@@ -11,7 +11,13 @@ import {
   MenuItem,
   MenuItems,
 } from "@headlessui/react";
-import { Bars3Icon, XMarkIcon, ChevronDownIcon, UserCircleIcon, ArrowRightOnRectangleIcon } from "@heroicons/react/24/outline";
+import {
+  Bars3Icon,
+  XMarkIcon,
+  ChevronDownIcon,
+  UserCircleIcon,
+  ArrowRightOnRectangleIcon,
+} from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useAuth } from "../contexts/AuthContext";
 import SearchButton from "./SearchButton";
@@ -19,15 +25,18 @@ import SearchButton from "./SearchButton";
 export default function Navigation({ therapeuticAreas = [] }) {
   const [open, setOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [participationDropdownOpen, setParticipationDropdownOpen] = useState(false);
+  const [participationDropdownOpen, setParticipationDropdownOpen] =
+    useState(false);
+  const [healthInfoDropdownOpen, setHealthInfoDropdownOpen] = useState(false);
   const [mobileAreasOpen, setMobileAreasOpen] = useState(false);
   const [mobileParticipationOpen, setMobileParticipationOpen] = useState(false);
+  const [mobileHealthInfoOpen, setMobileHealthInfoOpen] = useState(false);
   const { isAuthenticated, user, logout, loading } = useAuth();
 
   const navigation = {
     pages: [
       { name: "Начало", href: "/" },
-      { name: "Обучителен център", href: "/blog" },
+      // { name: "Здравна информация", href: "/blog" }, // Moved to dropdown menu
       { name: "За нас", href: "#" },
     ],
   };
@@ -35,6 +44,11 @@ export default function Navigation({ therapeuticAreas = [] }) {
   const participationMenu = [
     { name: "Пътят на пациента", href: "/patiat-na-patsienta" },
     { name: "Често задавани въпроси", href: "/chesto-zadavani-vaprosi" },
+  ];
+
+  const healthInfoMenu = [
+    { name: "Статии", href: "/blog/category/статии" },
+    { name: "Подкасти", href: "/blog/category/подкасти" },
   ];
 
   return (
@@ -58,7 +72,7 @@ export default function Navigation({ therapeuticAreas = [] }) {
                   width={150}
                   height={40}
                   className="w-auto h-10"
-                  style={{ width: 'auto' }}
+                  style={{ width: "auto" }}
                 />
               </Link>
               <button
@@ -84,24 +98,26 @@ export default function Navigation({ therapeuticAreas = [] }) {
                   Начало
                 </Link>
               </div>
-              
+
               {/* Терапевтични области - Accordion Mobile */}
               <div className="flow-root">
-                <button 
+                <button
                   onClick={() => setMobileAreasOpen(!mobileAreasOpen)}
                   className="flex items-center justify-between -m-2 p-2 text-gray-700 hover:text-[#04737d] transition-colors w-full"
                 >
                   <span className="font-normal">Терапевтични области</span>
                   <ChevronDownIcon
                     className={`${
-                      mobileAreasOpen ? 'rotate-180' : ''
+                      mobileAreasOpen ? "rotate-180" : ""
                     } h-5 w-5 flex-shrink-0 transition-transform duration-200`}
                   />
                 </button>
                 {mobileAreasOpen && (
                   <div className="mt-2 pl-4">
                     <div className="space-y-2 max-h-60 overflow-y-auto">
-                      <p className="text-xs text-gray-500 mb-2 px-1">Изберете терапевтична област:</p>
+                      <p className="text-xs text-gray-500 mb-2 px-1">
+                        Изберете терапевтична област:
+                      </p>
                       {therapeuticAreas.map((area) => (
                         <Link
                           key={area.id}
@@ -119,14 +135,16 @@ export default function Navigation({ therapeuticAreas = [] }) {
 
               {/* Участие - Accordion Mobile */}
               <div className="flow-root">
-                <button 
-                  onClick={() => setMobileParticipationOpen(!mobileParticipationOpen)}
+                <button
+                  onClick={() =>
+                    setMobileParticipationOpen(!mobileParticipationOpen)
+                  }
                   className="flex items-center justify-between -m-2 p-2 text-gray-700 hover:text-[#04737d] transition-colors w-full"
                 >
                   <span className="font-normal">Участие</span>
                   <ChevronDownIcon
                     className={`${
-                      mobileParticipationOpen ? 'rotate-180' : ''
+                      mobileParticipationOpen ? "rotate-180" : ""
                     } h-5 w-5 flex-shrink-0 transition-transform duration-200`}
                   />
                 </button>
@@ -134,6 +152,39 @@ export default function Navigation({ therapeuticAreas = [] }) {
                   <div className="mt-2 pl-4">
                     <div className="space-y-2">
                       {participationMenu.map((item) => (
+                        <Link
+                          key={item.name}
+                          href={item.href}
+                          className="block py-2 text-sm text-gray-600 hover:text-[#04737d] transition-colors"
+                          onClick={() => setOpen(false)}
+                        >
+                          {item.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Здравна информация - Accordion Mobile */}
+              <div className="flow-root">
+                <button
+                  onClick={() =>
+                    setMobileHealthInfoOpen(!mobileHealthInfoOpen)
+                  }
+                  className="flex items-center justify-between -m-2 p-2 text-gray-700 hover:text-[#04737d] transition-colors w-full"
+                >
+                  <span className="font-normal">Здравна информация</span>
+                  <ChevronDownIcon
+                    className={`${
+                      mobileHealthInfoOpen ? "rotate-180" : ""
+                    } h-5 w-5 flex-shrink-0 transition-transform duration-200`}
+                  />
+                </button>
+                {mobileHealthInfoOpen && (
+                  <div className="mt-2 pl-4">
+                    <div className="space-y-2">
+                      {healthInfoMenu.map((item) => (
                         <Link
                           key={item.name}
                           href={item.href}
@@ -240,11 +291,13 @@ export default function Navigation({ therapeuticAreas = [] }) {
               className="relative rounded-md bg-white p-2 text-gray-700 xl:hidden z-50"
             >
               <span className="absolute -inset-0.5" />
-              <span className="sr-only">{open ? 'Close menu' : 'Open menu'}</span>
+              <span className="sr-only">
+                {open ? "Close menu" : "Open menu"}
+              </span>
               {open ? (
                 <XMarkIcon aria-hidden="true" className="size-6" />
               ) : (
-              <Bars3Icon aria-hidden="true" className="size-6" />
+                <Bars3Icon aria-hidden="true" className="size-6" />
               )}
             </button>
 
@@ -257,7 +310,7 @@ export default function Navigation({ therapeuticAreas = [] }) {
                   width={180}
                   height={50}
                   className="w-[100px] md:w-[120px] xl:w-[150px] h-auto object-contain"
-                  style={{ height: 'auto' }}
+                  style={{ height: "auto" }}
                   priority
                 />
               </Link>
@@ -273,26 +326,28 @@ export default function Navigation({ therapeuticAreas = [] }) {
                 >
                   Начало
                 </Link>
-                
+
                 {/* Терапевтични области - Dropdown Desktop (Hover) */}
-                <div 
+                <div
                   className="relative group"
                   onMouseEnter={() => setDropdownOpen(true)}
                   onMouseLeave={() => setDropdownOpen(false)}
                 >
-                  <button
-                    className="flex items-center text-sm font-normal text-gray-700 hover:text-[#04737d] transition-colors whitespace-nowrap"
-                  >
+                  <button className="flex items-center text-sm font-normal text-gray-700 hover:text-[#04737d] transition-colors whitespace-nowrap">
                     Терапевтични области
-                    <ChevronDownIcon className={`ml-1 h-4 w-4 hover:text-[#04737d] transition-all ${dropdownOpen ? 'rotate-180' : ''}`} />
+                    <ChevronDownIcon
+                      className={`ml-1 h-4 w-4 hover:text-[#04737d] transition-all ${
+                        dropdownOpen ? "rotate-180" : ""
+                      }`}
+                    />
                   </button>
-                  
+
                   {/* Dropdown Menu */}
                   <div
                     className={`absolute left-0 z-50 mt-3 w-72 origin-top-left rounded-xl bg-white shadow-2xl ring-1 ring-black/5 transition-all duration-200 ${
-                      dropdownOpen 
-                        ? 'opacity-100 scale-100 visible' 
-                        : 'opacity-0 scale-95 invisible'
+                      dropdownOpen
+                        ? "opacity-100 scale-100 visible"
+                        : "opacity-0 scale-95 invisible"
                     }`}
                   >
                     <div className="p-2 max-h-[480px] overflow-y-auto">
@@ -310,7 +365,9 @@ export default function Navigation({ therapeuticAreas = [] }) {
                         >
                           <div className="flex items-center">
                             <div className="mr-3 h-2 w-2 rounded-full bg-gray-300 group-hover:bg-[#04737d] transition-colors"></div>
-                            <span className="font-normal">{area.title.rendered}</span>
+                            <span className="font-normal">
+                              {area.title.rendered}
+                            </span>
                           </div>
                         </Link>
                       ))}
@@ -319,28 +376,70 @@ export default function Navigation({ therapeuticAreas = [] }) {
                 </div>
 
                 {/* Участие - Dropdown Desktop (Hover) */}
-                <div 
+                <div
                   className="relative group"
                   onMouseEnter={() => setParticipationDropdownOpen(true)}
                   onMouseLeave={() => setParticipationDropdownOpen(false)}
                 >
-                  <button
-                    className="flex items-center text-sm font-normal text-gray-700 hover:text-[#04737d] transition-colors whitespace-nowrap"
-                  >
+                  <button className="flex items-center text-sm font-normal text-gray-700 hover:text-[#04737d] transition-colors whitespace-nowrap">
                     Участие
-                    <ChevronDownIcon className={`ml-1 h-4 w-4 hover:text-[#04737d] transition-all ${participationDropdownOpen ? 'rotate-180' : ''}`} />
+                    <ChevronDownIcon
+                      className={`ml-1 h-4 w-4 hover:text-[#04737d] transition-all ${
+                        participationDropdownOpen ? "rotate-180" : ""
+                      }`}
+                    />
                   </button>
-                  
+
                   {/* Dropdown Menu */}
                   <div
                     className={`absolute left-0 z-50 mt-3 w-64 origin-top-left rounded-xl bg-white shadow-2xl ring-1 ring-black/5 transition-all duration-200 ${
-                      participationDropdownOpen 
-                        ? 'opacity-100 scale-100 visible' 
-                        : 'opacity-0 scale-95 invisible'
+                      participationDropdownOpen
+                        ? "opacity-100 scale-100 visible"
+                        : "opacity-0 scale-95 invisible"
                     }`}
                   >
                     <div className="p-2">
                       {participationMenu.map((item) => (
+                        <Link
+                          key={item.name}
+                          href={item.href}
+                          className="group flex items-center rounded-lg px-3 py-3 text-sm transition-colors text-gray-700 hover:bg-[#04737d]/5 hover:text-[#04737d]"
+                        >
+                          <div className="flex items-center">
+                            <div className="mr-3 h-2 w-2 rounded-full bg-gray-300 group-hover:bg-[#04737d] transition-colors"></div>
+                            <span className="font-normal">{item.name}</span>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Здравна информация - Dropdown Desktop (Hover) */}
+                <div
+                  className="relative group"
+                  onMouseEnter={() => setHealthInfoDropdownOpen(true)}
+                  onMouseLeave={() => setHealthInfoDropdownOpen(false)}
+                >
+                  <button className="flex items-center text-sm font-normal text-gray-700 hover:text-[#04737d] transition-colors whitespace-nowrap">
+                    Здравна информация
+                    <ChevronDownIcon
+                      className={`ml-1 h-4 w-4 hover:text-[#04737d] transition-all ${
+                        healthInfoDropdownOpen ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+
+                  {/* Dropdown Menu */}
+                  <div
+                    className={`absolute left-0 z-50 mt-3 w-64 origin-top-left rounded-xl bg-white shadow-2xl ring-1 ring-black/5 transition-all duration-200 ${
+                      healthInfoDropdownOpen
+                        ? "opacity-100 scale-100 visible"
+                        : "opacity-0 scale-95 invisible"
+                    }`}
+                  >
+                    <div className="p-2">
+                      {healthInfoMenu.map((item) => (
                         <Link
                           key={item.name}
                           href={item.href}
@@ -390,7 +489,7 @@ export default function Navigation({ therapeuticAreas = [] }) {
                           </span>
                           <ChevronDownIcon className="h-4 w-4 text-gray-500" />
                         </MenuButton>
-                        
+
                         <MenuItems
                           transition
                           className="absolute right-0 z-50 mt-2 w-56 origin-top-right rounded-xl bg-white shadow-xl ring-1 ring-black/5 transition duration-200 ease-out data-[closed]:scale-95 data-[closed]:opacity-0 focus:outline-none"
@@ -411,7 +510,9 @@ export default function Navigation({ therapeuticAreas = [] }) {
                                 <button
                                   onClick={logout}
                                   className={`${
-                                    focus ? 'bg-red-50 text-red-700' : 'text-red-600'
+                                    focus
+                                      ? "bg-red-50 text-red-700"
+                                      : "text-red-600"
                                   } group flex w-full items-center gap-2 rounded-lg px-3 py-2.5 text-sm transition-colors mt-1`}
                                 >
                                   <ArrowRightOnRectangleIcon className="h-5 w-5" />
