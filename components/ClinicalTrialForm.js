@@ -31,8 +31,8 @@ const GENDER_OPTIONS = [
 ];
 
 export default function ClinicalTrialForm() {
-  const { user, isAuthenticated, submitClinicalInquiry, updateProfile } = useAuth();
-  const [loading, setLoading] = useState(false);
+  const { user, isAuthenticated, loading: authLoading, submitClinicalInquiry, updateProfile } = useAuth();
+  const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
   
@@ -97,7 +97,7 @@ export default function ClinicalTrialForm() {
       return;
     }
 
-    setLoading(true);
+    setSubmitting(true);
     setError('');
 
     try {
@@ -130,13 +130,30 @@ export default function ClinicalTrialForm() {
     } catch (err) {
       setError(err.message || 'Възникна грешка. Моля, опитайте отново.');
     } finally {
-      setLoading(false);
+      setSubmitting(false);
     }
   };
 
   // Don't show form if user is not authenticated
   if (!isAuthenticated) {
     return null;
+  }
+
+  // Show loading state while auth is being checked
+  if (authLoading) {
+    return (
+      <div className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-8 md:p-12 shadow-lg border border-gray-100">
+        <div className="text-center">
+          <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg className="animate-spin h-10 w-10 text-[#04737d]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+          </div>
+          <p className="text-gray-600">Зареждане на профила...</p>
+        </div>
+      </div>
+    );
   }
 
   // Don't show form if profile is already completed (unless success is true from current session)
@@ -414,10 +431,10 @@ export default function ClinicalTrialForm() {
         <div className="pt-4">
           <button
             type="submit"
-            disabled={loading}
+            disabled={submitting}
             className="w-full md:w-auto px-10 py-4 bg-[#f5a524] hover:bg-[#e09000] text-white font-semibold rounded-full transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? 'Изпращане...' : 'Регистрация'}
+            {submitting ? 'Изпращане...' : 'Регистрация'}
           </button>
         </div>
       </form>

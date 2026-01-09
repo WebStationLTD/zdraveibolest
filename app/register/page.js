@@ -3,11 +3,12 @@ import { getServices } from "../../services/services";
 import Link from "next/link";
 
 // Force dynamic rendering to avoid build timeout
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Регистрация - zdraveibolest.bg",
-  description: "Регистрирайте се за достъп до пълната информация за клинични проучвания",
+  description:
+    "Регистрирайте се за достъп до пълната информация за клинични проучвания",
 };
 
 export default async function RegisterPage() {
@@ -25,14 +26,7 @@ export default async function RegisterPage() {
       <div className="max-w-md mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <Link href="/" className="inline-block mb-6">
-            <span className="text-2xl font-bold text-[#04737d]">
-              zdraveibolest.bg
-            </span>
-          </Link>
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">
-            Регистрация
-          </h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">Регистрация</h2>
           <p className="text-gray-600">
             Създайте акаунт за достъп до пълната информация
           </p>
@@ -46,8 +40,3 @@ export default async function RegisterPage() {
     </div>
   );
 }
-
-
-
-
-

@@ -4,9 +4,6 @@ export default function Footer() {
   const navigation = [
     { name: "Начало", href: "/" },
     { name: "Терапевтични области", href: "#" },
-    { name: "Участие", href: "#" },
-    { name: "Клинични проучвания", href: "#" },
-    { name: "Форум", href: "#" },
     { name: "Здравна информация", href: "/blog" },
     { name: "За нас", href: "#" },
   ];

@@ -244,6 +244,34 @@ export function getAuthToken() {
 }
 
 /**
+ * Check if user profile is completed
+ * Profile is considered completed if user has filled extended health information
+ * @param {Object} user - User data object
+ * @returns {boolean} - True if profile is completed
+ */
+export function isProfileCompleted(user) {
+  if (!user) return false;
+  
+  // If backend explicitly sets profile_completed, use that
+  if (user.profile_completed === true) {
+    return true;
+  }
+  
+  // Otherwise, check if extended profile fields are filled
+  // Profile is completed if user has provided health-related information
+  const hasExtendedInfo = !!(
+    user.birth_year ||
+    user.gender ||
+    user.city ||
+    user.current_conditions ||
+    user.current_medications ||
+    user.smoking_status
+  );
+  
+  return hasExtendedInfo;
+}
+
+/**
  * Save auth data to localStorage
  * @param {string} token - JWT token
  * @param {Object} user - User data
@@ -251,8 +279,14 @@ export function getAuthToken() {
 export function saveAuthData(token, user) {
   if (typeof window === 'undefined') return;
   
+  // Add profile_completed flag based on user data
+  const userWithProfileStatus = {
+    ...user,
+    profile_completed: isProfileCompleted(user)
+  };
+  
   localStorage.setItem('auth_token', token);
-  localStorage.setItem('user_data', JSON.stringify(user));
+  localStorage.setItem('user_data', JSON.stringify(userWithProfileStatus));
 }
 
 

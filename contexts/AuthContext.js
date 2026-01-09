@@ -18,6 +18,7 @@ import {
   getCurrentUser as getStoredUser,
   getAuthToken,
   saveAuthData,
+  isProfileCompleted,
 } from "../services/auth";
 
 const AuthContext = createContext({});
@@ -40,8 +41,15 @@ export function AuthProvider({ children }) {
 
       // Ако имаме token и user в localStorage, веднагаги използваме
       if (token && storedUser) {
+        // storedUser already has profile_completed from saveAuthData
+        // But recalculate to ensure it's accurate
+        const userWithProfileStatus = {
+          ...storedUser,
+          profile_completed: isProfileCompleted(storedUser)
+        };
+        
         // Първо задаваме user-а от localStorage за незабавен достъп
-        setUser(storedUser);
+        setUser(userWithProfileStatus);
         setIsAuthenticated(true);
 
         // Валидираме токена на заден план (опционално)
@@ -49,8 +57,11 @@ export function AuthProvider({ children }) {
           const validatedUser = await validateToken(token);
           // Ако валидацията е успешна, обновяваме user данните
           if (validatedUser && (validatedUser.id || validatedUser.user_id)) {
-            setUser(validatedUser);
+            // saveAuthData will add profile_completed status
             saveAuthData(token, validatedUser);
+            // Get updated user from localStorage
+            const updatedUser = getStoredUser();
+            setUser(updatedUser);
           }
         } catch (validationError) {
           // Логваме грешката но НЕ logout-ваме потребителя
@@ -91,10 +102,14 @@ export function AuthProvider({ children }) {
       const response = await apiLogin(username, password);
       
       if (response.token && response.user) {
+        // saveAuthData automatically adds profile_completed status
         saveAuthData(response.token, response.user);
-        setUser(response.user);
+        
+        // Get user with profile_completed from localStorage
+        const userWithStatus = getStoredUser();
+        setUser(userWithStatus);
         setIsAuthenticated(true);
-        return { success: true, user: response.user };
+        return { success: true, user: userWithStatus };
       } else {
         throw new Error('Invalid response from server');
       }
@@ -109,10 +124,14 @@ export function AuthProvider({ children }) {
       const response = await apiRegister(userData);
       
       if (response.token && response.user) {
+        // saveAuthData automatically adds profile_completed status (new users won't have extended profile)
         saveAuthData(response.token, response.user);
-        setUser(response.user);
+        
+        // Get user with profile_completed from localStorage
+        const userWithStatus = getStoredUser();
+        setUser(userWithStatus);
         setIsAuthenticated(true);
-        return { success: true, user: response.user };
+        return { success: true, user: userWithStatus };
       } else {
         throw new Error('Invalid response from server');
       }
@@ -127,10 +146,14 @@ export function AuthProvider({ children }) {
       const response = await apiQuickRegister(userData);
 
       if (response.token && response.user) {
+        // saveAuthData automatically adds profile_completed status (quick register users won't have completed profile)
         saveAuthData(response.token, response.user);
-        setUser(response.user);
+        
+        // Get user with profile_completed from localStorage
+        const userWithStatus = getStoredUser();
+        setUser(userWithStatus);
         setIsAuthenticated(true);
-        return { success: true, user: response.user };
+        return { success: true, user: userWithStatus };
       } else {
         throw new Error("Invalid response from server");
       }
@@ -150,10 +173,13 @@ export function AuthProvider({ children }) {
       const response = await apiUpdateProfile(profileData, token);
 
       if (response.user) {
-        // Update local user data
+        // saveAuthData automatically adds profile_completed status
         saveAuthData(token, response.user);
-        setUser(response.user);
-        return { success: true, user: response.user };
+        
+        // Get updated user with profile_completed from localStorage
+        const updatedUser = getStoredUser();
+        setUser(updatedUser);
+        return { success: true, user: updatedUser };
       }
 
       return { success: true };

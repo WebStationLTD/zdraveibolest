@@ -82,6 +82,7 @@ export async function getPostsByCategory(categoryId, perPage = 100) {
 
 /**
  * Взима категориите за навигацията (за менюто)
+ * Excludes "Статии" (ID 19) and "Подкасти" (ID 20) as they are not therapeutic areas
  * @returns {Promise<Array>} - списък с категории за меню
  */
 export async function getCategoriesForNav() {
@@ -99,9 +100,15 @@ export async function getCategoriesForNav() {
 
     const categories = await response.json();
     
-    // Филтрираме "Uncategorized" и форматираме за меню
+    // Category IDs to exclude from navigation (not therapeutic areas)
+    const excludedCategoryIds = [19, 20]; // 19 = Статии, 20 = Подкасти
+    
+    // Filter out "Uncategorized", "Статии", and "Подкасти" categories
     return categories
-      .filter(cat => cat.slug !== 'uncategorized')
+      .filter(cat => 
+        cat.slug !== 'uncategorized' && 
+        !excludedCategoryIds.includes(cat.id)
+      )
       .map(cat => ({
         id: cat.id,
         name: cat.name,

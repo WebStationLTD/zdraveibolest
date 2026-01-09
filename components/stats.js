@@ -1,16 +1,28 @@
+/**
+ * Stats Component
+ * Displays key statistics about the platform
+ */
 export default function Stats() {
   const stats = [
-    {
-      number: "13",
-      label: "терапевтични области",
-    },
+    // {
+    //   number: "13",
+    //   label: "терапевтични области",
+    // },
     {
       number: "100%",
       label: "проверена информация",
     },
+    // {
+    //   number: "80+",
+    //   label: "специалисти",
+    // },
     {
-      number: "80+",
-      label: "специалисти",
+      number: "30+",
+      label: "години медицински опит",
+    },
+    {
+      number: "24/7",
+      label: "обновяване на информация",
     },
     {
       number: "1",
