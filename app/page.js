@@ -10,7 +10,7 @@ import StickyQuickRegisterWrapper from "../components/StickyQuickRegisterWrapper
 import { WebVitals } from "./web-vitals";
 
 // Force dynamic rendering to avoid build timeout
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 // Добавяне на метаданни за главната страница
 export const metadata = {
@@ -48,9 +48,9 @@ export default function Home() {
       <Stats />
       <TherapeuticAreas />
       <VideoSection />
-      <OurMission />
-      <LatestBlogPosts />
       <AboutUs />
+      <LatestBlogPosts />
+      <OurMission />
       <CTASection />
     </>
   );
