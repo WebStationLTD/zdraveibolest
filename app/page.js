@@ -4,6 +4,7 @@ import TherapeuticAreas from "../components/therapeutic-areas";
 import VideoSection from "../components/video-section";
 import LatestBlogPosts from "../components/latest-blog-posts";
 import AboutUs from "../components/about-us";
+import OurMission from "../components/our-mission";
 import CTASection from "../components/cta-section";
 import StickyQuickRegisterWrapper from "../components/StickyQuickRegisterWrapper";
 import { WebVitals } from "./web-vitals";
@@ -47,6 +48,7 @@ export default function Home() {
       <Stats />
       <TherapeuticAreas />
       <VideoSection />
+      <OurMission />
       <LatestBlogPosts />
       <AboutUs />
       <CTASection />

@@ -4,67 +4,67 @@ export default function TherapeuticAreas() {
   const areas = [
     {
       name: "Пулмология",
-      icon: "/пулмология-icon.svg",
+      icon: "/pulmonology-icon.svg",
       href: "/kategoriya/пулмология",
     },
     {
       name: "Ревматология",
-      icon: "/ревматология-icon.svg",
+      icon: "/rheumatology-icon.svg",
       href: "/kategoriya/ревматология",
     },
     {
       name: "Кардиология",
-      icon: "/кардиология-icon.svg",
+      icon: "/cardiology-icon.svg",
       href: "/kategoriya/кардиология",
     },
     {
       name: "Неврология",
-      icon: "/неврология-icon.svg",
+      icon: "/neurology-icon.svg",
       href: "/kategoriya/неврология",
     },
     {
       name: "Нефрология",
-      icon: "/нефрология-icon.svg",
+      icon: "/nephrology-icon.svg",
       href: "/kategoriya/нефрология",
     },
     {
       name: "Гастроентерология",
-      icon: "/гастроентерология-icon.svg",
+      icon: "/gastroenterology-icon.svg",
       href: "/kategoriya/гастроентерология",
     },
     {
       name: "Ендокринология",
-      icon: "/ендокринология-icon.svg",
+      icon: "/endocrinology-icon.svg",
       href: "/kategoriya/ендокринология",
     },
     {
       name: "Онкология",
-      icon: "/онкология-icon.svg",
+      icon: "/oncology-icon.svg",
       href: "/kategoriya/онкология",
     },
     {
       name: "Алергология",
-      icon: "/алергология-icon.svg",
+      icon: "/allergology-icon.svg",
       href: "/kategoriya/алергология",
     },
     {
       name: "Дерматология",
-      icon: "/дерматология-icon.svg",
+      icon: "/dermatology-icon.svg",
       href: "/kategoriya/дерматология",
     },
     {
       name: "Ранни фази",
-      icon: "/ранни-фази-icon.svg",
+      icon: "/early-phases-icon.svg",
       href: "/kategoriya/ранни-фази",
     },
     {
       name: "Хематология",
-      icon: "/хематология-icon.svg",
+      icon: "/hematology-icon.svg",
       href: "/kategoriya/хематология",
     },
     {
       name: "Акушер-гинекология",
-      icon: "/акушер-гинекология-icon.svg",
+      icon: "/obstetrics-gynecology-icon.svg",
       href: "/kategoriya/акушер-гинекология",
     },
   ];
