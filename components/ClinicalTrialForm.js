@@ -1,96 +1,126 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { useAuth } from '../contexts/AuthContext';
-import Link from 'next/link';
+import { useState, useEffect } from "react";
+import { useAuth } from "../contexts/AuthContext";
+import Link from "next/link";
 
 // Bulgarian cities list
 const BULGARIAN_CITIES = [
-  'София', 'Пловдив', 'Варна', 'Бургас', 'Русе', 'Стара Загора', 'Плевен', 
-  'Сливен', 'Добрич', 'Шумен', 'Перник', 'Хасково', 'Враца', 'Кюстендил',
-  'Благоевград', 'Пазарджик', 'Велико Търново', 'Ямбол', 'Габрово', 'Видин',
-  'Монтана', 'Ловеч', 'Силистра', 'Разград', 'Търговище', 'Смолян', 'Кърджали'
-].sort((a, b) => a.localeCompare(b, 'bg'));
+  "София",
+  "Пловдив",
+  "Варна",
+  "Бургас",
+  "Русе",
+  "Стара Загора",
+  "Плевен",
+  "Сливен",
+  "Добрич",
+  "Шумен",
+  "Перник",
+  "Хасково",
+  "Враца",
+  "Кюстендил",
+  "Благоевград",
+  "Пазарджик",
+  "Велико Търново",
+  "Ямбол",
+  "Габрово",
+  "Видин",
+  "Монтана",
+  "Ловеч",
+  "Силистра",
+  "Разград",
+  "Търговище",
+  "Смолян",
+  "Кърджали",
+].sort((a, b) => a.localeCompare(b, "bg"));
 
 // Smoking status options
 const SMOKING_OPTIONS = [
-  { value: '', label: 'Изберете' },
-  { value: 'never', label: 'Никога не съм пушил/а' },
-  { value: 'former', label: 'Бивш пушач' },
-  { value: 'current', label: 'Пуша в момента' },
-  { value: 'occasional', label: 'Пуша рядко/социално' },
+  { value: "", label: "Изберете" },
+  { value: "never", label: "Никога не съм пушил/а" },
+  { value: "former", label: "Бивш пушач" },
+  { value: "current", label: "Пуша в момента" },
+  { value: "occasional", label: "Пуша рядко/социално" },
 ];
 
 // Gender options
 const GENDER_OPTIONS = [
-  { value: '', label: 'Изберете' },
-  { value: 'male', label: 'Мъж' },
-  { value: 'female', label: 'Жена' },
-  { value: 'other', label: 'Друго' },
-  { value: 'prefer_not_to_say', label: 'Предпочитам да не отговарям' },
+  { value: "", label: "Изберете" },
+  { value: "male", label: "Мъж" },
+  { value: "female", label: "Жена" },
+  { value: "other", label: "Друго" },
+  { value: "prefer_not_to_say", label: "Предпочитам да не отговарям" },
 ];
 
 export default function ClinicalTrialForm() {
-  const { user, isAuthenticated, loading: authLoading, submitClinicalInquiry, updateProfile } = useAuth();
+  const {
+    user,
+    isAuthenticated,
+    loading: authLoading,
+    submitClinicalInquiry,
+    updateProfile,
+  } = useAuth();
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [error, setError] = useState('');
-  
+  const [error, setError] = useState("");
+
   const [formData, setFormData] = useState({
-    first_name: '',
-    last_name: '',
-    phone: '',
-    email: '',
-    birth_year: '',
-    gender: '',
-    city: '',
-    current_conditions: '',
-    current_medications: '',
-    smoking_status: '',
-    additional_info: '',
+    first_name: "",
+    last_name: "",
+    phone: "",
+    email: "",
+    birth_year: "",
+    gender: "",
+    city: "",
+    current_conditions: "",
+    current_medications: "",
+    smoking_status: "",
+    additional_info: "",
     privacy_consent: false,
   });
 
   // Pre-fill form with user data
   useEffect(() => {
     if (user) {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
-        first_name: user.first_name || user.firstName || '',
-        last_name: user.last_name || user.lastName || '',
-        email: user.email || user.user_email || '',
-        phone: user.phone || user.user_phone || '',
-        birth_year: user.birth_year || '',
-        gender: user.gender || '',
-        city: user.city || '',
-        current_conditions: user.current_conditions || '',
-        current_medications: user.current_medications || '',
-        smoking_status: user.smoking_status || '',
+        first_name: user.first_name || user.firstName || "",
+        last_name: user.last_name || user.lastName || "",
+        email: user.email || user.user_email || "",
+        phone: user.phone || user.user_phone || "",
+        birth_year: user.birth_year || "",
+        gender: user.gender || "",
+        city: user.city || "",
+        current_conditions: user.current_conditions || "",
+        current_medications: user.current_medications || "",
+        smoking_status: user.smoking_status || "",
       }));
     }
   }, [user]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === "checkbox" ? checked : value,
     }));
-    setError('');
+    setError("");
   };
 
   const validateForm = () => {
-    if (!formData.first_name.trim()) return 'Името е задължително';
-    if (!formData.last_name.trim()) return 'Фамилията е задължителна';
-    if (!formData.email.trim()) return 'Имейлът е задължителен';
-    if (!/\S+@\S+\.\S+/.test(formData.email)) return 'Невалиден имейл адрес';
-    if (!formData.privacy_consent) return 'Трябва да се съгласите с политиката за поверителност';
+    if (!formData.first_name.trim()) return "Името е задължително";
+    if (!formData.last_name.trim()) return "Фамилията е задължителна";
+    if (!formData.email.trim()) return "Имейлът е задължителен";
+    if (!/\S+@\S+\.\S+/.test(formData.email)) return "Невалиден имейл адрес";
+    if (!formData.privacy_consent)
+      return "Трябва да се съгласите с политиката за поверителност";
     return null;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     const validationError = validateForm();
     if (validationError) {
       setError(validationError);
@@ -98,7 +128,7 @@ export default function ClinicalTrialForm() {
     }
 
     setSubmitting(true);
-    setError('');
+    setError("");
 
     try {
       // First update user profile with the new fields
@@ -116,7 +146,9 @@ export default function ClinicalTrialForm() {
       });
 
       if (!profileResult.success) {
-        throw new Error(profileResult.error || 'Грешка при обновяване на профила');
+        throw new Error(
+          profileResult.error || "Грешка при обновяване на профила"
+        );
       }
 
       // Then submit the clinical trial inquiry (sends email to admin)
@@ -125,10 +157,12 @@ export default function ClinicalTrialForm() {
       if (inquiryResult.success) {
         setSuccess(true);
       } else {
-        throw new Error(inquiryResult.error || 'Грешка при изпращане на заявката');
+        throw new Error(
+          inquiryResult.error || "Грешка при изпращане на заявката"
+        );
       }
     } catch (err) {
-      setError(err.message || 'Възникна грешка. Моля, опитайте отново.');
+      setError(err.message || "Възникна грешка. Моля, опитайте отново.");
     } finally {
       setSubmitting(false);
     }
@@ -145,9 +179,25 @@ export default function ClinicalTrialForm() {
       <div className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-8 md:p-12 shadow-lg border border-gray-100">
         <div className="text-center">
           <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <svg className="animate-spin h-10 w-10 text-[#04737d]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            <svg
+              className="animate-spin h-10 w-10 text-[#04737d]"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
             </svg>
           </div>
           <p className="text-gray-600">Зареждане на профила...</p>
@@ -162,15 +212,26 @@ export default function ClinicalTrialForm() {
       <div className="bg-gradient-to-br from-blue-50 to-white rounded-2xl p-8 md:p-12 shadow-lg border border-blue-100">
         <div className="text-center">
           <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <svg className="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <svg
+              className="w-10 h-10 text-blue-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
             </svg>
           </div>
           <h3 className="text-2xl font-bold text-gray-900 mb-4">
             Профилът Ви е завършен
           </h3>
           <p className="text-gray-600 mb-6">
-            Вече сте попълнили подробния си профил. Благодарим Ви за предоставената информация!
+            Вече сте попълнили подробния си профил. Благодарим Ви за
+            предоставената информация!
           </p>
           <p className="text-sm text-gray-500">
             Ако искате да актуализирате информацията си, моля свържете се с нас.
@@ -185,16 +246,26 @@ export default function ClinicalTrialForm() {
       <div className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-8 md:p-12 shadow-lg border border-gray-100">
         <div className="text-center">
           <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <svg className="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            <svg
+              className="w-10 h-10 text-green-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M5 13l4 4L19 7"
+              />
             </svg>
           </div>
           <h3 className="text-2xl font-bold text-gray-900 mb-3">
             Благодарим Ви!
           </h3>
           <p className="text-gray-600 max-w-md mx-auto">
-            Вашата заявка за клинично изпитване е изпратена успешно. 
-            Ще се свържем с Вас в най-кратък срок.
+            Вашата заявка за клинично изпитване е изпратена успешно. Ще се
+            свържем с Вас в най-кратък срок.
           </p>
         </div>
       </div>
@@ -221,7 +292,10 @@ export default function ClinicalTrialForm() {
         {/* Name Fields - Row */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label htmlFor="first_name" className="block text-sm font-medium text-gray-700 mb-1.5">
+            <label
+              htmlFor="first_name"
+              className="block text-sm font-medium text-gray-700 mb-1.5"
+            >
               Име
             </label>
             <input
@@ -235,7 +309,10 @@ export default function ClinicalTrialForm() {
             />
           </div>
           <div>
-            <label htmlFor="last_name" className="block text-sm font-medium text-gray-700 mb-1.5">
+            <label
+              htmlFor="last_name"
+              className="block text-sm font-medium text-gray-700 mb-1.5"
+            >
               Фамилия
             </label>
             <input
@@ -253,7 +330,10 @@ export default function ClinicalTrialForm() {
         {/* Phone & Email - Row */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1.5">
+            <label
+              htmlFor="phone"
+              className="block text-sm font-medium text-gray-700 mb-1.5"
+            >
               Телефон
             </label>
             <input
@@ -267,7 +347,10 @@ export default function ClinicalTrialForm() {
             />
           </div>
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1.5">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 mb-1.5"
+            >
               Имейл
             </label>
             <input
@@ -284,7 +367,10 @@ export default function ClinicalTrialForm() {
 
         {/* Birth Year */}
         <div>
-          <label htmlFor="birth_year" className="block text-sm font-medium text-gray-700 mb-1.5">
+          <label
+            htmlFor="birth_year"
+            className="block text-sm font-medium text-gray-700 mb-1.5"
+          >
             Година на раждане
           </label>
           <input
@@ -303,7 +389,10 @@ export default function ClinicalTrialForm() {
         {/* Gender & City - Row */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label htmlFor="gender" className="block text-sm font-medium text-gray-700 mb-1.5">
+            <label
+              htmlFor="gender"
+              className="block text-sm font-medium text-gray-700 mb-1.5"
+            >
               Пол
             </label>
             <select
@@ -313,7 +402,7 @@ export default function ClinicalTrialForm() {
               onChange={handleChange}
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent transition-all bg-white appearance-none cursor-pointer"
             >
-              {GENDER_OPTIONS.map(option => (
+              {GENDER_OPTIONS.map((option) => (
                 <option key={option.value} value={option.value}>
                   {option.label}
                 </option>
@@ -321,7 +410,10 @@ export default function ClinicalTrialForm() {
             </select>
           </div>
           <div>
-            <label htmlFor="city" className="block text-sm font-medium text-gray-700 mb-1.5">
+            <label
+              htmlFor="city"
+              className="block text-sm font-medium text-gray-700 mb-1.5"
+            >
               Град
             </label>
             <select
@@ -332,7 +424,7 @@ export default function ClinicalTrialForm() {
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent transition-all bg-white appearance-none cursor-pointer"
             >
               <option value="">Изберете</option>
-              {BULGARIAN_CITIES.map(city => (
+              {BULGARIAN_CITIES.map((city) => (
                 <option key={city} value={city}>
                   {city}
                 </option>
@@ -343,7 +435,10 @@ export default function ClinicalTrialForm() {
 
         {/* Current Conditions */}
         <div>
-          <label htmlFor="current_conditions" className="block text-sm font-medium text-gray-700 mb-1.5">
+          <label
+            htmlFor="current_conditions"
+            className="block text-sm font-medium text-gray-700 mb-1.5"
+          >
             Настоящи заболявания
           </label>
           <input
@@ -359,7 +454,10 @@ export default function ClinicalTrialForm() {
 
         {/* Current Medications */}
         <div>
-          <label htmlFor="current_medications" className="block text-sm font-medium text-gray-700 mb-1.5">
+          <label
+            htmlFor="current_medications"
+            className="block text-sm font-medium text-gray-700 mb-1.5"
+          >
             Прием на медикаменти
           </label>
           <input
@@ -375,7 +473,10 @@ export default function ClinicalTrialForm() {
 
         {/* Smoking Status */}
         <div>
-          <label htmlFor="smoking_status" className="block text-sm font-medium text-gray-700 mb-1.5">
+          <label
+            htmlFor="smoking_status"
+            className="block text-sm font-medium text-gray-700 mb-1.5"
+          >
             Пушене
           </label>
           <select
@@ -385,7 +486,7 @@ export default function ClinicalTrialForm() {
             onChange={handleChange}
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent transition-all bg-white appearance-none cursor-pointer"
           >
-            {SMOKING_OPTIONS.map(option => (
+            {SMOKING_OPTIONS.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
               </option>
@@ -395,7 +496,10 @@ export default function ClinicalTrialForm() {
 
         {/* Additional Info */}
         <div>
-          <label htmlFor="additional_info" className="block text-sm font-medium text-gray-700 mb-1.5">
+          <label
+            htmlFor="additional_info"
+            className="block text-sm font-medium text-gray-700 mb-1.5"
+          >
             Допълнителна здравна информация/коментар
           </label>
           <textarea
@@ -420,10 +524,15 @@ export default function ClinicalTrialForm() {
             className="mt-1 w-4 h-4 text-[#04737d] border-gray-300 rounded focus:ring-[#04737d] cursor-pointer"
           />
           <label htmlFor="privacy_consent" className="text-sm text-gray-600">
-            Съгласен съм личните ми данни да бъдат обработвани за целите на регистрация в базата данни за клинични проучвания, съгласно{' '}
-            <Link href="/privacy-policy" className="text-[#04737d] hover:underline">
+            Съгласен съм личните ми данни да бъдат обработвани за целите на
+            регистрация в базата данни за клинични проучвания, съгласно{" "}
+            <Link
+              href="/privacy-policy"
+              className="text-[#04737d] hover:underline"
+            >
               Политика за поверителност
-            </Link>.
+            </Link>
+            .
           </label>
         </div>
 
@@ -434,11 +543,10 @@ export default function ClinicalTrialForm() {
             disabled={submitting}
             className="w-full md:w-auto px-10 py-4 bg-[#f5a524] hover:bg-[#e09000] text-white font-semibold rounded-full transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {submitting ? 'Изпращане...' : 'Регистрация'}
+            {submitting ? "Изпращане..." : "Регистрация"}
           </button>
         </div>
       </form>
     </div>
   );
 }
-

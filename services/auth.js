@@ -253,7 +253,8 @@ export function isProfileCompleted(user) {
   if (!user) return false;
   
   // If backend explicitly sets profile_completed, use that
-  if (user.profile_completed === true) {
+  // Handle both boolean true and string values like "1" or "true"
+  if (user.profile_completed === true || user.profile_completed === 1 || user.profile_completed === "1" || user.profile_completed === "true") {
     return true;
   }
   

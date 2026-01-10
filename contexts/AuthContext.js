@@ -41,27 +41,45 @@ export function AuthProvider({ children }) {
 
       // Ако имаме token и user в localStorage, веднагаги използваме
       if (token && storedUser) {
-        // storedUser already has profile_completed from saveAuthData
-        // But recalculate to ensure it's accurate
-        const userWithProfileStatus = {
-          ...storedUser,
-          profile_completed: isProfileCompleted(storedUser)
-        };
-        
-        // Първо задаваме user-а от localStorage за незабавен достъп
-        setUser(userWithProfileStatus);
-        setIsAuthenticated(true);
-
-        // Валидираме токена на заден план (опционално)
+        // Валидираме токена на заден план (задължително за пълни данни)
+        // ВАЖНО: Не задаваме user преди validation, за да избегнем race conditions
         try {
           const validatedUser = await validateToken(token);
           // Ако валидацията е успешна, обновяваме user данните
           if (validatedUser && (validatedUser.id || validatedUser.user_id)) {
-            // saveAuthData will add profile_completed status
-            saveAuthData(token, validatedUser);
-            // Get updated user from localStorage
-            const updatedUser = getStoredUser();
-            setUser(updatedUser);
+            // Check if backend returned complete data
+            // If profile is marked as completed, we MUST have extended fields
+            const hasExtendedFields = !!(validatedUser.birth_year || validatedUser.gender || validatedUser.city || validatedUser.current_conditions || validatedUser.current_medications || validatedUser.smoking_status);
+            const backendProfileCompleted = validatedUser.profile_completed === true || validatedUser.profile_completed === 1 || validatedUser.profile_completed === "1" || validatedUser.profile_completed === "true";
+            
+            // If backend says profile is completed but doesn't return extended fields,
+            // use stored user data (which should have extended fields from previous successful validation)
+            if (backendProfileCompleted && !hasExtendedFields && storedUser.birth_year) {
+              // Use stored user with updated basic fields from validation
+              const mergedUser = {
+                ...storedUser,
+                ...validatedUser,
+                // Preserve extended fields from stored user
+                birth_year: storedUser.birth_year,
+                gender: storedUser.gender,
+                city: storedUser.city,
+                current_conditions: storedUser.current_conditions,
+                current_medications: storedUser.current_medications,
+                smoking_status: storedUser.smoking_status,
+                profile_completed: true
+              };
+              saveAuthData(token, mergedUser);
+              const updatedUser = getStoredUser();
+              setUser(updatedUser);
+              setIsAuthenticated(true);
+            } else {
+              // Normal case: backend returned complete data or profile is not completed
+              saveAuthData(token, validatedUser);
+              // Get updated user from localStorage
+              const updatedUser = getStoredUser();
+              setUser(updatedUser);
+              setIsAuthenticated(true);
+            }
           }
         } catch (validationError) {
           // Логваме грешката но НЕ logout-ваме потребителя
@@ -79,8 +97,15 @@ export function AuthProvider({ children }) {
             apiLogout();
             setUser(null);
             setIsAuthenticated(false);
+          } else {
+            // За всички други грешки използваме user-а от localStorage
+            const userWithProfileStatus = {
+              ...storedUser,
+              profile_completed: isProfileCompleted(storedUser)
+            };
+            setUser(userWithProfileStatus);
+            setIsAuthenticated(true);
           }
-          // За всички други грешки оставяме user-а логнат с localStorage данните
         }
       } else {
         // Няма token или user - потребителят не е логнат (НЕ е грешка!)
@@ -102,14 +127,31 @@ export function AuthProvider({ children }) {
       const response = await apiLogin(username, password);
       
       if (response.token && response.user) {
-        // saveAuthData automatically adds profile_completed status
-        saveAuthData(response.token, response.user);
+        // Save token first
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('auth_token', response.token);
+        }
         
-        // Get user with profile_completed from localStorage
-        const userWithStatus = getStoredUser();
-        setUser(userWithStatus);
-        setIsAuthenticated(true);
-        return { success: true, user: userWithStatus };
+        // Now fetch full user data via validateToken to get extended fields
+        try {
+          const fullUserData = await validateToken(response.token);
+          if (fullUserData && (fullUserData.id || fullUserData.user_id)) {
+            // saveAuthData with full user data
+            saveAuthData(response.token, fullUserData);
+            const userWithStatus = getStoredUser();
+            setUser(userWithStatus);
+            setIsAuthenticated(true);
+            return { success: true, user: userWithStatus };
+          }
+        } catch (validationError) {
+          // If validation fails, fall back to login response user
+          console.warn('Failed to fetch full user data, using login response:', validationError);
+          saveAuthData(response.token, response.user);
+          const userWithStatus = getStoredUser();
+          setUser(userWithStatus);
+          setIsAuthenticated(true);
+          return { success: true, user: userWithStatus };
+        }
       } else {
         throw new Error('Invalid response from server');
       }
@@ -124,14 +166,30 @@ export function AuthProvider({ children }) {
       const response = await apiRegister(userData);
       
       if (response.token && response.user) {
-        // saveAuthData automatically adds profile_completed status (new users won't have extended profile)
-        saveAuthData(response.token, response.user);
+        // Save token first
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('auth_token', response.token);
+        }
         
-        // Get user with profile_completed from localStorage
-        const userWithStatus = getStoredUser();
-        setUser(userWithStatus);
-        setIsAuthenticated(true);
-        return { success: true, user: userWithStatus };
+        // Fetch full user data via validateToken to get extended fields
+        try {
+          const fullUserData = await validateToken(response.token);
+          if (fullUserData && (fullUserData.id || fullUserData.user_id)) {
+            saveAuthData(response.token, fullUserData);
+            const userWithStatus = getStoredUser();
+            setUser(userWithStatus);
+            setIsAuthenticated(true);
+            return { success: true, user: userWithStatus };
+          }
+        } catch (validationError) {
+          // If validation fails, fall back to register response user
+          console.warn('Failed to fetch full user data, using register response:', validationError);
+          saveAuthData(response.token, response.user);
+          const userWithStatus = getStoredUser();
+          setUser(userWithStatus);
+          setIsAuthenticated(true);
+          return { success: true, user: userWithStatus };
+        }
       } else {
         throw new Error('Invalid response from server');
       }
@@ -146,14 +204,30 @@ export function AuthProvider({ children }) {
       const response = await apiQuickRegister(userData);
 
       if (response.token && response.user) {
-        // saveAuthData automatically adds profile_completed status (quick register users won't have completed profile)
-        saveAuthData(response.token, response.user);
+        // Save token first
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('auth_token', response.token);
+        }
         
-        // Get user with profile_completed from localStorage
-        const userWithStatus = getStoredUser();
-        setUser(userWithStatus);
-        setIsAuthenticated(true);
-        return { success: true, user: userWithStatus };
+        // Fetch full user data via validateToken to get extended fields
+        try {
+          const fullUserData = await validateToken(response.token);
+          if (fullUserData && (fullUserData.id || fullUserData.user_id)) {
+            saveAuthData(response.token, fullUserData);
+            const userWithStatus = getStoredUser();
+            setUser(userWithStatus);
+            setIsAuthenticated(true);
+            return { success: true, user: userWithStatus };
+          }
+        } catch (validationError) {
+          // If validation fails, fall back to quick register response user
+          console.warn('Failed to fetch full user data, using quick register response:', validationError);
+          saveAuthData(response.token, response.user);
+          const userWithStatus = getStoredUser();
+          setUser(userWithStatus);
+          setIsAuthenticated(true);
+          return { success: true, user: userWithStatus };
+        }
       } else {
         throw new Error("Invalid response from server");
       }
