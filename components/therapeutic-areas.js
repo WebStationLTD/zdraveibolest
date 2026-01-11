@@ -70,7 +70,10 @@ export default function TherapeuticAreas() {
   ];
 
   return (
-    <section className="relative px-5 pt-5 pb-16 md:pb-20 lg:pb-24">
+    <section
+      id="therapeutic-areas"
+      className="relative px-5 pt-5 pb-16 md:pb-20 lg:pb-24"
+    >
       <div className="mx-auto w-[95%] md:w-[80%]">
         {/* Section Header */}
         <div className="text-center mb-12 md:mb-16">
