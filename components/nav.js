@@ -37,7 +37,7 @@ export default function Navigation({ therapeuticAreas = [] }) {
     pages: [
       { name: "Начало", href: "/" },
       // { name: "Здравна информация", href: "/blog" }, // Moved to dropdown menu
-      { name: "За нас", href: "#" },
+      { name: "За нас", href: "/nashata-misiya" },
     ],
   };
 
@@ -169,9 +169,7 @@ export default function Navigation({ therapeuticAreas = [] }) {
               {/* Здравна информация - Accordion Mobile */}
               <div className="flow-root">
                 <button
-                  onClick={() =>
-                    setMobileHealthInfoOpen(!mobileHealthInfoOpen)
-                  }
+                  onClick={() => setMobileHealthInfoOpen(!mobileHealthInfoOpen)}
                   className="flex items-center justify-between -m-2 p-2 text-gray-700 hover:text-[#04737d] transition-colors w-full"
                 >
                   <span className="font-normal">Здравна информация</span>

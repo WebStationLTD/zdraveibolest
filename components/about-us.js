@@ -133,7 +133,7 @@ export default function AboutUs() {
           {/* CTA Button */}
           <div>
             <Link
-              href="#"
+              href="/nashata-misiya"
               className="inline-block px-8 py-3.5 bg-[#fd9300] hover:bg-[#e48400] text-white text-base font-medium rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl"
             >
               Научи повече
