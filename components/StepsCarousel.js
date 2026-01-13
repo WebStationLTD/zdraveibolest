@@ -111,6 +111,7 @@ export default function StepsCarousel() {
   const [scrollLeft, setScrollLeft] = useState(0);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+  const [isAutoScrolling, setIsAutoScrolling] = useState(true);
 
   // Check scroll position for arrow visibility
   const checkScrollPosition = () => {
@@ -130,10 +131,33 @@ export default function StepsCarousel() {
     }
   }, []);
 
+  // Auto-scroll effect - every 6-7 seconds
+  useEffect(() => {
+    if (!isAutoScrolling) return;
+    
+    const autoScrollInterval = setInterval(() => {
+      if (carouselRef.current) {
+        const { scrollLeft, scrollWidth, clientWidth } = carouselRef.current;
+        const cardWidth = carouselRef.current.offsetWidth / 3.5;
+        
+        // If at the end, scroll back to the beginning
+        if (scrollLeft >= scrollWidth - clientWidth - 10) {
+          carouselRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          // Otherwise, scroll one card to the right
+          carouselRef.current.scrollBy({ left: cardWidth, behavior: 'smooth' });
+        }
+      }
+    }, 6500); // 6.5 seconds (between 6-7 seconds)
+
+    return () => clearInterval(autoScrollInterval);
+  }, [isAutoScrolling]);
+
   // Mouse down - start dragging
   const handleMouseDown = (e) => {
     if (!carouselRef.current) return;
     setIsDragging(true);
+    setIsAutoScrolling(false); // Stop auto-scroll when user interacts
     setStartX(e.pageX - carouselRef.current.offsetLeft);
     setScrollLeft(carouselRef.current.scrollLeft);
     carouselRef.current.style.cursor = 'grabbing';
@@ -183,6 +207,7 @@ export default function StepsCarousel() {
   // Navigation buttons
   const scrollTo = (direction) => {
     if (!carouselRef.current) return;
+    setIsAutoScrolling(false); // Stop auto-scroll when user interacts
     const cardWidth = carouselRef.current.offsetWidth / 3.5;
     const scrollAmount = direction === 'left' ? -cardWidth : cardWidth;
     carouselRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });

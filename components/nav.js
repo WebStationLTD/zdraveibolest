@@ -134,7 +134,7 @@ export default function Navigation({ therapeuticAreas = [] }) {
               </div>
 
               {/* Участие - Accordion Mobile */}
-              <div className="flow-root">
+              {/* <div className="flow-root">
                 <button
                   onClick={() =>
                     setMobileParticipationOpen(!mobileParticipationOpen)
@@ -164,7 +164,7 @@ export default function Navigation({ therapeuticAreas = [] }) {
                     </div>
                   </div>
                 )}
-              </div>
+              </div> */}
 
               {/* Здравна информация - Accordion Mobile */}
               <div className="flow-root">
@@ -374,7 +374,7 @@ export default function Navigation({ therapeuticAreas = [] }) {
                 </div>
 
                 {/* Участие - Dropdown Desktop (Hover) */}
-                <div
+                {/* <div
                   className="relative group"
                   onMouseEnter={() => setParticipationDropdownOpen(true)}
                   onMouseLeave={() => setParticipationDropdownOpen(false)}
@@ -388,7 +388,6 @@ export default function Navigation({ therapeuticAreas = [] }) {
                     />
                   </button>
 
-                  {/* Dropdown Menu */}
                   <div
                     className={`absolute left-0 z-50 mt-3 w-64 origin-top-left rounded-xl bg-white shadow-2xl ring-1 ring-black/5 transition-all duration-200 ${
                       participationDropdownOpen
@@ -411,7 +410,7 @@ export default function Navigation({ therapeuticAreas = [] }) {
                       ))}
                     </div>
                   </div>
-                </div>
+                </div> */}
 
                 {/* Здравна информация - Dropdown Desktop (Hover) */}
                 <div

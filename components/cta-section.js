@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 
 // Carousel slides data
@@ -35,6 +35,14 @@ export default function CTASection() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
+  // Handle next slide with transition
+  const handleNextSlide = useCallback(() => {
+    if (isTransitioning) return;
+    setIsTransitioning(true);
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+    setTimeout(() => setIsTransitioning(false), 500);
+  }, [isTransitioning]);
+
   // Auto-advance slides every 6 seconds
   useEffect(() => {
     const interval = setInterval(() => {
@@ -42,15 +50,7 @@ export default function CTASection() {
     }, 6000);
 
     return () => clearInterval(interval);
-  }, [currentSlide]);
-
-  // Handle next slide with transition
-  const handleNextSlide = () => {
-    if (isTransitioning) return;
-    setIsTransitioning(true);
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
-    setTimeout(() => setIsTransitioning(false), 500);
-  };
+  }, [handleNextSlide]);
 
   // Handle previous slide with transition
   const handlePrevSlide = () => {

@@ -52,11 +52,11 @@ export default function TherapeuticAreas() {
       icon: "/dermatology-icon.svg",
       href: "/kategoriya/дерматология",
     },
-    {
-      name: "Ранни фази",
-      icon: "/early-phases-icon.svg",
-      href: "/kategoriya/ранни-фази",
-    },
+    // {
+    //   name: "Ранни фази",
+    //   icon: "/early-phases-icon.svg",
+    //   href: "/kategoriya/ранни-фази",
+    // },
     {
       name: "Хематология",
       icon: "/hematology-icon.svg",
@@ -94,57 +94,29 @@ export default function TherapeuticAreas() {
           </div>
         </div>
 
-        {/* Grid of Therapeutic Areas */}
-        <div className="space-y-4 md:space-y-5">
-          {/* First 10 cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-5">
-            {areas.slice(0, 10).map((area, index) => (
-              <Link
-                key={index}
-                href={area.href}
-                className="group relative bg-white rounded-2xl border border-[#04737d] p-6 md:p-8 hover:shadow-lg transition-all duration-300 flex flex-col items-center justify-center text-center"
-              >
-                {/* Icon */}
-                <div className="mb-4 w-16 h-16 md:w-20 md:h-20 flex items-center justify-center">
-                  <img
-                    src={area.icon}
-                    alt={area.name}
-                    className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300"
-                  />
-                </div>
+        {/* Grid of Therapeutic Areas - 3x4 Layout (12 items total) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5">
+          {areas.map((area, index) => (
+            <Link
+              key={index}
+              href={area.href}
+              className="group relative bg-white rounded-2xl border border-[#04737d] p-6 md:p-8 hover:shadow-lg transition-all duration-300 flex flex-col items-center justify-center text-center"
+            >
+              {/* Icon */}
+              <div className="mb-4 w-16 h-16 md:w-20 md:h-20 flex items-center justify-center">
+                <img
+                  src={area.icon}
+                  alt={area.name}
+                  className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300"
+                />
+              </div>
 
-                {/* Area Name */}
-                <h3 className="text-base md:text-lg font-normal text-gray-900 group-hover:text-[#04737d] transition-colors">
-                  {area.name}
-                </h3>
-              </Link>
-            ))}
-          </div>
-
-          {/* Last 3 cards - Equal width */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-5">
-            {areas.slice(10).map((area, index) => (
-              <Link
-                key={index + 10}
-                href={area.href}
-                className="group relative bg-white rounded-2xl border border-[#04737d] p-6 md:p-8 hover:shadow-lg transition-all duration-300 flex flex-col items-center justify-center text-center"
-              >
-                {/* Icon */}
-                <div className="mb-4 w-16 h-16 md:w-20 md:h-20 flex items-center justify-center">
-                  <img
-                    src={area.icon}
-                    alt={area.name}
-                    className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300"
-                  />
-                </div>
-
-                {/* Area Name */}
-                <h3 className="text-base md:text-lg font-normal text-gray-900 group-hover:text-[#04737d] transition-colors">
-                  {area.name}
-                </h3>
-              </Link>
-            ))}
-          </div>
+              {/* Area Name */}
+              <h3 className="text-base md:text-lg font-normal text-gray-900 group-hover:text-[#04737d] transition-colors">
+                {area.name}
+              </h3>
+            </Link>
+          ))}
         </div>
       </div>
     </section>

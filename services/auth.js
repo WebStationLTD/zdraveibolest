@@ -11,8 +11,10 @@ const API_URL = process.env.NEXT_PUBLIC_WORDPRESS_API_URL?.replace('/wp-json/wp/
 export async function registerUser(userData) {
   try {
     // Always add site_member role for new registrations
+    // Email is used as username
     const dataWithRole = {
       ...userData,
+      username: userData.email, // Use email as username
       role: 'site_member'
     };
     
@@ -38,7 +40,7 @@ export async function registerUser(userData) {
 }
 
 /**
- * Quick register with minimal fields (email as username, phone, password)
+ * Quick register with minimal fields (email as username, phone, password, therapeutic_area, disease)
  * @param {Object} userData - User registration data
  * @returns {Promise<Object>} - Registration response
  */
@@ -49,6 +51,7 @@ export async function quickRegisterUser(userData) {
       email: userData.email,
       password: userData.password,
       phone: userData.phone,
+      therapeutic_area: userData.therapeutic_area || '',
       disease: userData.disease || '',
       role: 'site_member'
     };

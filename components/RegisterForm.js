@@ -204,8 +204,8 @@ export default function RegisterForm({
   const { register } = useAuth();
   const router = useRouter();
   const [formData, setFormData] = useState({
-    username: "",
     email: "",
+    phone: "",
     password: "",
     confirmPassword: "",
     first_name: "",
@@ -271,16 +271,14 @@ export default function RegisterForm({
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.username.trim()) {
-      newErrors.username = "Потребителското име е задължително";
-    } else if (formData.username.length < 3) {
-      newErrors.username = "Потребителското име трябва да е минимум 3 символа";
-    }
-
     if (!formData.email.trim()) {
       newErrors.email = "Имейлът е задължителен";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = "Невалиден имейл адрес";
+    }
+
+    if (!formData.phone.trim()) {
+      newErrors.phone = "Телефонът е задължителен";
     }
 
     if (!formData.first_name.trim()) {
@@ -320,8 +318,8 @@ export default function RegisterForm({
 
     try {
       const result = await register({
-        username: formData.username,
         email: formData.email,
+        phone: formData.phone,
         password: formData.password,
         first_name: formData.first_name,
         last_name: formData.last_name,
@@ -447,37 +445,13 @@ export default function RegisterForm({
         </div>
       </div>
 
-      {/* Username */}
-      <div>
-        <label
-          htmlFor="username"
-          className="block text-sm font-medium text-gray-700 mb-1"
-        >
-          Потребителско име <span className="text-red-500">*</span>
-        </label>
-        <input
-          type="text"
-          id="username"
-          name="username"
-          value={formData.username}
-          onChange={handleChange}
-          className={`w-full px-4 py-2.5 border ${
-            errors.username ? "border-red-300" : "border-gray-300"
-          } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent transition-colors`}
-          placeholder="Изберете потребителско име"
-        />
-        {errors.username && (
-          <p className="mt-1 text-sm text-red-600">{errors.username}</p>
-        )}
-      </div>
-
       {/* Email */}
       <div>
         <label
           htmlFor="email"
           className="block text-sm font-medium text-gray-700 mb-1"
         >
-          Имейл адрес <span className="text-red-500">*</span>
+          Имейл адрес (Потребителско име) <span className="text-red-500">*</span>
         </label>
         <input
           type="email"
@@ -489,9 +463,35 @@ export default function RegisterForm({
             errors.email ? "border-red-300" : "border-gray-300"
           } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent transition-colors`}
           placeholder="your@email.com"
+          autoComplete="email"
         />
         {errors.email && (
           <p className="mt-1 text-sm text-red-600">{errors.email}</p>
+        )}
+      </div>
+
+      {/* Phone */}
+      <div>
+        <label
+          htmlFor="phone"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
+          Телефон <span className="text-red-500">*</span>
+        </label>
+        <input
+          type="tel"
+          id="phone"
+          name="phone"
+          value={formData.phone}
+          onChange={handleChange}
+          className={`w-full px-4 py-2.5 border ${
+            errors.phone ? "border-red-300" : "border-gray-300"
+          } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent transition-colors`}
+          placeholder="+359 888 123 456"
+          autoComplete="tel"
+        />
+        {errors.phone && (
+          <p className="mt-1 text-sm text-red-600">{errors.phone}</p>
         )}
       </div>
 

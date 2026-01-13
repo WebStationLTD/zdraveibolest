@@ -3,9 +3,9 @@ import Link from "next/link";
 export default function Footer() {
   const navigation = [
     { name: "Начало", href: "/" },
-    { name: "Терапевтични области", href: "#" },
-    { name: "Здравна информация", href: "/blog" },
-    { name: "За нас", href: "#" },
+    { name: "Терапевтични области", href: "/#therapeutic-areas" },
+    { name: "Здравна информация", href: "/blog/category/статии" },
+    { name: "За нас", href: "/nashata-misiya" },
   ];
 
   return (

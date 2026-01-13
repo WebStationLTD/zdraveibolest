@@ -3,7 +3,7 @@ import Stats from "../components/stats";
 import TherapeuticAreas from "../components/therapeutic-areas";
 import VideoSection from "../components/video-section";
 import LatestBlogPosts from "../components/latest-blog-posts";
-import AboutUs from "../components/about-us";
+// import AboutUs from "../components/about-us"; // Removed as per request
 import OurMission from "../components/our-mission";
 import CTASection from "../components/cta-section";
 import StickyQuickRegisterWrapper from "../components/StickyQuickRegisterWrapper";
@@ -48,7 +48,7 @@ export default function Home() {
       <Stats />
       <TherapeuticAreas />
       <VideoSection />
-      <AboutUs />
+      {/* <AboutUs /> */} {/* Removed as per request */}
       <LatestBlogPosts />
       <OurMission />
       <CTASection />

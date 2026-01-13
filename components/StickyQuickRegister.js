@@ -2,12 +2,187 @@
 
 import { useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
+import { getServices } from "../services/services";
 import Link from "next/link";
 import {
   ChevronDownIcon,
   ChevronUpIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
+
+// Diseases by therapeutic area (same as in RegisterForm)
+const DISEASES_BY_AREA = {
+  "akusher-ginekologia": [
+    "Лейомиома на матката (маточни миоми)",
+    "Ендометриоза – тазова",
+    "Аденомиоза",
+    "Синдром на поликистозните яйчници (PCOS)",
+    "Хиперменорея",
+    "Дисменорея",
+    "Аменорея",
+    "Бактериална вагиноза",
+    "Вулвовагинална кандидоза",
+    "HPV инфекция",
+    "Цервикална дисплазия (CIN I–III)",
+    "Инфертилитет – женски фактор",
+    "Прееклампсия",
+    "Гестационен диабет",
+    "Преждевременно раждане",
+  ],
+  alergologia: [
+    "Сезонен алергичен ринит",
+    "Целогодишен алергичен ринит",
+    "Алергична бронхиална астма",
+    "Атопичен дерматит",
+    "Ангиоедем (оток на Квинке)",
+    "Хронична спонтанна уртикария",
+    "Физикална уртикария",
+    "Анафилактична реакция",
+    "Хранителна алергия – IgE-медиирана",
+    "Лекарствена алергия",
+    "Алергия към ужилвания от насекоми",
+    "Алергичен конюнктивит",
+    "Контактен алергичен дерматит",
+  ],
+  pulmologia: [
+    "Бронхиална астма",
+    "ХОББ – GOLD I–IV",
+    "Хроничен бронхит",
+    "Емфизем",
+    "Пневмония – бактериална",
+    "Пневмония – вирусна",
+    "Интерстициална белодробна фиброза",
+    "Идиопатична белодробна фиброза",
+    "Обструктивна сънна апнея",
+    "Белодробна хипертония",
+    "Бронхоекстазии",
+    "Туберкулоза – белодробна",
+  ],
+  kardiologia: [
+    "Артериална хипертония",
+    "Исхемична болест на сърцето",
+    "Стабилна стенокардия",
+    "Нестабилна стенокардия",
+    "Остър миокарден инфаркт",
+    "Хронична сърдечна недостатъчност",
+    "Предсърдно мъждене",
+    "Суправентрикуларни тахикардии",
+    "Камерни аритмии",
+    "Дилатативна кардиомиопатия",
+    "Хипертрофична кардиомиопатия",
+    "Аортна стеноза",
+    "Митрална регургитация",
+  ],
+  gastroenterologia: [
+    "Остър гастрит",
+    "Хроничен гастрит",
+    "Helicobacter pylori инфекция",
+    "ГЕРБ",
+    "Язва на стомаха",
+    "Язва на дванадесетопръстника",
+    "Синдром на раздразненото черво",
+    "Болест на Крон",
+    "Улцерозен колит",
+    "Чернодробна стеатоза (NAFLD)",
+    "Неалкохолен стеатохепатит (NASH)",
+    "Хроничен хепатит B",
+    "Хроничен хепатит C",
+    "Жлъчнокаменна болест",
+    "Хроничен панкреатит",
+  ],
+  nefrologia: [
+    "Хронично бъбречно заболяване",
+    "Остър бъбречен увреда",
+    "Диабетна нефропатия",
+    "Хипертонична нефропатия",
+    "Гломерулонефрит",
+    "Пиелонефрит",
+    "Поликистозна бъбречна болест",
+    "Нефролитиаза",
+    "Нефротичен синдром",
+  ],
+  nevrologia: [
+    "Исхемичен инсулт",
+    "Хеморагичен инсулт",
+    "Мигрена",
+    "Епилепсия",
+    "Болест на Паркинсон",
+    "Алцхаймерова болест",
+    "Множествена склероза – RRMS",
+    "Множествена склероза – прогресивна форма",
+    "Полиневропатия",
+    "Радикулопатия",
+    "Дискова херния",
+  ],
+  revmatologia: [
+    "Ревматоиден артрит",
+    "Остеоартрит",
+    "Анкилозиращ спондилит",
+    "Псориатичен артрит",
+    "Подагра",
+    "Системен лупус еритематозус",
+    "Синдром на Сьогрен",
+    "Васкулити – ANCA-асоциирани",
+    "Остеопороза",
+  ],
+  hematologia: [
+    "Желязодефицитна анемия",
+    "Мегалобластна анемия",
+    "Апластична анемия",
+    "Хронична лимфоцитна левкемия",
+    "Остра миелоидна левкемия",
+    "Ходжкинов лимфом",
+    "Неходжкинов лимфом",
+    "Множествен миелом",
+    "Тромбоцитопения",
+    "Тромбофилия",
+    "Хемофилия",
+    "Полицитемия вера",
+  ],
+  onkologia: [
+    "Карцином на млечната жлеза",
+    "Недребноклетъчен рак на белия дроб",
+    "Дребноклетъчен рак на белия дроб",
+    "Колоректален карцином",
+    "Простатен карцином",
+    "Овариален карцином",
+    "Цервикален карцином",
+    "Хепатоцелуларен карцином",
+    "Панкреасен аденокарцином",
+    "Меланом",
+    "Рак на бъбрека",
+    "Рак на пикочния мехур",
+  ],
+  endokrinologia: [
+    "Захарен диабет тип 1",
+    "Захарен диабет тип 2",
+    "Предиабет (Инсулинова резистентност)",
+    "Хипотиреоидизъм",
+    "Хипертиреоидизъм",
+    "Тиреоидит на Хашимото",
+    "Базедова болест",
+    "Нодуларна гуша",
+    "Затлъстяване",
+    "Метаболитен синдром",
+    "Хиперпаратиреоидизъм",
+    "Остеопороза",
+    "Хипофизен аденом",
+  ],
+  dermatologia: [
+    "Атопичен дерматит",
+    "Псориазис вулгарис",
+    "Акне вулгарис",
+    "Розацея",
+    "Себореен дерматит",
+    "Контактен дерматит",
+    "Уртикария",
+    "Гъбични кожни инфекции",
+    "Херпес симплекс",
+    "Херпес зостер",
+    "Меланом",
+    "Базоцелуларен карцином",
+  ],
+};
 
 export default function StickyQuickRegister() {
   const { isAuthenticated, quickRegister, loading: authLoading } = useAuth();
@@ -20,13 +195,30 @@ export default function StickyQuickRegister() {
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [countdown, setCountdown] = useState(5); // For closing countdown
+  const [therapeuticAreas, setTherapeuticAreas] = useState([]);
+  const [availableDiseases, setAvailableDiseases] = useState([]);
 
   const [formData, setFormData] = useState({
     email: "",
     phone: "",
     password: "",
+    therapeutic_area: "",
+    disease: "",
     privacy_consent: false,
   });
+
+  // Load therapeutic areas
+  useEffect(() => {
+    const loadTherapeuticAreas = async () => {
+      try {
+        const areas = await getServices();
+        setTherapeuticAreas(areas || []);
+      } catch (error) {
+        console.error("Error loading therapeutic areas:", error);
+      }
+    };
+    loadTherapeuticAreas();
+  }, []);
 
   // Delayed visibility effect - show form after 7-8 seconds (7500ms)
   useEffect(() => {
@@ -67,6 +259,15 @@ export default function StickyQuickRegister() {
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
+
+    // Update available diseases when therapeutic area changes
+    if (name === "therapeutic_area") {
+      const diseases = DISEASES_BY_AREA[value] || [];
+      setAvailableDiseases(diseases);
+      // Reset disease selection
+      setFormData((prev) => ({ ...prev, disease: "" }));
+    }
+
     setError("");
   };
 
@@ -98,6 +299,8 @@ export default function StickyQuickRegister() {
         email: formData.email,
         phone: formData.phone,
         password: formData.password,
+        therapeutic_area: formData.therapeutic_area,
+        disease: formData.disease,
       });
 
       if (result.success) {
@@ -260,6 +463,56 @@ export default function StickyQuickRegister() {
                     autoComplete="tel"
                   />
                 </div>
+
+                {/* Therapeutic Area Select */}
+                <div>
+                  <label
+                    htmlFor="quick_therapeutic_area"
+                    className="block text-xs font-medium text-gray-700 mb-1"
+                  >
+                    За коя болест проявявате интерес?
+                  </label>
+                  <select
+                    id="quick_therapeutic_area"
+                    name="therapeutic_area"
+                    value={formData.therapeutic_area}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent bg-white"
+                  >
+                    <option value="">Изберете терапевтична област</option>
+                    {therapeuticAreas.map((area) => (
+                      <option key={area.id} value={area.slug}>
+                        {area.title.rendered}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Disease Select (Cascading) */}
+                {availableDiseases.length > 0 && (
+                  <div className="overflow-hidden transition-all duration-500 ease-in-out">
+                    <label
+                      htmlFor="quick_disease"
+                      className="block text-xs font-medium text-gray-700 mb-1"
+                    >
+                      Конкретно заболяване (по избор)
+                    </label>
+                    <select
+                      id="quick_disease"
+                      name="disease"
+                      value={formData.disease}
+                      onChange={handleChange}
+                      className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent bg-white"
+                    >
+                      <option value="">Изберете заболяване</option>
+                      {availableDiseases.map((disease, index) => (
+                        <option key={index} value={disease}>
+                          {disease}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
 
                 {/* Password */}
                 <div>
