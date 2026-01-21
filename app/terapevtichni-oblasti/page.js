@@ -122,10 +122,28 @@ export default async function TherapeuticAreas() {
               // Determine if image should be on left or right
               const imageOnLeft = index % 2 === 0;
               
-              // Get excerpt from content
-              const excerpt = area.content?.rendered
-                ? area.content.rendered.replace(/<[^>]+>/g, "").substring(0, 250) + "..."
-                : "Разгледайте информация за клиничните проучвания в тази терапевтична област.";
+              // Get excerpt from content - decode HTML entities and remove [&hellip;]
+              const rawContent = area.content?.rendered || "";
+              const textContent = rawContent
+                .replace(/<[^>]+>/g, "") // Remove HTML tags
+                .replace(/\[&hellip;\]/g, "") // Remove [&hellip;]
+                .replace(/&hellip;/g, "") // Remove &hellip;
+                .replace(/\[…\]/g, "") // Remove […]
+                .replace(/&#8230;/g, "") // Remove &#8230;
+                .trim();
+              
+              // Extract first paragraph - shorter excerpt for better preview
+              let excerpt = "Разгледайте информация за клиничните проучвания в тази терапевтична област.";
+              if (textContent) {
+                // Try to get first sentence or up to 250 characters
+                const sentenceMatch = textContent.match(/^.{150,280}[.!?]\s/);
+                if (sentenceMatch) {
+                  excerpt = sentenceMatch[0].trim();
+                } else {
+                  // Fallback: take first 250 characters and add ellipsis
+                  excerpt = textContent.substring(0, 250).trim() + "...";
+                }
+              }
 
               return (
                 <div 

@@ -150,12 +150,21 @@ export default async function CategoryPage({ params }) {
                 || areaIcons[slug] 
                 || "/hero-woman-bg.png";
 
-              // Извличане на excerpt
-              const excerpt = post.excerpt?.rendered
-                ? post.excerpt.rendered.replace(/<[^>]+>/g, "").substring(0, 250) + "..."
-                : post.content?.rendered
-                  ? post.content.rendered.replace(/<[^>]+>/g, "").substring(0, 250) + "..."
-                  : "Прочетете цялата статия за повече информация.";
+              // Extract excerpt - ALWAYS use full content, not the short excerpt
+              const rawText = post.content?.rendered || post.excerpt?.rendered || "";
+              
+              const textContent = rawText
+                .replace(/<[^>]+>/g, "") // Remove HTML tags
+                .replace(/\[&hellip;\]/g, "") // Remove [&hellip;]
+                .replace(/&hellip;/g, "") // Remove &hellip;
+                .replace(/\[…\]/g, "") // Remove […]
+                .replace(/&#8230;/g, "") // Remove &#8230;
+                .trim();
+              
+              // Show longer excerpt - one full paragraph (500 characters)
+              const excerpt = textContent
+                ? textContent.substring(0, 500) + "..."
+                : "Прочетете цялата статия за повече информация.";
 
               return (
                 <div

@@ -135,7 +135,7 @@ export default async function TherapeuticAreaPage({ params }) {
           <div className="mx-auto w-[95%] md:w-[80%] px-4 sm:px-6 lg:px-8">
             <ProtectedContent 
               content={service[0].content.rendered} 
-              previewHeight={450}
+              previewHeight={120}
               therapeuticAreas={therapeuticAreas}
             />
           </div>

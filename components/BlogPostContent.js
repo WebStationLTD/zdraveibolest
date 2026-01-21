@@ -18,7 +18,7 @@ export default function BlogPostContent({ content, therapeuticAreas = [] }) {
       {/* Protected Content - shows preview for non-authenticated users */}
       <ProtectedContent
         content={content}
-        previewHeight={450}
+        previewHeight={200}
         therapeuticAreas={therapeuticAreas}
       />
 
