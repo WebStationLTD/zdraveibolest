@@ -14,10 +14,11 @@ export const getPostBySlug = cache(async (slug) => {
 
 /**
  * Get latest posts with featured image and categories
- * @returns {Promise<Array>} - List of latest posts
+ * Only posts from category ID 19 (Статии) are returned
+ * @returns {Promise<Array>} - List of latest posts from category 19
  */
 export const getLatestPosts = cache(async () => {
   return await fetchAPI(
-    "posts?per_page=3&_embed"
+    "posts?per_page=3&categories=19&_embed"
   );
 });
