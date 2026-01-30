@@ -437,7 +437,7 @@ export default function OurMissionPage() {
                 </div>
               </div>
               <p className="text-base md:text-lg text-gray-700 leading-relaxed">
-                За пациенти, които се интересуват от съвременни и иновативни методи на лечение, включително нови медикаменти, биотехнологии и <Link href="/kategoriya/клинични-проучвания" className="text-[#04737d] font-medium hover:text-[#035057] underline transition-colors">клинични проучвания</Link>.
+                За пациенти, които се интересуват от съвременни и иновативни методи на лечение, включително нови медикаменти, биотехнологии и <Link href="/klinichni-prouchvaniya" className="text-[#04737d] font-medium hover:text-[#035057] underline transition-colors">клинични проучвания</Link>.
               </p>
             </div>
 

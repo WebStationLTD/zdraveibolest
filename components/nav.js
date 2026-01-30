@@ -37,6 +37,7 @@ export default function Navigation({ therapeuticAreas = [] }) {
     pages: [
       { name: "Начало", href: "/" },
       // { name: "Здравна информация", href: "/blog" }, // Moved to dropdown menu
+      // { name: "Клинични проучвания", href: "/klinichni-prouchvaniya" },
       { name: "За нас", href: "/nashata-misiya" },
     ],
   };
