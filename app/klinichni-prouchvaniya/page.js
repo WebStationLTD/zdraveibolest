@@ -20,7 +20,7 @@ export default function ClinicalTrialsPage() {
   return (
     <div className="bg-white">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-[#2563eb] to-[#1e40af] overflow-hidden">
+      <section className="relative bg-gradient-to-r from-[#238C96] to-[#1a6b73] overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-10 left-10 w-72 h-72 bg-white blur-3xl"></div>
           <div className="absolute bottom-10 right-10 w-96 h-96 bg-blue-300 blur-3xl"></div>
@@ -39,13 +39,13 @@ export default function ClinicalTrialsPage() {
                 участие.
               </p>
               <div className="flex flex-wrap gap-4">
-                <Link
-                  href="/register"
-                  className="px-8 py-4 bg-[#fd9300] text-white font-semibold hover:bg-[#e48400] transition-colors"
-                >
-                  ЗАПОЧНЕТЕ СЕГА
-                </Link>
-                <button className="px-8 py-4 bg-white/10 text-white font-semibold hover:bg-white/20 transition-colors flex items-center gap-2 backdrop-blur-sm">
+              <Link
+                href="/register"
+                className="px-8 py-4 bg-[#fd9300] text-white font-semibold hover:bg-[#e48400] transition-colors rounded-lg"
+              >
+                ЗАПОЧНЕТЕ СЕГА
+              </Link>
+              <button className="px-8 py-4 bg-white/10 text-white font-semibold hover:bg-white/20 transition-colors flex items-center gap-2 backdrop-blur-sm rounded-lg">
                   <svg
                     className="w-5 h-5"
                     fill="currentColor"
@@ -69,7 +69,7 @@ export default function ClinicalTrialsPage() {
               priority
             />
             {/* Stats Badge */}
-            <div className="absolute bottom-8 right-8 bg-white p-5 shadow-2xl flex items-start gap-4 max-w-[300px]">
+            <div className="absolute bottom-8 right-8 bg-white p-5 shadow-2xl flex items-start gap-4 max-w-[300px] rounded-2xl">
               <div className="w-14 h-14 flex-shrink-0">
                 <Image
                   src="/who-we-are.jpg"
@@ -80,7 +80,7 @@ export default function ClinicalTrialsPage() {
                 />
               </div>
               <div className="flex-1">
-                <div className="text-4xl font-bold text-[#2563eb] leading-none mb-2">
+                <div className="text-4xl font-bold text-[#238C96] leading-none mb-2">
                   150<span className="text-[#fd9300]">+</span>
                 </div>
                 <div className="text-sm text-gray-600 leading-tight">
@@ -108,7 +108,7 @@ export default function ClinicalTrialsPage() {
             ].map((partner, index) => (
               <div
                 key={index}
-                className="flex items-center justify-center p-6 bg-white"
+                className="flex items-center justify-center p-6 bg-white rounded-2xl"
               >
                 <div className="text-2xl font-bold text-gray-400">
                   {partner}
@@ -123,7 +123,7 @@ export default function ClinicalTrialsPage() {
       <section className="py-20 md:py-28">
         <div className="mx-auto w-[95%] md:w-[85%] grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left Image */}
-          <div className="relative h-[500px]">
+          <div className="relative h-[500px] rounded-2xl overflow-hidden">
             <Image
               src="/our-mission.jpg"
               alt="Laboratory Solutions"
@@ -145,7 +145,7 @@ export default function ClinicalTrialsPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               <div className="flex items-start gap-4">
-                <div className="w-16 h-16 bg-[#2563eb] flex items-center justify-center flex-shrink-0">
+                <div className="w-16 h-16 bg-[#238C96] flex items-center justify-center flex-shrink-0 rounded-lg">
                   <ClipboardDocumentCheckIcon className="w-8 h-8 text-white" />
                 </div>
                 <div>
@@ -159,7 +159,7 @@ export default function ClinicalTrialsPage() {
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="w-16 h-16 bg-[#2563eb] flex items-center justify-center flex-shrink-0">
+                <div className="w-16 h-16 bg-[#238C96] flex items-center justify-center flex-shrink-0 rounded-lg">
                   <BeakerIcon className="w-8 h-8 text-white" />
                 </div>
                 <div>
@@ -180,7 +180,7 @@ export default function ClinicalTrialsPage() {
 
             <Link
               href="/nashata-misiya"
-              className="inline-block px-8 py-4 bg-[#fd9300] text-white font-semibold hover:bg-[#e48400] transition-colors"
+              className="inline-block px-8 py-4 bg-[#fd9300] text-white font-semibold hover:bg-[#e48400] transition-colors rounded-lg"
             >
               НАУЧЕТЕ ПОВЕЧЕ
             </Link>
@@ -207,8 +207,8 @@ export default function ClinicalTrialsPage() {
               {/* Left Column - 2 Cards Stacked */}
               <div className="flex flex-col gap-6 md:gap-8">
                 {/* Feature Card 1 - Top Left */}
-                <div className="bg-gradient-to-br from-blue-50 to-white p-6 md:p-8 text-center hover:shadow-2xl transition-all min-h-[240px] lg:h-[280px] flex flex-col justify-center">
-                  <div className="w-14 h-14 md:w-16 md:h-16 bg-[#2563eb] flex items-center justify-center mx-auto mb-4 md:mb-5">
+                <div className="bg-gradient-to-br from-blue-50 to-white p-6 md:p-8 text-center hover:shadow-2xl transition-all min-h-[240px] lg:h-[280px] flex flex-col justify-center rounded-2xl">
+                  <div className="w-14 h-14 md:w-16 md:h-16 bg-[#238C96] flex items-center justify-center mx-auto mb-4 md:mb-5 rounded-lg">
                     <BeakerIcon className="w-7 h-7 md:w-8 md:h-8 text-white" />
                   </div>
                   <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-3">
@@ -220,8 +220,8 @@ export default function ClinicalTrialsPage() {
                 </div>
 
                 {/* Feature Card 3 - Bottom Left */}
-                <div className="bg-gradient-to-br from-blue-50 to-white p-6 md:p-8 text-center hover:shadow-2xl transition-all min-h-[240px] lg:h-[280px] flex flex-col justify-center">
-                  <div className="w-14 h-14 md:w-16 md:h-16 bg-[#2563eb] flex items-center justify-center mx-auto mb-4 md:mb-5">
+                <div className="bg-gradient-to-br from-blue-50 to-white p-6 md:p-8 text-center hover:shadow-2xl transition-all min-h-[240px] lg:h-[280px] flex flex-col justify-center rounded-2xl">
+                  <div className="w-14 h-14 md:w-16 md:h-16 bg-[#238C96] flex items-center justify-center mx-auto mb-4 md:mb-5 rounded-lg">
                     <ShieldCheckIcon className="w-7 h-7 md:w-8 md:h-8 text-white" />
                   </div>
                   <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-3">
@@ -234,7 +234,7 @@ export default function ClinicalTrialsPage() {
               </div>
 
               {/* Center Column - Large Image */}
-              <div className="relative h-[400px] lg:h-full lg:min-h-[500px] order-first lg:order-none">
+              <div className="relative h-[400px] lg:h-full lg:min-h-[500px] order-first lg:order-none rounded-2xl overflow-hidden">
                 <Image
                   src="/who-we-are.jpg"
                   alt="Research Team"
@@ -246,8 +246,8 @@ export default function ClinicalTrialsPage() {
               {/* Right Column - 2 Cards Stacked */}
               <div className="flex flex-col gap-6 md:gap-8">
                 {/* Feature Card 2 - Top Right */}
-                <div className="bg-gradient-to-br from-blue-50 to-white p-6 md:p-8 text-center hover:shadow-2xl transition-all min-h-[240px] lg:h-[280px] flex flex-col justify-center">
-                  <div className="w-14 h-14 md:w-16 md:h-16 bg-[#2563eb] flex items-center justify-center mx-auto mb-4 md:mb-5">
+                <div className="bg-gradient-to-br from-blue-50 to-white p-6 md:p-8 text-center hover:shadow-2xl transition-all min-h-[240px] lg:h-[280px] flex flex-col justify-center rounded-2xl">
+                  <div className="w-14 h-14 md:w-16 md:h-16 bg-[#238C96] flex items-center justify-center mx-auto mb-4 md:mb-5 rounded-lg">
                     <UserGroupIcon className="w-7 h-7 md:w-8 md:h-8 text-white" />
                   </div>
                   <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-3">
@@ -259,8 +259,8 @@ export default function ClinicalTrialsPage() {
                 </div>
 
                 {/* Feature Card 4 - Bottom Right */}
-                <div className="bg-gradient-to-br from-blue-50 to-white p-6 md:p-8 text-center hover:shadow-2xl transition-all min-h-[240px] lg:h-[280px] flex flex-col justify-center">
-                  <div className="w-14 h-14 md:w-16 md:h-16 bg-[#2563eb] flex items-center justify-center mx-auto mb-4 md:mb-5">
+                <div className="bg-gradient-to-br from-blue-50 to-white p-6 md:p-8 text-center hover:shadow-2xl transition-all min-h-[240px] lg:h-[280px] flex flex-col justify-center rounded-2xl">
+                  <div className="w-14 h-14 md:w-16 md:h-16 bg-[#238C96] flex items-center justify-center mx-auto mb-4 md:mb-5 rounded-lg">
                     <ClipboardDocumentCheckIcon className="w-7 h-7 md:w-8 md:h-8 text-white" />
                   </div>
                   <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-3">
@@ -299,8 +299,8 @@ export default function ClinicalTrialsPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Service Card 1 - Fixed overlay */}
-            <div className="group hover:shadow-2xl transition-all">
-              <div className="relative h-[450px] overflow-hidden">
+            <div className="group hover:shadow-2xl transition-all rounded-2xl overflow-hidden">
+              <div className="relative h-[450px]">
                 <Image
                   src="/our-mission.jpg"
                   alt="Chemical Research"
@@ -308,8 +308,8 @@ export default function ClinicalTrialsPage() {
                   className="object-cover group-hover:scale-110 transition-transform duration-500"
                 />
                 {/* Overlay white box in bottom left - larger and better positioned */}
-                <div className="absolute bottom-8 left-8 bg-white p-8 w-[calc(100%-4rem)] shadow-xl">
-                  <div className="w-14 h-14 bg-[#2563eb] flex items-center justify-center mb-5">
+                <div className="absolute bottom-8 left-8 bg-white p-8 w-[calc(100%-4rem)] shadow-xl rounded-xl">
+                  <div className="w-14 h-14 bg-[#238C96] flex items-center justify-center mb-5 rounded-lg">
                     <BeakerIcon className="w-7 h-7 text-white" />
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-3 leading-tight">
@@ -323,8 +323,8 @@ export default function ClinicalTrialsPage() {
             </div>
 
             {/* Service Card 2 - Fixed overlay */}
-            <div className="group hover:shadow-2xl transition-all">
-              <div className="relative h-[450px] overflow-hidden">
+            <div className="group hover:shadow-2xl transition-all rounded-2xl overflow-hidden">
+              <div className="relative h-[450px]">
                 <Image
                   src="/who-we-are.jpg"
                   alt="Analytical Chemistry"
@@ -332,8 +332,8 @@ export default function ClinicalTrialsPage() {
                   className="object-cover group-hover:scale-110 transition-transform duration-500"
                 />
                 {/* Overlay white box in bottom left - larger and better positioned */}
-                <div className="absolute bottom-8 left-8 bg-white p-8 w-[calc(100%-4rem)] shadow-xl">
-                  <div className="w-14 h-14 bg-[#2563eb] flex items-center justify-center mb-5">
+                <div className="absolute bottom-8 left-8 bg-white p-8 w-[calc(100%-4rem)] shadow-xl rounded-xl">
+                  <div className="w-14 h-14 bg-[#238C96] flex items-center justify-center mb-5 rounded-lg">
                     <ShieldCheckIcon className="w-7 h-7 text-white" />
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-3 leading-tight">
@@ -347,8 +347,8 @@ export default function ClinicalTrialsPage() {
             </div>
 
             {/* Service Card 3 - Fixed overlay */}
-            <div className="group hover:shadow-2xl transition-all">
-              <div className="relative h-[450px] overflow-hidden">
+            <div className="group hover:shadow-2xl transition-all rounded-2xl overflow-hidden">
+              <div className="relative h-[450px]">
                 <Image
                   src="/our-mission.jpg"
                   alt="Biochemistry Solution"
@@ -356,8 +356,8 @@ export default function ClinicalTrialsPage() {
                   className="object-cover group-hover:scale-110 transition-transform duration-500"
                 />
                 {/* Overlay white box in bottom left - larger and better positioned */}
-                <div className="absolute bottom-8 left-8 bg-white p-8 w-[calc(100%-4rem)] shadow-xl">
-                  <div className="w-14 h-14 bg-[#2563eb] flex items-center justify-center mb-5">
+                <div className="absolute bottom-8 left-8 bg-white p-8 w-[calc(100%-4rem)] shadow-xl rounded-xl">
+                  <div className="w-14 h-14 bg-[#238C96] flex items-center justify-center mb-5 rounded-lg">
                     <SparklesIcon className="w-7 h-7 text-white" />
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-3 leading-tight">
@@ -386,7 +386,7 @@ export default function ClinicalTrialsPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 max-w-6xl mx-auto shadow-2xl">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 max-w-6xl mx-auto shadow-2xl rounded-2xl overflow-hidden">
             {/* Left - Image */}
             <div className="relative h-[400px] lg:h-auto">
               <Image
@@ -441,7 +441,7 @@ export default function ClinicalTrialsPage() {
               </p>
               <Link
                 href="/terapevtichni-oblasti"
-                className="inline-block px-8 py-4 bg-[#fd9300] text-white font-semibold hover:bg-[#e48400] transition-colors"
+                className="inline-block px-8 py-4 bg-[#fd9300] text-white font-semibold hover:bg-[#e48400] transition-colors rounded-lg"
               >
                 ВСИЧКИ ТЕРАПЕВТИЧНИ ОБЛАСТИ
               </Link>
@@ -449,7 +449,7 @@ export default function ClinicalTrialsPage() {
 
             <div className="space-y-8">
               {/* Study Card 1 */}
-              <div className="bg-white shadow-lg hover:shadow-2xl transition-all">
+              <div className="bg-white shadow-lg hover:shadow-2xl transition-all rounded-2xl overflow-hidden">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div className="relative h-[200px] md:h-auto">
                     <Image
@@ -460,7 +460,7 @@ export default function ClinicalTrialsPage() {
                     />
                   </div>
                   <div className="md:col-span-2 p-6 flex flex-col justify-center">
-                    <span className="text-sm font-semibold text-[#2563eb] mb-3">
+                    <span className="text-sm font-semibold text-[#238C96] mb-3">
                       Кардиология
                     </span>
                     <h3 className="text-2xl font-bold text-gray-900 mb-3">
@@ -493,7 +493,7 @@ export default function ClinicalTrialsPage() {
               </div>
 
               {/* Study Card 2 */}
-              <div className="bg-white shadow-lg hover:shadow-2xl transition-all">
+              <div className="bg-white shadow-lg hover:shadow-2xl transition-all rounded-2xl overflow-hidden">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div className="relative h-[200px] md:h-auto">
                     <Image
@@ -504,7 +504,7 @@ export default function ClinicalTrialsPage() {
                     />
                   </div>
                   <div className="md:col-span-2 p-6 flex flex-col justify-center">
-                    <span className="text-sm font-semibold text-[#2563eb] mb-3">
+                    <span className="text-sm font-semibold text-[#238C96] mb-3">
                       Онкология
                     </span>
                     <h3 className="text-2xl font-bold text-gray-900 mb-3">
@@ -554,7 +554,7 @@ export default function ClinicalTrialsPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Blog Card 1 - Horizontal Layout */}
-            <div className="bg-white hover:shadow-2xl transition-all group">
+            <div className="bg-white hover:shadow-2xl transition-all group rounded-2xl overflow-hidden">
               <div className="grid grid-cols-5 gap-0 h-full">
                 {/* Left - Image */}
                 <div className="col-span-2 relative overflow-hidden">
@@ -571,7 +571,7 @@ export default function ClinicalTrialsPage() {
                     <span className="text-sm text-gray-500 mb-2 block">
                       Юни 3, 2025
                     </span>
-                    <h3 className="text-lg font-bold text-gray-900 mb-3 group-hover:text-[#2563eb] transition-colors leading-tight">
+                    <h3 className="text-lg font-bold text-gray-900 mb-3 group-hover:text-[#238C96] transition-colors leading-tight">
                       Как протича участието в клинично изпитване
                     </h3>
                     <p className="text-gray-600 text-sm mb-4 leading-relaxed">
@@ -602,7 +602,7 @@ export default function ClinicalTrialsPage() {
             </div>
 
             {/* Blog Card 2 - Horizontal Layout */}
-            <div className="bg-white hover:shadow-2xl transition-all group">
+            <div className="bg-white hover:shadow-2xl transition-all group rounded-2xl overflow-hidden">
               <div className="grid grid-cols-5 gap-0 h-full">
                 {/* Left - Image */}
                 <div className="col-span-2 relative overflow-hidden">
@@ -619,7 +619,7 @@ export default function ClinicalTrialsPage() {
                     <span className="text-sm text-gray-500 mb-2 block">
                       Юни 3, 2025
                     </span>
-                    <h3 className="text-lg font-bold text-gray-900 mb-3 group-hover:text-[#2563eb] transition-colors leading-tight">
+                    <h3 className="text-lg font-bold text-gray-900 mb-3 group-hover:text-[#238C96] transition-colors leading-tight">
                       Иновативно лечение чрез клинични проучвания
                     </h3>
                     <p className="text-gray-600 text-sm mb-4 leading-relaxed">
@@ -650,7 +650,7 @@ export default function ClinicalTrialsPage() {
             </div>
 
             {/* Blog Card 3 - Horizontal Layout */}
-            <div className="bg-white hover:shadow-2xl transition-all group">
+            <div className="bg-white hover:shadow-2xl transition-all group rounded-2xl overflow-hidden">
               <div className="grid grid-cols-5 gap-0 h-full">
                 {/* Left - Image */}
                 <div className="col-span-2 relative overflow-hidden">
@@ -667,7 +667,7 @@ export default function ClinicalTrialsPage() {
                     <span className="text-sm text-gray-500 mb-2 block">
                       Юни 3, 2025
                     </span>
-                    <h3 className="text-lg font-bold text-gray-900 mb-3 group-hover:text-[#2563eb] transition-colors leading-tight">
+                    <h3 className="text-lg font-bold text-gray-900 mb-3 group-hover:text-[#238C96] transition-colors leading-tight">
                       Защо да участвате в клинични изпитвания
                     </h3>
                     <p className="text-gray-600 text-sm mb-4 leading-relaxed">
@@ -698,7 +698,7 @@ export default function ClinicalTrialsPage() {
             </div>
 
             {/* Blog Card 4 - Horizontal Layout */}
-            <div className="bg-white hover:shadow-2xl transition-all group">
+            <div className="bg-white hover:shadow-2xl transition-all group rounded-2xl overflow-hidden">
               <div className="grid grid-cols-5 gap-0 h-full">
                 {/* Left - Image */}
                 <div className="col-span-2 relative overflow-hidden">
@@ -715,7 +715,7 @@ export default function ClinicalTrialsPage() {
                     <span className="text-sm text-gray-500 mb-2 block">
                       Юни 3, 2025
                     </span>
-                    <h3 className="text-lg font-bold text-gray-900 mb-3 group-hover:text-[#2563eb] transition-colors leading-tight">
+                    <h3 className="text-lg font-bold text-gray-900 mb-3 group-hover:text-[#238C96] transition-colors leading-tight">
                       Специализирана грижа по време на клинично изпитване
                     </h3>
                     <p className="text-gray-600 text-sm mb-4 leading-relaxed">
