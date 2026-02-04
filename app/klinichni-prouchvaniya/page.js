@@ -21,10 +21,10 @@ export default function ClinicalTrialsPage() {
   return (
     <div className="bg-white">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-[#238C96] to-[#1a6b73] overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
+      <section className="relative bg-gradient-to-r from-[#5FA8B3] via-[#7BB8C3] to-[#A8D5DD] overflow-hidden">
+        <div className="absolute inset-0 opacity-20">
           <div className="absolute top-10 left-10 w-72 h-72 bg-white blur-3xl"></div>
-          <div className="absolute bottom-10 right-10 w-96 h-96 bg-blue-300 blur-3xl"></div>
+          <div className="absolute bottom-10 right-10 w-96 h-96 bg-blue-200 blur-3xl"></div>
         </div>
 
         <div className="relative grid grid-cols-1 lg:grid-cols-2">
