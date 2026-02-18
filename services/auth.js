@@ -188,6 +188,8 @@ export async function validateToken(token) {
   }
   
   try {
+    console.log('🔍 VALIDATE TOKEN - Calling:', `${API_URL}/wp-json/zdravei/v1/validate`);
+    
     // Използваме custom header X-Auth-Token вместо Authorization за да избегнем JWT плъгина
     const response = await fetch(`${API_URL}/wp-json/zdravei/v1/validate`, {
       method: 'POST',
@@ -197,15 +199,24 @@ export async function validateToken(token) {
       },
     });
 
+    console.log('🔍 VALIDATE TOKEN - Response status:', response.status);
+    console.log('🔍 VALIDATE TOKEN - Response ok:', response.ok);
+
     const data = await response.json();
+    console.log('🔍 VALIDATE TOKEN - Response data:', data);
 
     if (!response.ok) {
+      console.error('❌ VALIDATE TOKEN - Error response:', data);
       throw new Error(data.message || 'Token validation failed');
     }
 
     return data;
   } catch (error) {
-    console.error('Token validation error:', error);
+    console.error('❌ Token validation error:', error);
+    console.error('❌ Error details:', {
+      message: error.message,
+      stack: error.stack
+    });
     throw error;
   }
 }
@@ -230,9 +241,11 @@ export function getCurrentUser() {
   
   try {
     const userData = localStorage.getItem('user_data');
-    return userData ? JSON.parse(userData) : null;
+    const parsed = userData ? JSON.parse(userData) : null;
+    console.log('📖 GET CURRENT USER from localStorage:', parsed);
+    return parsed;
   } catch (error) {
-    console.error('Error getting current user:', error);
+    console.error('❌ Error getting current user:', error);
     return null;
   }
 }
@@ -248,31 +261,63 @@ export function getAuthToken() {
 
 /**
  * Check if user profile is completed
- * Profile is considered completed if user has filled extended health information
+ * Profile is considered completed if user has filled ALL required fields
  * @param {Object} user - User data object
  * @returns {boolean} - True if profile is completed
  */
 export function isProfileCompleted(user) {
-  if (!user) return false;
-  
-  // If backend explicitly sets profile_completed, use that
-  // Handle both boolean true and string values like "1" or "true"
-  if (user.profile_completed === true || user.profile_completed === 1 || user.profile_completed === "1" || user.profile_completed === "true") {
-    return true;
+  if (!user) {
+    console.log('🔍 isProfileCompleted: user is null/undefined');
+    return false;
   }
   
-  // Otherwise, check if extended profile fields are filled
-  // Profile is completed if user has provided health-related information
-  const hasExtendedInfo = !!(
-    user.birth_year ||
-    user.gender ||
-    user.city ||
-    user.current_conditions ||
-    user.current_medications ||
-    user.smoking_status
-  );
+  // Helper function to check if value is truly filled (not empty string, null, or undefined)
+  const isFilled = (value) => {
+    if (value === null || value === undefined) return false;
+    if (typeof value === 'string') return value.trim().length > 0;
+    if (typeof value === 'number') return true;
+    return false;
+  };
   
-  return hasExtendedInfo;
+  // Required basic fields
+  const hasFirstName = isFilled(user.first_name);
+  const hasLastName = isFilled(user.last_name);
+  const hasEmail = isFilled(user.email) && /\S+@\S+\.\S+/.test(user.email);
+  
+  console.log('🔍 isProfileCompleted: Basic fields:', {
+    first_name: hasFirstName ? '✅' : '❌',
+    last_name: hasLastName ? '✅' : '❌',
+    email: hasEmail ? '✅' : '❌'
+  });
+  
+  if (!hasFirstName || !hasLastName || !hasEmail) {
+    console.log('❌ isProfileCompleted: Basic fields missing - FALSE');
+    return false;
+  }
+  
+  // Extended fields - at least ONE must be filled
+  const hasBirthYear = isFilled(user.birth_year);
+  const hasGender = isFilled(user.gender);
+  const hasCity = isFilled(user.city);
+  const hasConditions = isFilled(user.current_conditions);
+  const hasMedications = isFilled(user.current_medications);
+  const hasSmoking = isFilled(user.smoking_status);
+  
+  console.log('🔍 isProfileCompleted: Extended fields:', {
+    birth_year: hasBirthYear ? '✅' : '❌',
+    gender: hasGender ? '✅' : '❌',
+    city: hasCity ? '✅' : '❌',
+    current_conditions: hasConditions ? '✅' : '❌',
+    current_medications: hasMedications ? '✅' : '❌',
+    smoking_status: hasSmoking ? '✅' : '❌'
+  });
+  
+  const hasAnyExtendedField = hasBirthYear || hasGender || hasCity || hasConditions || hasMedications || hasSmoking;
+  
+  const result = hasAnyExtendedField;
+  console.log(`🔍 isProfileCompleted: Final result = ${result ? '✅ TRUE' : '❌ FALSE'}`);
+  
+  return result;
 }
 
 /**
@@ -283,14 +328,14 @@ export function isProfileCompleted(user) {
 export function saveAuthData(token, user) {
   if (typeof window === 'undefined') return;
   
-  // Add profile_completed flag based on user data
-  const userWithProfileStatus = {
-    ...user,
-    profile_completed: isProfileCompleted(user)
-  };
+  console.log('💾 SAVE AUTH DATA:', {
+    email: user.email,
+    profile_completed: user.profile_completed,
+    has_extended_fields: !!(user.birth_year || user.gender || user.city || user.current_conditions || user.current_medications || user.smoking_status)
+  });
   
   localStorage.setItem('auth_token', token);
-  localStorage.setItem('user_data', JSON.stringify(userWithProfileStatus));
+  localStorage.setItem('user_data', JSON.stringify(user));
 }
 
 

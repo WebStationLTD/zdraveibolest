@@ -1,5 +1,6 @@
 import { getServiceBySlug, getServices } from "../../../services/services";
 import ProtectedContent from "../../../components/ProtectedContent";
+import StickyRegistrationBox from "../../../components/StickyRegistrationBox";
 import Script from "next/script";
 
 // Добавяне на ISR ревалидиране на всеки час
@@ -132,12 +133,22 @@ export default async function TherapeuticAreaPage({ params }) {
           </div>
         </div>
         <div className="bg-white py-12 sm:py-12">
-          <div className="mx-auto w-[95%] md:w-[80%] px-4 sm:px-6 lg:px-8">
-            <ProtectedContent 
-              content={service[0].content.rendered} 
-              previewHeight={120}
-              therapeuticAreas={therapeuticAreas}
-            />
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+              {/* Main Content - Left Column */}
+              <div className="lg:col-span-8">
+                <ProtectedContent 
+                  content={service[0].content.rendered} 
+                  previewHeight={120}
+                  therapeuticAreas={therapeuticAreas}
+                />
+              </div>
+
+              {/* Sticky Registration Box - Right Column */}
+              <aside className="lg:col-span-4">
+                <StickyRegistrationBox />
+              </aside>
+            </div>
           </div>
         </div>
       </>

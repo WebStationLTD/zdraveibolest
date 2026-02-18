@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import ClinicalStepsCarousel from "../../components/ClinicalStepsCarousel";
+import ClinicalTrialForm from "../../components/ClinicalTrialForm";
 import {
   BeakerIcon,
   ShieldCheckIcon,
@@ -653,6 +654,13 @@ export default function ClinicalTrialsPage() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Registration Section */}
+      <section id="registration" className="py-20 bg-gradient-to-br from-gray-50 to-white">
+        <div className="mx-auto w-[95%] md:w-[85%] max-w-4xl">
+          <ClinicalTrialForm />
         </div>
       </section>
     </div>

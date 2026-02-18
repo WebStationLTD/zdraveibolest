@@ -45,41 +45,23 @@ export function AuthProvider({ children }) {
         // ВАЖНО: Не задаваме user преди validation, за да избегнем race conditions
         try {
           const validatedUser = await validateToken(token);
+          console.log('🔍 CHECK AUTH - Backend validated user:', validatedUser);
+          console.log('🔍 CHECK AUTH - Stored user:', storedUser);
+          
           // Ако валидацията е успешна, обновяваме user данните
           if (validatedUser && (validatedUser.id || validatedUser.user_id)) {
-            // Check if backend returned complete data
-            // If profile is marked as completed, we MUST have extended fields
-            const hasExtendedFields = !!(validatedUser.birth_year || validatedUser.gender || validatedUser.city || validatedUser.current_conditions || validatedUser.current_medications || validatedUser.smoking_status);
-            const backendProfileCompleted = validatedUser.profile_completed === true || validatedUser.profile_completed === 1 || validatedUser.profile_completed === "1" || validatedUser.profile_completed === "true";
+            // SIMPLE LOGIC: Use backend data directly - backend is the source of truth
+            const userData = {
+              ...validatedUser,
+              // Force re-check profile completion based on CURRENT data from backend
+              profile_completed: isProfileCompleted(validatedUser)
+            };
             
-            // If backend says profile is completed but doesn't return extended fields,
-            // use stored user data (which should have extended fields from previous successful validation)
-            if (backendProfileCompleted && !hasExtendedFields && storedUser.birth_year) {
-              // Use stored user with updated basic fields from validation
-              const mergedUser = {
-                ...storedUser,
-                ...validatedUser,
-                // Preserve extended fields from stored user
-                birth_year: storedUser.birth_year,
-                gender: storedUser.gender,
-                city: storedUser.city,
-                current_conditions: storedUser.current_conditions,
-                current_medications: storedUser.current_medications,
-                smoking_status: storedUser.smoking_status,
-                profile_completed: true
-              };
-              saveAuthData(token, mergedUser);
-              const updatedUser = getStoredUser();
-              setUser(updatedUser);
-              setIsAuthenticated(true);
-            } else {
-              // Normal case: backend returned complete data or profile is not completed
-              saveAuthData(token, validatedUser);
-              // Get updated user from localStorage
-              const updatedUser = getStoredUser();
-              setUser(updatedUser);
-              setIsAuthenticated(true);
-            }
+            console.log('✅ CHECK AUTH - User data from backend:', userData);
+            
+            saveAuthData(token, userData);
+            setUser(userData);
+            setIsAuthenticated(true);
           }
         } catch (validationError) {
           // Логваме грешката но НЕ logout-ваме потребителя
@@ -99,10 +81,13 @@ export function AuthProvider({ children }) {
             setIsAuthenticated(false);
           } else {
             // За всички други грешки използваме user-а от localStorage
+            // IMPORTANT: Always re-validate profile completion
             const userWithProfileStatus = {
               ...storedUser,
               profile_completed: isProfileCompleted(storedUser)
             };
+            // Update localStorage with re-validated status
+            saveAuthData(token, userWithProfileStatus);
             setUser(userWithProfileStatus);
             setIsAuthenticated(true);
           }
@@ -136,8 +121,12 @@ export function AuthProvider({ children }) {
         try {
           const fullUserData = await validateToken(response.token);
           if (fullUserData && (fullUserData.id || fullUserData.user_id)) {
-            // saveAuthData with full user data
-            saveAuthData(response.token, fullUserData);
+            // IMPORTANT: Validate profile completion before saving
+            const userWithValidatedProfile = {
+              ...fullUserData,
+              profile_completed: isProfileCompleted(fullUserData)
+            };
+            saveAuthData(response.token, userWithValidatedProfile);
             const userWithStatus = getStoredUser();
             setUser(userWithStatus);
             setIsAuthenticated(true);
@@ -146,7 +135,11 @@ export function AuthProvider({ children }) {
         } catch (validationError) {
           // If validation fails, fall back to login response user
           console.warn('Failed to fetch full user data, using login response:', validationError);
-          saveAuthData(response.token, response.user);
+          const userWithValidatedProfile = {
+            ...response.user,
+            profile_completed: isProfileCompleted(response.user)
+          };
+          saveAuthData(response.token, userWithValidatedProfile);
           const userWithStatus = getStoredUser();
           setUser(userWithStatus);
           setIsAuthenticated(true);
@@ -175,7 +168,12 @@ export function AuthProvider({ children }) {
         try {
           const fullUserData = await validateToken(response.token);
           if (fullUserData && (fullUserData.id || fullUserData.user_id)) {
-            saveAuthData(response.token, fullUserData);
+            // IMPORTANT: Validate profile completion before saving
+            const userWithValidatedProfile = {
+              ...fullUserData,
+              profile_completed: isProfileCompleted(fullUserData)
+            };
+            saveAuthData(response.token, userWithValidatedProfile);
             const userWithStatus = getStoredUser();
             setUser(userWithStatus);
             setIsAuthenticated(true);
@@ -184,7 +182,11 @@ export function AuthProvider({ children }) {
         } catch (validationError) {
           // If validation fails, fall back to register response user
           console.warn('Failed to fetch full user data, using register response:', validationError);
-          saveAuthData(response.token, response.user);
+          const userWithValidatedProfile = {
+            ...response.user,
+            profile_completed: isProfileCompleted(response.user)
+          };
+          saveAuthData(response.token, userWithValidatedProfile);
           const userWithStatus = getStoredUser();
           setUser(userWithStatus);
           setIsAuthenticated(true);
@@ -213,7 +215,12 @@ export function AuthProvider({ children }) {
         try {
           const fullUserData = await validateToken(response.token);
           if (fullUserData && (fullUserData.id || fullUserData.user_id)) {
-            saveAuthData(response.token, fullUserData);
+            // IMPORTANT: Validate profile completion before saving
+            const userWithValidatedProfile = {
+              ...fullUserData,
+              profile_completed: isProfileCompleted(fullUserData)
+            };
+            saveAuthData(response.token, userWithValidatedProfile);
             const userWithStatus = getStoredUser();
             setUser(userWithStatus);
             setIsAuthenticated(true);
@@ -222,7 +229,11 @@ export function AuthProvider({ children }) {
         } catch (validationError) {
           // If validation fails, fall back to quick register response user
           console.warn('Failed to fetch full user data, using quick register response:', validationError);
-          saveAuthData(response.token, response.user);
+          const userWithValidatedProfile = {
+            ...response.user,
+            profile_completed: isProfileCompleted(response.user)
+          };
+          saveAuthData(response.token, userWithValidatedProfile);
           const userWithStatus = getStoredUser();
           setUser(userWithStatus);
           setIsAuthenticated(true);
@@ -244,21 +255,43 @@ export function AuthProvider({ children }) {
         throw new Error("Not authenticated");
       }
 
+      console.log('📤 UPDATE PROFILE - Sending data:', profileData);
+
       const response = await apiUpdateProfile(profileData, token);
 
-      if (response.user) {
-        // saveAuthData automatically adds profile_completed status
-        saveAuthData(token, response.user);
-        
-        // Get updated user with profile_completed from localStorage
-        const updatedUser = getStoredUser();
-        setUser(updatedUser);
-        return { success: true, user: updatedUser };
-      }
+      console.log('📥 UPDATE PROFILE - Backend response:', response);
 
-      return { success: true };
+      // Get current user from localStorage
+      const currentUser = getStoredUser();
+      
+      // Merge: current user + backend response + profile data we sent
+      // This ensures ALL fields are preserved
+      const mergedUserData = {
+        ...currentUser, // Start with everything we have
+        ...response.user, // Add backend response (may have some fields)
+        ...profileData, // Force add the fields we just sent
+        // Keep user ID and email from current user (these should never change)
+        id: currentUser?.id || response.user?.id,
+        user_id: currentUser?.user_id || response.user?.user_id,
+        email: currentUser?.email || response.user?.email,
+      };
+      
+      // Re-validate profile completion
+      mergedUserData.profile_completed = isProfileCompleted(mergedUserData);
+      
+      console.log('💾 SAVING MERGED DATA:', mergedUserData);
+      
+      // Save to localStorage
+      saveAuthData(token, mergedUserData);
+      
+      // Force update state
+      setUser(mergedUserData);
+      
+      console.log('✅ PROFILE UPDATE COMPLETE');
+      
+      return { success: true, user: mergedUserData };
     } catch (error) {
-      console.error("Profile update error:", error);
+      console.error("❌ Profile update error:", error);
       return { success: false, error: error.message };
     }
   };

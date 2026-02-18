@@ -1,6 +1,7 @@
 import { getPostBySlug } from "../../../services/posts";
 import { getServices } from "../../../services/services";
 import BlogPostContent from "../../../components/BlogPostContent";
+import StickyRegistrationBox from "../../../components/StickyRegistrationBox";
 
 // Force dynamic rendering to avoid build timeout
 export const dynamic = 'force-dynamic';
@@ -84,21 +85,29 @@ export default async function PostPage({ params }) {
           </div>
         </div>
         <div className="bg-white py-16 md:py-20">
-          <div className="mx-auto max-w-4xl px-6 lg:px-8">
-            <article className="mx-auto w-full">
-              {ogImage && (
-                <img
-                  src={ogImage}
-                  alt={meta?.og_title || post[0].title.rendered}
-                  className="w-full h-auto mb-10 rounded-2xl shadow-lg"
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+              {/* Main Content - Left Column */}
+              <article className="lg:col-span-8">
+                {ogImage && (
+                  <img
+                    src={ogImage}
+                    alt={meta?.og_title || post[0].title.rendered}
+                    className="w-full h-auto mb-10 rounded-2xl shadow-lg"
+                  />
+                )}
+                {/* Protected Content - Client Component */}
+                <BlogPostContent 
+                  content={post[0].content.rendered}
+                  therapeuticAreas={therapeuticAreas}
                 />
-              )}
-              {/* Protected Content - Client Component */}
-              <BlogPostContent 
-                content={post[0].content.rendered}
-                therapeuticAreas={therapeuticAreas}
-              />
-            </article>
+              </article>
+
+              {/* Sticky Registration Box - Right Column */}
+              <aside className="lg:col-span-4">
+                <StickyRegistrationBox />
+              </aside>
+            </div>
           </div>
         </div>
       </>

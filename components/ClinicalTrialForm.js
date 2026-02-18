@@ -81,10 +81,23 @@ export default function ClinicalTrialForm() {
   });
 
   // Pre-fill form with user data
+  // This effect runs when user changes or when component mounts
   useEffect(() => {
-    if (user) {
-      setFormData((prev) => ({
-        ...prev,
+    if (user && !authLoading) {
+      console.log('🔍 PRE-FILLING FORM - User data received:', {
+        first_name: user.first_name,
+        last_name: user.last_name,
+        email: user.email,
+        phone: user.phone,
+        birth_year: user.birth_year,
+        gender: user.gender,
+        city: user.city,
+        current_conditions: user.current_conditions,
+        current_medications: user.current_medications,
+        smoking_status: user.smoking_status,
+      });
+      
+      setFormData({
         first_name: user.first_name || user.firstName || "",
         last_name: user.last_name || user.lastName || "",
         email: user.email || user.user_email || "",
@@ -95,9 +108,13 @@ export default function ClinicalTrialForm() {
         current_conditions: user.current_conditions || "",
         current_medications: user.current_medications || "",
         smoking_status: user.smoking_status || "",
-      }));
+        additional_info: user.additional_info || "",
+        privacy_consent: false, // Always reset to false
+      });
+      
+      console.log('✅ FORM DATA SET');
     }
-  }, [user]);
+  }, [user, authLoading]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -132,6 +149,7 @@ export default function ClinicalTrialForm() {
 
     try {
       // First update user profile with the new fields
+      console.log('Submitting profile update with data:', formData); // Debug log
       const profileResult = await updateProfile({
         first_name: formData.first_name,
         last_name: formData.last_name,
@@ -145,6 +163,8 @@ export default function ClinicalTrialForm() {
         additional_info: formData.additional_info,
       });
 
+      console.log('Profile update result:', profileResult); // Debug log
+
       if (!profileResult.success) {
         throw new Error(
           profileResult.error || "Грешка при обновяване на профила"
@@ -156,12 +176,14 @@ export default function ClinicalTrialForm() {
 
       if (inquiryResult.success) {
         setSuccess(true);
+        console.log('Form submitted successfully, updated user:', profileResult.user); // Debug log
       } else {
         throw new Error(
           inquiryResult.error || "Грешка при изпращане на заявката"
         );
       }
     } catch (err) {
+      console.error('Form submission error:', err); // Debug log
       setError(err.message || "Възникна грешка. Моля, опитайте отново.");
     } finally {
       setSubmitting(false);
@@ -206,8 +228,29 @@ export default function ClinicalTrialForm() {
     );
   }
 
-  // Don't show form if profile is already completed (unless success is true from current session)
-  if (!success && user?.profile_completed) {
+  // Check if profile is truly completed (all required fields filled)
+  // Don't show "completed" message if we just successfully submitted in this session
+  const isProfileReallyCompleted = !success && 
+    user?.profile_completed === true &&
+    user?.first_name?.trim() &&
+    user?.last_name?.trim() &&
+    user?.email?.trim() &&
+    // At least one extended field must be filled
+    (user?.birth_year || user?.gender || user?.city || 
+     user?.current_conditions || user?.current_medications || user?.smoking_status);
+
+  console.log('🔍 PROFILE COMPLETION CHECK:', {
+    success,
+    profile_completed: user?.profile_completed,
+    first_name: user?.first_name,
+    last_name: user?.last_name,
+    email: user?.email,
+    hasExtendedFields: !!(user?.birth_year || user?.gender || user?.city || 
+                          user?.current_conditions || user?.current_medications || user?.smoking_status),
+    isProfileReallyCompleted
+  });
+
+  if (isProfileReallyCompleted) {
     return (
       <div className="bg-gradient-to-br from-blue-50 to-white rounded-2xl p-8 md:p-12 shadow-lg border border-blue-100">
         <div className="text-center">
