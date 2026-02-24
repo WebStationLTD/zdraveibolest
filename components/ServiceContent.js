@@ -58,7 +58,7 @@ export default function ServiceContent({ content }) {
     <article className="mx-auto max-w-8xl w-full">
       <div
         id="service-content"
-        className={`wordpress-content prose max-w-none leading-relaxed ${
+        className={`wordpress-content prose max-w-none leading-relaxed text-justify ${
           isVisible ? "opacity-100" : "opacity-0"
         } transition-opacity duration-300`}
         dangerouslySetInnerHTML={{

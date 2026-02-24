@@ -95,7 +95,7 @@ export default async function Team() {
                       {member.position || ""}
                     </p>
                     <div
-                      className="mt-6 text-base/7 text-gray-600 prose"
+                      className="mt-6 text-base/7 text-gray-600 prose text-justify"
                       dangerouslySetInnerHTML={{
                         __html:
                           member.description && member.description.length > 100

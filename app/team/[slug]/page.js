@@ -111,7 +111,7 @@ export default async function MemberDetails({ params }) {
         </div>
         <div className="divide-y divide-gray-200 xl:col-span-2 xl:w-full">
           <div
-            className="text-gray-700 prose max-w-none leading-relaxed"
+            className="text-gray-700 prose max-w-none leading-relaxed text-justify"
             dangerouslySetInnerHTML={{
               __html: member.description || "",
             }}

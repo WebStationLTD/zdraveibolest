@@ -7,7 +7,6 @@ import Link from "next/link";
 import {
   ChevronDownIcon,
   ChevronUpIcon,
-  XMarkIcon,
 } from "@heroicons/react/24/outline";
 
 // Diseases by therapeutic area (same as in RegisterForm)
@@ -354,17 +353,8 @@ export default function StickyQuickRegister() {
         ) : (
           // Expanded State
           <div className="p-5">
-            {/* Close Button */}
-            <button
-              onClick={() => setIsOpen(false)}
-              className="absolute top-2 right-2 text-gray-400 hover:text-gray-600 transition-colors"
-              aria-label="Затвори"
-            >
-              <XMarkIcon className="w-5 h-5" />
-            </button>
-
             {/* Header */}
-            <div className="mb-4 pr-6">
+            <div className="mb-4">
               <h3 className="text-base font-bold text-gray-900 leading-tight">
                 Регистрирай се и получи достъп до най-новите възможности за
                 лечение и информация за заболявания

@@ -2,14 +2,14 @@ import Link from "next/link";
 import Image from "next/image";
 import ClinicalStepsCarousel from "../../components/ClinicalStepsCarousel";
 import ClinicalTrialForm from "../../components/ClinicalTrialForm";
+import PhasesDescriptionToggle from "../../components/PhasesDescriptionToggle";
+import TeamRoleCard from "../../components/TeamRoleCard";
 import {
   BeakerIcon,
   ShieldCheckIcon,
   UserGroupIcon,
   ClipboardDocumentCheckIcon,
-  SparklesIcon,
   CurrencyEuroIcon,
-  HeartIcon,
 } from "@heroicons/react/24/outline";
 
 export const metadata = {
@@ -145,41 +145,6 @@ export default function ClinicalTrialsPage() {
               вас, за да осигури най-добрата грижа и подкрепа през целия процес.
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-              <div className="flex items-start gap-4">
-                <div className="w-16 h-16 bg-[#238C96] flex items-center justify-center flex-shrink-0 rounded-lg">
-                  <ClipboardDocumentCheckIcon className="w-8 h-8 text-white" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-gray-900 mb-2">
-                    Иновативно лечение
-                  </h3>
-                  <p className="text-sm text-gray-600">
-                    Получавате шанс за съвременно и иновативно лечение, което може да предложи по-добър контрол върху заболяването.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <div className="w-16 h-16 bg-[#238C96] flex items-center justify-center flex-shrink-0 rounded-lg">
-                  <BeakerIcon className="w-8 h-8 text-white" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-gray-900 mb-2">
-                    Специализирана грижа
-                  </h3>
-                  <p className="text-sm text-gray-600">
-                    През цялото време сте под грижите на специализиран екип, който следи внимателно вашето здраве.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <p className="text-gray-600 mb-6 leading-relaxed">
-              С вашето участие помагате за напредъка на медицината и допринасяте
-              за по-добро бъдещо лечение на хора със същото заболяване.
-            </p>
-
             <Link
               href="/nashata-misiya"
               className="inline-block px-8 py-4 bg-[#fd9300] text-white font-semibold hover:bg-[#e48400] transition-colors rounded-lg"
@@ -194,12 +159,9 @@ export default function ClinicalTrialsPage() {
       <section className="py-20 bg-[#0f172a]">
         <div className="mx-auto w-[95%] md:w-[85%]">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-8">
               Фази на клиничното изпитване
             </h2>
-            <p className="text-lg text-gray-400 max-w-3xl mx-auto">
-              Клиничните изпитвания обикновено се провеждат на етапи (фази). Всяка фаза отговаря на различни въпроси: безопасно ли е, действа ли, каква е правилната доза, как се сравнява с наличните терапии, и какво се случва при дългосрочна употреба. Важно: във всяка фаза участието е доброволно и става след информирано съгласие.
-            </p>
           </div>
 
           <div className="max-w-7xl mx-auto">
@@ -350,6 +312,9 @@ export default function ClinicalTrialsPage() {
 
             </div>
           </div>
+
+          {/* Expandable Description */}
+          <PhasesDescriptionToggle />
         </div>
       </section>
 
@@ -560,99 +525,51 @@ export default function ClinicalTrialsPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Role Card 1 - Principal Investigator */}
-            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
-              <div className="w-16 h-16 bg-[#238C96] flex items-center justify-center mb-6 rounded-xl">
-                <UserGroupIcon className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-4">
-                Главен изследовател (Principal Investigator – PI)
-              </h3>
-              <div className="space-y-3 text-sm text-gray-600 leading-relaxed">
-                <p><strong>Образование и роля:</strong> Лекар със специализация и дългогодишен опит, който отговаря за научната, етичната и медицинската страна на проучването.</p>
-                <p><strong>Основни отговорности:</strong> Подписва документацията, осигурява информирано съгласие, следи за спазване на протокола и стандартите GCP, медицински наблюдава участниците.</p>
-                <p><strong>Как комуникира с вас:</strong> PI може да ви прегледа при включване и при медицински въпроси. Обсъждане на рискове, лекарства и симптоми.</p>
-              </div>
-            </div>
+            <TeamRoleCard iconName="UserGroupIcon" title="Главен изследовател (Principal Investigator – PI)">
+              <p><strong>Образование и роля:</strong> Лекар със специализация и дългогодишен опит, който отговаря за научната, етичната и медицинската страна на проучването.</p>
+              <p><strong>Основни отговорности:</strong> Подписва документацията, осигурява информирано съгласие, следи за спазване на протокола и стандартите GCP, медицински наблюдава участниците.</p>
+              <p><strong>Как комуникира с вас:</strong> PI може да ви прегледа при включване и при медицински въпроси. Обсъждане на рискове, лекарства и симптоми.</p>
+            </TeamRoleCard>
 
             {/* Role Card 2 - Sub-Investigators */}
-            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
-              <div className="w-16 h-16 bg-[#238C96] flex items-center justify-center mb-6 rounded-xl">
-                <BeakerIcon className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-4">
-                Подизследователи (Sub-Investigators)
-              </h3>
-              <div className="space-y-3 text-sm text-gray-600 leading-relaxed">
-                <p><strong>Роля:</strong> Лекари или специалисти, които подпомагат PI в конкретни медицински дейности – невролог, кардиолог, ендокринолог и др.</p>
-                <p><strong>Какво правят:</strong> Провеждат целенасочени прегледи и тестове, интерпретират резултати, наблюдават участниците, водят медицинска документация, съветват PI.</p>
-                <p><strong>Защо са важни:</strong> Гарантират мултидисциплинарен подход и специализирана експертиза.</p>
-                <p><strong>Може да се обърнете към тях за:</strong> Преглед свързан с тяхната специалност, обсъждане на изследвания или симптоми.</p>
-              </div>
-            </div>
+            <TeamRoleCard iconName="BeakerIcon" title="Подизследователи (Sub-Investigators)">
+              <p><strong>Роля:</strong> Лекари или специалисти, които подпомагат PI в конкретни медицински дейности – невролог, кардиолог, ендокринолог и др.</p>
+              <p><strong>Какво правят:</strong> Провеждат целенасочени прегледи и тестове, интерпретират резултати, наблюдават участниците, водят медицинска документация, съветват PI.</p>
+              <p><strong>Защо са важни:</strong> Гарантират мултидисциплинарен подход и специализирана експертиза.</p>
+              <p><strong>Може да се обърнете към тях за:</strong> Преглед свързан с тяхната специалност, обсъждане на изследвания или симптоми.</p>
+            </TeamRoleCard>
 
             {/* Role Card 3 - Study Coordinator */}
-            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
-              <div className="w-16 h-16 bg-[#238C96] flex items-center justify-center mb-6 rounded-xl">
-                <ClipboardDocumentCheckIcon className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-4">
-                Изследователски координатор (Study Coordinator)
-              </h3>
-              <div className="space-y-3 text-sm text-gray-600 leading-relaxed">
-                <p><strong>Профил:</strong> Връзката между всички участници - пациенти, лекари, медицински сестри, монитор, спонсор, лаборатории. Обикновено медицински специалист с GCP обучение.</p>
-                <p><strong>Основни функции:</strong> Организира и координира ежедневната работа, подготвя графика на визитите, контролира процедурите, въвежда данни в системите, поддържа връзка с CRA.</p>
-                <p><strong>Връзка с пациента:</strong> Човекът, който ще ви се обади, ще ви насочи, ще ви помогне при всяко посещение и ще отговори на въпросите ви.</p>
-              </div>
-            </div>
+            <TeamRoleCard iconName="ClipboardDocumentCheckIcon" title="Изследователски координатор (Study Coordinator)">
+              <p><strong>Профил:</strong> Връзката между всички участници - пациенти, лекари, медицински сестри, монитор, спонсор, лаборатории. Обикновено медицински специалист с GCP обучение.</p>
+              <p><strong>Основни функции:</strong> Организира и координира ежедневната работа, подготвя графика на визитите, контролира процедурите, въвежда данни в системите, поддържа връзка с CRA.</p>
+              <p><strong>Връзка с пациента:</strong> Човекът, който ще ви се обади, ще ви насочи, ще ви помогне при всяко посещение и ще отговори на въпросите ви.</p>
+            </TeamRoleCard>
 
             {/* Role Card 4 - Study Nurse */}
-            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
-              <div className="w-16 h-16 bg-[#238C96] flex items-center justify-center mb-6 rounded-xl">
-                <HeartIcon className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-4">
-                Изследователска медицинска сестра (Study Nurse)
-              </h3>
-              <div className="space-y-3 text-sm text-gray-600 leading-relaxed">
-                <p><strong>Образование:</strong> Регистрирани медицински специалисти с обучения по ICH-GCP, безопасност на пациента, фармаконаблюдение, вземане на биологични проби.</p>
-                <p><strong>Основни дейности:</strong> Взема кръв, урина и други проби, измерва жизнени показатели, извършва тестове (ЕКГ, спирометрия), подготвя пациента за изследвания, следи за нежелани реакции.</p>
-                <p><strong>Отношение към участника:</strong> Човекът, който се грижи за вашия комфорт, безопасност и спокойствие при всяко посещение. Следи вашето състояние и съобщава на изследователя при промяна.</p>
-              </div>
-            </div>
+            <TeamRoleCard iconName="HeartIcon" title="Изследователска медицинска сестра (Study Nurse)">
+              <p><strong>Образование:</strong> Регистрирани медицински специалисти с обучения по ICH-GCP, безопасност на пациента, фармаконаблюдение, вземане на биологични проби.</p>
+              <p><strong>Основни дейности:</strong> Взема кръв, урина и други проби, измерва жизнени показатели, извършва тестове (ЕКГ, спирометрия), подготвя пациента за изследвания, следи за нежелани реакции.</p>
+              <p><strong>Отношение към участника:</strong> Човекът, който се грижи за вашия комфорт, безопасност и спокойствие при всяко посещение. Следи вашето състояние и съобщава на изследователя при промяна.</p>
+            </TeamRoleCard>
 
             {/* Role Card 5 - Clinical Monitor (CRA) */}
-            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
-              <div className="w-16 h-16 bg-[#238C96] flex items-center justify-center mb-6 rounded-xl">
-                <ShieldCheckIcon className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-4">
-                Клиничен монитор (CRA)
-              </h3>
-              <div className="space-y-3 text-sm text-gray-600 leading-relaxed">
-                <p><strong>Кой е той:</strong> Представител на компанията (спонсор или CRO), която организира проучването. Не е част от медицинския екип, но има критична функция.</p>
-                <p><strong>Функции:</strong> Наблюдава, проверява и гарантира, че всичко се извършва по правилата на медицинската етика, закона и международните стандарти ICH-GCP.</p>
-                <p><strong>Какво прави:</strong> Посещава центъра (pre-study visit), проверява оборудването, помещенията, документацията, уверява се че PI и екипът имат нужния опит, съобщава на спонсора дали центърът може да бъде включен.</p>
-                <p><strong>Важност:</strong> Проверява мястото, в което ще участвате, дали отговаря на всички изисквания за безопасност и качество още преди да бъде включен първият участник.</p>
-              </div>
-            </div>
+            <TeamRoleCard iconName="ShieldCheckIcon" title="Клиничен монитор (CRA)">
+              <p><strong>Кой е той:</strong> Представител на компанията (спонсор или CRO), която организира проучването. Не е част от медицинския екип, но има критична функция.</p>
+              <p><strong>Функции:</strong> Наблюдава, проверява и гарантира, че всичко се извършва по правилата на медицинската етика, закона и международните стандарти ICH-GCP.</p>
+              <p><strong>Какво прави:</strong> Посещава центъра (pre-study visit), проверява оборудването, помещенията, документацията, уверява се че PI и екипът имат нужния опит, съобщава на спонсора дали центърът може да бъде включен.</p>
+              <p><strong>Важност:</strong> Проверява мястото, в което ще участвате, дали отговаря на всички изисквания за безопасност и качество още преди да бъде включен първият участник.</p>
+            </TeamRoleCard>
 
             {/* Role Card 6 - Sponsor */}
-            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
-              <div className="w-16 h-16 bg-[#238C96] flex items-center justify-center mb-6 rounded-xl">
-                <SparklesIcon className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-4">
-                Спонсор
-              </h3>
-              <div className="space-y-3 text-sm text-gray-600 leading-relaxed">
-                <p><strong>Кой е той:</strong> Организацията, която финансира и притежава новия лекарствен продукт или медицинско изделие. Може да бъде фармацевтична компания, биотехнологична фирма, университет или научен институт.</p>
-                <p><strong>Какво прави:</strong> Разработва и одобрява протокола, осигурява лекарствата и инструкциите, възлага провеждането на CRO, следи и анализира резултатите, подава информация към здравните власти.</p>
-                <p><strong>Роля:</strong> Не контактува директно с пациентите, но отговорността му е да гарантира, че проучването е етично, безопасно и че всички участници са защитени и оценени с уважение.</p>
-                <p><strong>Значение:</strong> Благодарение на спонсора новите терапии достигат от лабораторията до реалните пациенти.</p>
-              </div>
-            </div>
+            <TeamRoleCard iconName="SparklesIcon" title="Спонсор">
+              <p><strong>Кой е той:</strong> Организацията, която финансира и притежава новия лекарствен продукт или медицинско изделие. Може да бъде фармацевтична компания, биотехнологична фирма, университет или научен институт.</p>
+              <p><strong>Какво прави:</strong> Разработва и одобрява протокола, осигурява лекарствата и инструкциите, възлага провеждането на CRO, следи и анализира резултатите, подава информация към здравните власти.</p>
+              <p><strong>Роля:</strong> Не контактува директно с пациентите, но отговорността му е да гарантира, че проучването е етично, безопасно и че всички участници са защитени и оценени с уважение.</p>
+              <p><strong>Значение:</strong> Благодарение на спонсора новите терапии достигат от лабораторията до реалните пациенти.</p>
+            </TeamRoleCard>
           </div>
         </div>
       </section>

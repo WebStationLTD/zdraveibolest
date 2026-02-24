@@ -46,7 +46,7 @@ export default function ProtectedContent({
   if (isAuthenticated) {
     return (
       <div
-        className="prose prose-lg max-w-none"
+        className="prose prose-lg max-w-none text-justify"
         dangerouslySetInnerHTML={{ __html: content }}
       />
     );
@@ -61,7 +61,7 @@ export default function ProtectedContent({
         style={{ maxHeight: `${previewHeight}px` }}
       >
         <div
-          className="prose prose-lg max-w-none"
+          className="prose prose-lg max-w-none text-justify"
           dangerouslySetInnerHTML={{ __html: content }}
         />
 

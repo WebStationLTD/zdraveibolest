@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 import {
   Dialog,
@@ -32,6 +33,9 @@ export default function Navigation({ therapeuticAreas = [] }) {
   const [mobileParticipationOpen, setMobileParticipationOpen] = useState(false);
   const [mobileHealthInfoOpen, setMobileHealthInfoOpen] = useState(false);
   const { isAuthenticated, user, logout, loading } = useAuth();
+  const pathname = usePathname();
+  
+  const isClinicalTrialsSection = pathname?.startsWith('/klinichni-prouchvaniya');
 
   const navigation = {
     pages: [
@@ -100,75 +104,105 @@ export default function Navigation({ therapeuticAreas = [] }) {
                 </Link>
               </div>
 
-              {/* Терапевтични области - Accordion Mobile */}
-              <div className="flow-root">
-                <button
-                  onClick={() => setMobileAreasOpen(!mobileAreasOpen)}
-                  className="flex items-center justify-between -m-2 p-2 text-gray-700 hover:text-[#04737d] transition-colors w-full"
-                >
-                  <span className="font-normal">Терапевтични области</span>
-                  <ChevronDownIcon
-                    className={`${
-                      mobileAreasOpen ? "rotate-180" : ""
-                    } h-5 w-5 flex-shrink-0 transition-transform duration-200`}
-                  />
-                </button>
-                {mobileAreasOpen && (
-                  <div className="mt-2 pl-4">
-                    <div className="space-y-2 max-h-60 overflow-y-auto">
-                      <p className="text-xs text-gray-500 mb-2 px-1">
-                        Изберете терапевтична област:
-                      </p>
-                      {therapeuticAreas.map((area) => (
-                        <Link
-                          key={area.id}
-                          href={`/kategoriya/${area.slug}`}
-                          className="block py-2 text-sm text-gray-600 hover:text-[#04737d] transition-colors"
-                          onClick={() => setOpen(false)}
-                        >
-                          {area.title.rendered}
-                        </Link>
-                      ))}
+              {/* Терапевтични области - Accordion Mobile - Hide in Clinical Trials section */}
+              {!isClinicalTrialsSection && (
+                <div className="flow-root">
+                  <button
+                    onClick={() => setMobileAreasOpen(!mobileAreasOpen)}
+                    className="flex items-center justify-between -m-2 p-2 text-gray-700 hover:text-[#04737d] transition-colors w-full"
+                  >
+                    <span className="font-normal">Терапевтични области</span>
+                    <ChevronDownIcon
+                      className={`${
+                        mobileAreasOpen ? "rotate-180" : ""
+                      } h-5 w-5 flex-shrink-0 transition-transform duration-200`}
+                    />
+                  </button>
+                  {mobileAreasOpen && (
+                    <div className="mt-2 pl-4">
+                      <div className="space-y-2 max-h-60 overflow-y-auto">
+                        <p className="text-xs text-gray-500 mb-2 px-1">
+                          Изберете терапевтична област:
+                        </p>
+                        {therapeuticAreas.map((area) => (
+                          <Link
+                            key={area.id}
+                            href={`/kategoriya/${area.slug}`}
+                            className="block py-2 text-sm text-gray-600 hover:text-[#04737d] transition-colors"
+                            onClick={() => setOpen(false)}
+                          >
+                            {area.title.rendered}
+                          </Link>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                )}
-              </div>
+                  )}
+                </div>
+              )}
 
-              {/* Участие - Accordion Mobile */}
-              {/* <div className="flow-root">
-                <button
-                  onClick={() =>
-                    setMobileParticipationOpen(!mobileParticipationOpen)
-                  }
-                  className="flex items-center justify-between -m-2 p-2 text-gray-700 hover:text-[#04737d] transition-colors w-full"
-                >
-                  <span className="font-normal">Участие</span>
-                  <ChevronDownIcon
-                    className={`${
-                      mobileParticipationOpen ? "rotate-180" : ""
-                    } h-5 w-5 flex-shrink-0 transition-transform duration-200`}
-                  />
-                </button>
-                {mobileParticipationOpen && (
-                  <div className="mt-2 pl-4">
-                    <div className="space-y-2">
-                      {participationMenu.map((item) => (
-                        <Link
-                          key={item.name}
-                          href={item.href}
-                          className="block py-2 text-sm text-gray-600 hover:text-[#04737d] transition-colors"
-                          onClick={() => setOpen(false)}
-                        >
-                          {item.name}
-                        </Link>
-                      ))}
-                    </div>
+              {/* Clinical Trials Section - Mobile Menu */}
+              {isClinicalTrialsSection && (
+                <>
+                  {/* Участие - Accordion */}
+                  <div className="flow-root">
+                    <button
+                      onClick={() =>
+                        setMobileParticipationOpen(!mobileParticipationOpen)
+                      }
+                      className="flex items-center justify-between -m-2 p-2 text-gray-700 hover:text-[#04737d] transition-colors w-full"
+                    >
+                      <span className="font-normal">Участие</span>
+                      <ChevronDownIcon
+                        className={`${
+                          mobileParticipationOpen ? "rotate-180" : ""
+                        } h-5 w-5 flex-shrink-0 transition-transform duration-200`}
+                      />
+                    </button>
+                    {mobileParticipationOpen && (
+                      <div className="mt-2 pl-4">
+                        <div className="space-y-2">
+                          {participationMenu.map((item) => (
+                            <Link
+                              key={item.name}
+                              href={item.href}
+                              className="block py-2 text-sm text-gray-600 hover:text-[#04737d] transition-colors"
+                              onClick={() => setOpen(false)}
+                            >
+                              {item.name}
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
-                )}
-              </div> */}
 
-              {/* Здравна информация - Accordion Mobile */}
-              <div className="flow-root">
+                  {/* Намери клинично проучване */}
+                  <div className="flow-root">
+                    <Link
+                      href="/klinichni-prouchvaniya/nameri-klinichno-prouchvane"
+                      className="-m-2 block p-2 font-normal text-gray-700 hover:text-[#04737d] transition-colors"
+                      onClick={() => setOpen(false)}
+                    >
+                      Намери клинично проучване
+                    </Link>
+                  </div>
+
+                  {/* Регистрация */}
+                  <div className="flow-root">
+                    <Link
+                      href="/klinichni-prouchvaniya#registration"
+                      className="-m-2 block p-2 font-normal text-gray-700 hover:text-[#04737d] transition-colors"
+                      onClick={() => setOpen(false)}
+                    >
+                      Регистрация
+                    </Link>
+                  </div>
+                </>
+              )}
+
+              {/* Здравна информация - Accordion Mobile - Show ONLY outside Clinical Trials */}
+              {!isClinicalTrialsSection && (
+                <div className="flow-root">
                 <button
                   onClick={() => setMobileHealthInfoOpen(!mobileHealthInfoOpen)}
                   className="flex items-center justify-between -m-2 p-2 text-gray-700 hover:text-[#04737d] transition-colors w-full"
@@ -196,10 +230,11 @@ export default function Navigation({ therapeuticAreas = [] }) {
                     </div>
                   </div>
                 )}
-              </div>
+                </div>
+              )}
 
-              {/* Останалите страници */}
-              {navigation.pages.slice(1).map((page) => (
+              {/* Останалите страници - Hide in Clinical Trials section */}
+              {!isClinicalTrialsSection && navigation.pages.slice(1).map((page) => (
                 <div key={page.name} className="flow-root">
                   <Link
                     href={page.href}
@@ -326,95 +361,118 @@ export default function Navigation({ therapeuticAreas = [] }) {
                   Начало
                 </Link>
 
-                {/* Терапевтични области - Dropdown Desktop (Hover) */}
-                <div
-                  className="relative group"
-                  onMouseEnter={() => setDropdownOpen(true)}
-                  onMouseLeave={() => setDropdownOpen(false)}
-                >
-                  <button className="flex items-center text-sm font-normal text-gray-700 hover:text-[#04737d] transition-colors whitespace-nowrap">
-                    Терапевтични области
-                    <ChevronDownIcon
-                      className={`ml-1 h-4 w-4 hover:text-[#04737d] transition-all ${
-                        dropdownOpen ? "rotate-180" : ""
-                      }`}
-                    />
-                  </button>
-
-                  {/* Dropdown Menu */}
+                {/* Терапевтични области - Dropdown Desktop (Hover) - Hide in Clinical Trials section */}
+                {!isClinicalTrialsSection && (
                   <div
-                    className={`absolute left-0 z-50 mt-3 w-72 origin-top-left rounded-xl bg-white shadow-2xl ring-1 ring-black/5 transition-all duration-200 ${
-                      dropdownOpen
-                        ? "opacity-100 scale-100 visible"
-                        : "opacity-0 scale-95 invisible"
-                    }`}
+                    className="relative group"
+                    onMouseEnter={() => setDropdownOpen(true)}
+                    onMouseLeave={() => setDropdownOpen(false)}
                   >
-                    <div className="p-2 max-h-[480px] overflow-y-auto">
-                      {/* Individual Areas */}
-                      <div className="px-3 py-2 border-b border-gray-100">
-                        <p className="text-xs font-medium text-gray-500 tracking-wider uppercase">
-                          Изберете терапевтична област
-                        </p>
+                    <button className="flex items-center text-sm font-normal text-gray-700 hover:text-[#04737d] transition-colors whitespace-nowrap">
+                      Терапевтични области
+                      <ChevronDownIcon
+                        className={`ml-1 h-4 w-4 hover:text-[#04737d] transition-all ${
+                          dropdownOpen ? "rotate-180" : ""
+                        }`}
+                      />
+                    </button>
+
+                    {/* Dropdown Menu */}
+                    <div
+                      className={`absolute left-0 z-50 mt-3 w-72 origin-top-left rounded-xl bg-white shadow-2xl ring-1 ring-black/5 transition-all duration-200 ${
+                        dropdownOpen
+                          ? "opacity-100 scale-100 visible"
+                          : "opacity-0 scale-95 invisible"
+                      }`}
+                    >
+                      <div className="p-2 max-h-[480px] overflow-y-auto">
+                        {/* Individual Areas */}
+                        <div className="px-3 py-2 border-b border-gray-100">
+                          <p className="text-xs font-medium text-gray-500 tracking-wider uppercase">
+                            Изберете терапевтична област
+                          </p>
+                        </div>
+                        {therapeuticAreas.map((area) => (
+                          <Link
+                            key={area.id}
+                            href={`/kategoriya/${area.slug}`}
+                            className="group flex items-center rounded-lg px-3 py-2.5 text-sm transition-colors text-gray-700 hover:bg-[#04737d]/5 hover:text-[#04737d]"
+                          >
+                            <div className="flex items-center">
+                              <div className="mr-3 h-2 w-2 rounded-full bg-gray-300 group-hover:bg-[#04737d] transition-colors"></div>
+                              <span className="font-normal">
+                                {area.title.rendered}
+                              </span>
+                            </div>
+                          </Link>
+                        ))}
                       </div>
-                      {therapeuticAreas.map((area) => (
-                        <Link
-                          key={area.id}
-                          href={`/kategoriya/${area.slug}`}
-                          className="group flex items-center rounded-lg px-3 py-2.5 text-sm transition-colors text-gray-700 hover:bg-[#04737d]/5 hover:text-[#04737d]"
-                        >
-                          <div className="flex items-center">
-                            <div className="mr-3 h-2 w-2 rounded-full bg-gray-300 group-hover:bg-[#04737d] transition-colors"></div>
-                            <span className="font-normal">
-                              {area.title.rendered}
-                            </span>
-                          </div>
-                        </Link>
-                      ))}
                     </div>
                   </div>
-                </div>
+                )}
 
-                {/* Участие - Dropdown Desktop (Hover) */}
-                {/* <div
-                  className="relative group"
-                  onMouseEnter={() => setParticipationDropdownOpen(true)}
-                  onMouseLeave={() => setParticipationDropdownOpen(false)}
-                >
-                  <button className="flex items-center text-sm font-normal text-gray-700 hover:text-[#04737d] transition-colors whitespace-nowrap">
-                    Участие
-                    <ChevronDownIcon
-                      className={`ml-1 h-4 w-4 hover:text-[#04737d] transition-all ${
-                        participationDropdownOpen ? "rotate-180" : ""
-                      }`}
-                    />
-                  </button>
-
+                {/* Участие - Dropdown Desktop (Hover) - Show ONLY in Clinical Trials section */}
+                {isClinicalTrialsSection && (
                   <div
-                    className={`absolute left-0 z-50 mt-3 w-64 origin-top-left rounded-xl bg-white shadow-2xl ring-1 ring-black/5 transition-all duration-200 ${
-                      participationDropdownOpen
-                        ? "opacity-100 scale-100 visible"
-                        : "opacity-0 scale-95 invisible"
-                    }`}
+                    className="relative group"
+                    onMouseEnter={() => setParticipationDropdownOpen(true)}
+                    onMouseLeave={() => setParticipationDropdownOpen(false)}
                   >
-                    <div className="p-2">
-                      {participationMenu.map((item) => (
-                        <Link
-                          key={item.name}
-                          href={item.href}
-                          className="group flex items-center rounded-lg px-3 py-3 text-sm transition-colors text-gray-700 hover:bg-[#04737d]/5 hover:text-[#04737d]"
-                        >
-                          <div className="flex items-center">
-                            <div className="mr-3 h-2 w-2 rounded-full bg-gray-300 group-hover:bg-[#04737d] transition-colors"></div>
-                            <span className="font-normal">{item.name}</span>
-                          </div>
-                        </Link>
-                      ))}
+                    <button className="flex items-center text-sm font-normal text-gray-700 hover:text-[#04737d] transition-colors whitespace-nowrap">
+                      Участие
+                      <ChevronDownIcon
+                        className={`ml-1 h-4 w-4 hover:text-[#04737d] transition-all ${
+                          participationDropdownOpen ? "rotate-180" : ""
+                        }`}
+                      />
+                    </button>
+
+                    <div
+                      className={`absolute left-0 z-50 mt-3 w-64 origin-top-left rounded-xl bg-white shadow-2xl ring-1 ring-black/5 transition-all duration-200 ${
+                        participationDropdownOpen
+                          ? "opacity-100 scale-100 visible"
+                          : "opacity-0 scale-95 invisible"
+                      }`}
+                    >
+                      <div className="p-2">
+                        {participationMenu.map((item) => (
+                          <Link
+                            key={item.name}
+                            href={item.href}
+                            className="group flex items-center rounded-lg px-3 py-3 text-sm transition-colors text-gray-700 hover:bg-[#04737d]/5 hover:text-[#04737d]"
+                          >
+                            <div className="flex items-center">
+                              <div className="mr-3 h-2 w-2 rounded-full bg-gray-300 group-hover:bg-[#04737d] transition-colors"></div>
+                              <span className="font-normal">{item.name}</span>
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                </div> */}
+                )}
 
-                {/* Здравна информация - Dropdown Desktop (Hover) */}
-                <div
+                {/* Clinical Trials Specific Links - Desktop */}
+                {isClinicalTrialsSection && (
+                  <>
+                    <Link
+                      href="/klinichni-prouchvaniya/nameri-klinichno-prouchvane"
+                      className="text-sm font-normal text-gray-700 hover:text-[#04737d] transition-colors whitespace-nowrap"
+                    >
+                      Намери клинично проучване
+                    </Link>
+                    <Link
+                      href="/klinichni-prouchvaniya#registration"
+                      className="text-sm font-normal text-gray-700 hover:text-[#04737d] transition-colors whitespace-nowrap"
+                    >
+                      Регистрация
+                    </Link>
+                  </>
+                )}
+
+                {/* Здравна информация - Dropdown Desktop (Hover) - Show ONLY outside Clinical Trials */}
+                {!isClinicalTrialsSection && (
+                  <div
                   className="relative group"
                   onMouseEnter={() => setHealthInfoDropdownOpen(true)}
                   onMouseLeave={() => setHealthInfoDropdownOpen(false)}
@@ -451,10 +509,11 @@ export default function Navigation({ therapeuticAreas = [] }) {
                       ))}
                     </div>
                   </div>
-                </div>
+                  </div>
+                )}
 
-                {/* Останалите страници */}
-                {navigation.pages.slice(1).map((page) => (
+                {/* Останалите страници - Hide in Clinical Trials section */}
+                {!isClinicalTrialsSection && navigation.pages.slice(1).map((page) => (
                   <Link
                     key={page.name}
                     href={page.href}
