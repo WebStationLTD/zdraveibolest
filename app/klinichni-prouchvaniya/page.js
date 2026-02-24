@@ -40,7 +40,7 @@ export default function ClinicalTrialsPage() {
               </p>
               <div className="flex flex-wrap gap-4">
               <Link
-                href="#"
+                href="/klinichni-prouchvaniya/nameri-klinichno-prouchvane"
                 className="px-8 py-4 bg-[#fd9300] text-white font-semibold hover:bg-[#e48400] transition-colors rounded-lg"
               >
                 ОТКРИЙ ПРОУЧВАНИЯ
@@ -445,7 +445,7 @@ export default function ClinicalTrialsPage() {
                 Провери дали има проучване, което отговаря на твоето състояние или интерес.
               </p>
               <Link
-                href="/terapevtichni-oblasti"
+                href="/klinichni-prouchvaniya/nameri-klinichno-prouchvane"
                 className="inline-block px-8 py-4 bg-[#fd9300] text-white font-semibold hover:bg-[#e48400] transition-colors rounded-lg"
               >
                 НАМЕРИ КЛИНИЧНО ПРОУЧВАНЕ
