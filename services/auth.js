@@ -210,7 +210,21 @@ export async function validateToken(token) {
       throw new Error(data.message || 'Token validation failed');
     }
 
-    return data;
+    // Normalize ACF fields: create both prefixed and non-prefixed versions
+    const normalizedUser = { ...data };
+    Object.keys(data).forEach(key => {
+      if (key.startsWith('acf_')) {
+        // Add version without prefix for easier access
+        const fieldWithoutPrefix = key.replace('acf_', '');
+        if (!normalizedUser[fieldWithoutPrefix]) {
+          normalizedUser[fieldWithoutPrefix] = data[key];
+        }
+      }
+    });
+
+    console.log('🔍 VALIDATE TOKEN - Normalized user:', normalizedUser);
+
+    return normalizedUser;
   } catch (error) {
     console.error('❌ Token validation error:', error);
     console.error('❌ Error details:', {
@@ -296,12 +310,13 @@ export function isProfileCompleted(user) {
   }
   
   // Extended fields - at least ONE must be filled
-  const hasBirthYear = isFilled(user.birth_year);
-  const hasGender = isFilled(user.gender);
-  const hasCity = isFilled(user.city);
-  const hasConditions = isFilled(user.current_conditions);
-  const hasMedications = isFilled(user.current_medications);
-  const hasSmoking = isFilled(user.smoking_status);
+  // Check both with and without acf_ prefix
+  const hasBirthYear = isFilled(user.birth_year) || isFilled(user.acf_birth_year);
+  const hasGender = isFilled(user.gender) || isFilled(user.acf_gender);
+  const hasCity = isFilled(user.city) || isFilled(user.acf_city);
+  const hasConditions = isFilled(user.current_conditions) || isFilled(user.acf_current_diseases);
+  const hasMedications = isFilled(user.current_medications) || isFilled(user.acf_current_medications);
+  const hasSmoking = isFilled(user.smoking_status) || isFilled(user.acf_smoking_status);
   
   console.log('🔍 isProfileCompleted: Extended fields:', {
     birth_year: hasBirthYear ? '✅' : '❌',
@@ -318,6 +333,59 @@ export function isProfileCompleted(user) {
   console.log(`🔍 isProfileCompleted: Final result = ${result ? '✅ TRUE' : '❌ FALSE'}`);
   
   return result;
+}
+
+/**
+ * Create clinical trial application
+ * @param {Object} applicationData - Application data with user info and study ID
+ * @param {string} token - Auth token
+ * @returns {Promise<Object>} - Application creation response
+ */
+export async function createApplication(applicationData, token) {
+  try {
+    if (!token || typeof token !== 'string' || token.trim() === '') {
+      throw new Error('Не сте влезли в системата. Моля, влезте отново.');
+    }
+    
+    // Try standard WordPress REST API for creating posts
+    // ACF fields should be sent as meta fields or in the root object
+    const payload = {
+      title: `Кандидатура - ${applicationData.first_name} ${applicationData.last_name} - ${new Date().toLocaleDateString("bg-BG")}`,
+      status: 'publish',
+      // Try sending ACF fields directly in root
+      acf_applicant_id: applicationData.applicant_id,
+      acf_target_study_id: applicationData.target_study_id || 0,
+      acf_phone_number: applicationData.phone || '',
+      acf_birth_year: applicationData.birth_year || '',
+      acf_gender: applicationData.gender || '',
+      acf_city: applicationData.city || '',
+      acf_current_diseases: applicationData.current_diseases || '',
+      acf_current_medications: applicationData.current_medications || '',
+      acf_smoking_status: applicationData.smoking_status || '',
+      acf_additional_health_info: applicationData.additional_health_info || '',
+    };
+    
+    const response = await fetch(`${API_URL}/wp-json/wp/v2/applications`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error('Application creation failed:', data);
+      throw new Error(data.message || 'Грешка при създаване на кандидатурата');
+    }
+
+    return data;
+  } catch (error) {
+    console.error('Application creation error:', error);
+    throw error;
+  }
 }
 
 /**

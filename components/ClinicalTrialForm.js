@@ -101,14 +101,14 @@ export default function ClinicalTrialForm() {
         first_name: user.first_name || user.firstName || "",
         last_name: user.last_name || user.lastName || "",
         email: user.email || user.user_email || "",
-        phone: user.phone || user.user_phone || "",
-        birth_year: user.birth_year || "",
-        gender: user.gender || "",
-        city: user.city || "",
-        current_conditions: user.current_conditions || "",
-        current_medications: user.current_medications || "",
-        smoking_status: user.smoking_status || "",
-        additional_info: user.additional_info || "",
+        phone: user.phone || user.acf_phone_number || "",
+        birth_year: user.birth_year || user.acf_birth_year || "",
+        gender: user.gender || user.acf_gender || "",
+        city: user.city || user.acf_city || "",
+        current_conditions: user.current_conditions || user.acf_current_diseases || "",
+        current_medications: user.current_medications || user.acf_current_medications || "",
+        smoking_status: user.smoking_status || user.acf_smoking_status || "",
+        additional_info: user.additional_info || user.acf_additional_health_info || "",
         privacy_consent: false, // Always reset to false
       });
       
@@ -149,18 +149,18 @@ export default function ClinicalTrialForm() {
 
     try {
       // First update user profile with the new fields
-      console.log('Submitting profile update with data:', formData); // Debug log
+      console.log('Submitting profile update with data:', formData);
       const profileResult = await updateProfile({
         first_name: formData.first_name,
         last_name: formData.last_name,
-        phone: formData.phone,
-        birth_year: formData.birth_year,
-        gender: formData.gender,
-        city: formData.city,
-        current_conditions: formData.current_conditions,
-        current_medications: formData.current_medications,
-        smoking_status: formData.smoking_status,
-        additional_info: formData.additional_info,
+        acf_phone_number: formData.phone,
+        acf_birth_year: formData.birth_year,
+        acf_gender: formData.gender,
+        acf_city: formData.city,
+        acf_current_diseases: formData.current_conditions,
+        acf_current_medications: formData.current_medications,
+        acf_smoking_status: formData.smoking_status,
+        acf_additional_health_info: formData.additional_info,
       });
 
       console.log('Profile update result:', profileResult); // Debug log
@@ -228,61 +228,10 @@ export default function ClinicalTrialForm() {
     );
   }
 
-  // Check if profile is truly completed (all required fields filled)
-  // Don't show "completed" message if we just successfully submitted in this session
-  const isProfileReallyCompleted = !success && 
-    user?.profile_completed === true &&
-    user?.first_name?.trim() &&
-    user?.last_name?.trim() &&
-    user?.email?.trim() &&
-    // At least one extended field must be filled
-    (user?.birth_year || user?.gender || user?.city || 
-     user?.current_conditions || user?.current_medications || user?.smoking_status);
-
-  console.log('🔍 PROFILE COMPLETION CHECK:', {
-    success,
-    profile_completed: user?.profile_completed,
-    first_name: user?.first_name,
-    last_name: user?.last_name,
-    email: user?.email,
-    hasExtendedFields: !!(user?.birth_year || user?.gender || user?.city || 
-                          user?.current_conditions || user?.current_medications || user?.smoking_status),
-    isProfileReallyCompleted
-  });
-
-  if (isProfileReallyCompleted) {
-    return (
-      <div className="bg-gradient-to-br from-blue-50 to-white rounded-2xl p-8 md:p-12 shadow-lg border border-blue-100">
-        <div className="text-center">
-          <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <svg
-              className="w-10 h-10 text-blue-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-          </div>
-          <h3 className="text-2xl font-bold text-gray-900 mb-4">
-            Профилът Ви е завършен
-          </h3>
-          <p className="text-gray-600 mb-6">
-            Вече сте попълнили подробния си профил. Благодарим Ви за
-            предоставената информация!
-          </p>
-          <p className="text-sm text-gray-500">
-            Ако искате да актуализирате информацията си, моля свържете се с нас.
-          </p>
-        </div>
-      </div>
-    );
-  }
+  const handleNewApplication = () => {
+    setSuccess(false);
+    // Form will auto pre-fill with user data
+  };
 
   if (success) {
     return (
@@ -306,10 +255,25 @@ export default function ClinicalTrialForm() {
           <h3 className="text-2xl font-bold text-gray-900 mb-3">
             Благодарим Ви!
           </h3>
-          <p className="text-gray-600 max-w-md mx-auto">
+          <p className="text-gray-600 max-w-md mx-auto mb-6">
             Вашата заявка за клинично изпитване е изпратена успешно. Ще се
             свържем с Вас в най-кратък срок.
           </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <button
+              onClick={handleNewApplication}
+              className="px-8 py-3 bg-[#04737d] hover:bg-[#035057] text-white font-medium rounded-lg transition-colors"
+            >
+              Кандидатствай за друго проучване
+            </button>
+            <a
+              href="/klinichni-prouchvaniya/nameri-klinichno-prouchvane"
+              className="px-8 py-3 border-2 border-[#04737d] text-[#04737d] hover:bg-[#04737d] hover:text-white font-medium rounded-lg transition-colors"
+            >
+              Разгледай проучвания
+            </a>
+          </div>
         </div>
       </div>
     );

@@ -298,7 +298,7 @@ export default function StickyQuickRegister() {
         email: formData.email,
         phone: formData.phone,
         password: formData.password,
-        therapeutic_area: formData.therapeutic_area,
+        acf_therapeutic_area: formData.therapeutic_area,
         disease: formData.disease,
       });
 

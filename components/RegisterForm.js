@@ -323,7 +323,7 @@ export default function RegisterForm({
         password: formData.password,
         first_name: formData.first_name,
         last_name: formData.last_name,
-        therapeutic_area: formData.therapeutic_area,
+        acf_therapeutic_area: formData.therapeutic_area,
         disease: formData.disease,
       });
 

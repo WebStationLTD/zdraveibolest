@@ -13,6 +13,7 @@ import {
   quickRegisterUser as apiQuickRegister,
   updateUserProfile as apiUpdateProfile,
   submitClinicalTrialInquiry as apiSubmitInquiry,
+  createApplication as apiCreateApplication,
   validateToken,
   logoutUser as apiLogout,
   getCurrentUser as getStoredUser,
@@ -264,13 +265,26 @@ export function AuthProvider({ children }) {
       // Get current user from localStorage
       const currentUser = getStoredUser();
       
-      // Merge: current user + backend response + profile data we sent
-      // This ensures ALL fields are preserved
+      // Normalize ACF field names: create both prefixed and non-prefixed versions
+      // This ensures compatibility with both backend response and frontend checks
+      const normalizedData = {};
+      Object.keys(profileData).forEach(key => {
+        if (key.startsWith('acf_')) {
+          // If field has acf_ prefix, also save without prefix
+          const fieldWithoutPrefix = key.replace('acf_', '');
+          normalizedData[fieldWithoutPrefix] = profileData[key];
+          normalizedData[key] = profileData[key]; // Keep original too
+        } else {
+          normalizedData[key] = profileData[key];
+        }
+      });
+      
+      // Merge: current user + backend response + normalized profile data
       const mergedUserData = {
-        ...currentUser, // Start with everything we have
-        ...response.user, // Add backend response (may have some fields)
-        ...profileData, // Force add the fields we just sent
-        // Keep user ID and email from current user (these should never change)
+        ...currentUser,
+        ...response.user,
+        ...normalizedData,
+        // Keep user ID and email from current user
         id: currentUser?.id || response.user?.id,
         user_id: currentUser?.user_id || response.user?.user_id,
         email: currentUser?.email || response.user?.email,
@@ -311,6 +325,21 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const createApplication = async (applicationData) => {
+    try {
+      const token = getAuthToken();
+      if (!token) {
+        throw new Error("Not authenticated");
+      }
+
+      const response = await apiCreateApplication(applicationData, token);
+      return { success: true, data: response };
+    } catch (error) {
+      console.error("Application creation error:", error);
+      return { success: false, error: error.message };
+    }
+  };
+
   const logout = () => {
     apiLogout();
     setUser(null);
@@ -326,6 +355,7 @@ export function AuthProvider({ children }) {
     quickRegister,
     updateProfile,
     submitClinicalInquiry,
+    createApplication,
     logout,
     checkAuth,
   };
