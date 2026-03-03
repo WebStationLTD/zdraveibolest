@@ -63,26 +63,13 @@ const step1Schema = z.object({
   last_name: z.string().min(1, "Фамилията е задължителна"),
   email: z.string().email("Невалиден имейл адрес"),
   phone: z.string().min(1, "Телефонът е задължителен"),
+  birth_year: z.string().min(1, "Годината на раждане е задължителна"),
+  gender: z.string().min(1, "Полът е задължителен"),
+  city: z.string().min(1, "Градът е задължителен"),
 });
 
 const step2Schema = z.object({
-  birth_year: z
-    .string()
-    .optional()
-    .refine(
-      (val) => {
-        if (!val) return true;
-        const year = parseInt(val);
-        return year >= 1920 && year <= new Date().getFullYear();
-      },
-      { message: "Невалидна година" }
-    ),
-  gender: z.string().optional(),
-  city: z.string().optional(),
   therapeutic_area: z.string().optional(),
-});
-
-const step3Schema = z.object({
   current_conditions: z.string().optional(),
   current_medications: z.string().optional(),
   smoking_status: z.string().optional(),
@@ -116,8 +103,6 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
         return step1Schema;
       case 2:
         return step2Schema;
-      case 3:
-        return step3Schema;
       default:
         return step1Schema;
     }
@@ -251,7 +236,7 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
   const handleNext = async () => {
     const isValid = await trigger();
     if (isValid) {
-      setCurrentStep((prev) => Math.min(prev + 1, 3));
+      setCurrentStep((prev) => Math.min(prev + 1, 2));
       setError("");
     }
   };
@@ -262,15 +247,15 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
   };
 
   const onSubmit = async (data) => {
-    // ВАЖНО: Submit само ако сме на стъпка 3!
-    if (currentStep !== 3) {
-      console.log("⚠️ Submit prevented - not on step 3");
+    // ВАЖНО: Submit само ако сме на стъпка 2!
+    if (currentStep !== 2) {
+      console.log("⚠️ Submit prevented - not on step 2");
       return;
     }
 
-    // Валидирай с step3Schema
+    // Валидирай с step2Schema
     try {
-      step3Schema.parse(data);
+      step2Schema.parse(data);
     } catch (err) {
       console.error("Validation error:", err);
       if (err.errors) {
@@ -426,7 +411,7 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
     );
   }
 
-  const progress = (currentStep / 3) * 100;
+  const progress = (currentStep / 2) * 100;
 
   return (
     <div className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-8 md:p-12 shadow-lg border border-gray-100">
@@ -442,7 +427,7 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
       <div className="mb-8">
         <div className="flex justify-between mb-2">
           <span className="text-sm font-medium text-gray-700">
-            Стъпка {currentStep} от 3
+            Стъпка {currentStep} от 2
           </span>
           <span className="text-sm font-medium text-gray-700">
             {Math.round(progress)}%
@@ -458,14 +443,14 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
         </div>
 
         {/* Step Labels */}
-        <div className="flex justify-between mt-4">
+        <div className="flex justify-around mt-4 max-w-md mx-auto">
           <div
             className={`flex flex-col items-center ${
               currentStep >= 1 ? "text-[#04737d]" : "text-gray-400"
             }`}
           >
             <div
-              className={`w-8 h-8 rounded-full flex items-center justify-center mb-2 ${
+              className={`w-10 h-10 rounded-full flex items-center justify-center mb-2 ${
                 currentStep >= 1
                   ? "bg-[#04737d] text-white"
                   : "bg-gray-200 text-gray-400"
@@ -473,7 +458,7 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
             >
               1
             </div>
-            <span className="text-xs font-medium">Лични данни</span>
+            <span className="text-sm font-medium">Лични данни</span>
           </div>
           <div
             className={`flex flex-col items-center ${
@@ -481,7 +466,7 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
             }`}
           >
             <div
-              className={`w-8 h-8 rounded-full flex items-center justify-center mb-2 ${
+              className={`w-10 h-10 rounded-full flex items-center justify-center mb-2 ${
                 currentStep >= 2
                   ? "bg-[#04737d] text-white"
                   : "bg-gray-200 text-gray-400"
@@ -489,23 +474,7 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
             >
               2
             </div>
-            <span className="text-xs font-medium">Демография</span>
-          </div>
-          <div
-            className={`flex flex-col items-center ${
-              currentStep >= 3 ? "text-[#04737d]" : "text-gray-400"
-            }`}
-          >
-            <div
-              className={`w-8 h-8 rounded-full flex items-center justify-center mb-2 ${
-                currentStep >= 3
-                  ? "bg-[#04737d] text-white"
-                  : "bg-gray-200 text-gray-400"
-              }`}
-            >
-              3
-            </div>
-            <span className="text-xs font-medium">Здравна информация</span>
+            <span className="text-sm font-medium">Здравна информация</span>
           </div>
         </div>
       </div>
@@ -517,12 +486,12 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
       )}
 
       <form onSubmit={handleSubmit(onSubmit)} onKeyDown={(e) => {
-        if (e.key === 'Enter' && currentStep !== 3) {
+        if (e.key === 'Enter' && currentStep !== 2) {
           e.preventDefault();
         }
       }}>
         <AnimatePresence mode="wait">
-          {/* Step 1: Personal Information */}
+          {/* Step 1: Personal Information + Demographics */}
           {currentStep === 1 && (
             <motion.div
               key="step1"
@@ -544,16 +513,9 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
                     type="text"
                     id="first_name"
                     {...register("first_name")}
-                    className={`w-full px-4 py-3 border ${
-                      errors.first_name ? "border-red-300" : "border-gray-300"
-                    } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent transition-all bg-white`}
-                    placeholder="Вашето име"
+                    readOnly
+                    className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-gray-50 text-gray-600 cursor-not-allowed"
                   />
-                  {errors.first_name && (
-                    <p className="mt-1 text-sm text-red-600">
-                      {errors.first_name.message}
-                    </p>
-                  )}
                 </div>
 
                 <div>
@@ -567,16 +529,9 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
                     type="text"
                     id="last_name"
                     {...register("last_name")}
-                    className={`w-full px-4 py-3 border ${
-                      errors.last_name ? "border-red-300" : "border-gray-300"
-                    } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent transition-all bg-white`}
-                    placeholder="Вашата фамилия"
+                    readOnly
+                    className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-gray-50 text-gray-600 cursor-not-allowed"
                   />
-                  {errors.last_name && (
-                    <p className="mt-1 text-sm text-red-600">
-                      {errors.last_name.message}
-                    </p>
-                  )}
                 </div>
               </div>
 
@@ -592,16 +547,9 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
                     type="email"
                     id="email"
                     {...register("email")}
-                    className={`w-full px-4 py-3 border ${
-                      errors.email ? "border-red-300" : "border-gray-300"
-                    } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent transition-all bg-white`}
-                    placeholder="your@email.com"
+                    readOnly
+                    className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-gray-50 text-gray-600 cursor-not-allowed"
                   />
-                  {errors.email && (
-                    <p className="mt-1 text-sm text-red-600">
-                      {errors.email.message}
-                    </p>
-                  )}
                 </div>
 
                 <div>
@@ -615,105 +563,106 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
                     type="tel"
                     id="phone"
                     {...register("phone")}
-                    className={`w-full px-4 py-3 border ${
-                      errors.phone ? "border-red-300" : "border-gray-300"
-                    } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent transition-all bg-white`}
-                    placeholder="+359 888 123 456"
+                    readOnly
+                    className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-gray-50 text-gray-600 cursor-not-allowed"
                   />
-                  {errors.phone && (
+                </div>
+              </div>
+
+              <div className="pt-4 border-t border-gray-200">
+                <p className="text-sm text-gray-500 mb-4">
+                  Допълнителна информация за по-добро съответствие с клиничните проучвания
+                </p>
+                
+                <div>
+                  <label
+                    htmlFor="birth_year"
+                    className="block text-sm font-medium text-gray-700 mb-1.5"
+                  >
+                    Година на раждане <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="number"
+                    id="birth_year"
+                    {...register("birth_year")}
+                    min="1920"
+                    max={new Date().getFullYear()}
+                    className={`w-full px-4 py-3 border ${
+                      errors.birth_year ? "border-red-300" : "border-gray-300"
+                    } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent transition-all bg-white`}
+                    placeholder="1985"
+                  />
+                  {errors.birth_year && (
                     <p className="mt-1 text-sm text-red-600">
-                      {errors.phone.message}
+                      {errors.birth_year.message}
                     </p>
                   )}
                 </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                  <div>
+                    <label
+                      htmlFor="gender"
+                      className="block text-sm font-medium text-gray-700 mb-1.5"
+                    >
+                      Пол <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                      id="gender"
+                      {...register("gender")}
+                      className={`w-full px-4 py-3 border ${
+                        errors.gender ? "border-red-300" : "border-gray-300"
+                      } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent transition-all bg-white appearance-none cursor-pointer`}
+                    >
+                      {GENDER_OPTIONS.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+                    {errors.gender && (
+                      <p className="mt-1 text-sm text-red-600">
+                        {errors.gender.message}
+                      </p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="city"
+                      className="block text-sm font-medium text-gray-700 mb-1.5"
+                    >
+                      Град <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                      id="city"
+                      {...register("city")}
+                      className={`w-full px-4 py-3 border ${
+                        errors.city ? "border-red-300" : "border-gray-300"
+                      } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent transition-all bg-white appearance-none cursor-pointer`}
+                    >
+                      <option value="">Изберете</option>
+                      {BULGARIAN_CITIES.map((city) => (
+                        <option key={city} value={city}>
+                          {city}
+                        </option>
+                      ))}
+                    </select>
+                    {errors.city && (
+                      <p className="mt-1 text-sm text-red-600">
+                        {errors.city.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
               </div>
             </motion.div>
           )}
 
-          {/* Step 2: Demographics */}
+          {/* Step 2: Medical Information */}
           {currentStep === 2 && (
             <motion.div
               key="step2"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.3 }}
-              className="space-y-6"
-            >
-              <div>
-                <label
-                  htmlFor="birth_year"
-                  className="block text-sm font-medium text-gray-700 mb-1.5"
-                >
-                  Година на раждане
-                </label>
-                <input
-                  type="number"
-                  id="birth_year"
-                  {...register("birth_year")}
-                  min="1920"
-                  max={new Date().getFullYear()}
-                  className={`w-full px-4 py-3 border ${
-                    errors.birth_year ? "border-red-300" : "border-gray-300"
-                  } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent transition-all bg-white`}
-                  placeholder="1985"
-                />
-                {errors.birth_year && (
-                  <p className="mt-1 text-sm text-red-600">
-                    {errors.birth_year.message}
-                  </p>
-                )}
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label
-                    htmlFor="gender"
-                    className="block text-sm font-medium text-gray-700 mb-1.5"
-                  >
-                    Пол
-                  </label>
-                  <select
-                    id="gender"
-                    {...register("gender")}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent transition-all bg-white appearance-none cursor-pointer"
-                  >
-                    {GENDER_OPTIONS.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="city"
-                    className="block text-sm font-medium text-gray-700 mb-1.5"
-                  >
-                    Град
-                  </label>
-                  <select
-                    id="city"
-                    {...register("city")}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent transition-all bg-white appearance-none cursor-pointer"
-                  >
-                    <option value="">Изберете</option>
-                    {BULGARIAN_CITIES.map((city) => (
-                      <option key={city} value={city}>
-                        {city}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-            </motion.div>
-          )}
-
-          {/* Step 3: Medical Information */}
-          {currentStep === 3 && (
-            <motion.div
-              key="step3"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
@@ -882,7 +831,7 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
             Назад
           </button>
 
-          {currentStep < 3 ? (
+          {currentStep < 2 ? (
             <button
               type="button"
               onClick={handleNext}
@@ -896,7 +845,7 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
               disabled={submitting}
               className="px-10 py-3 bg-[#f5a524] hover:bg-[#e09000] text-white font-semibold rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {submitting ? "Изпращане..." : "Завърши регистрацията"}
+              {submitting ? "Изпращане..." : "Завърши кандидатурата"}
             </button>
           )}
         </div>
