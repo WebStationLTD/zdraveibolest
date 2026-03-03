@@ -347,43 +347,30 @@ export async function createApplication(applicationData, token) {
       throw new Error('Не сте влезли в системата. Моля, влезте отново.');
     }
     
-    // Try standard WordPress REST API for creating posts
-    // ACF fields should be sent as meta fields or in the root object
-    const payload = {
-      title: `Кандидатура - ${applicationData.first_name} ${applicationData.last_name} - ${new Date().toLocaleDateString("bg-BG")}`,
-      status: 'publish',
-      // Try sending ACF fields directly in root
-      acf_applicant_id: applicationData.applicant_id,
-      acf_target_study_id: applicationData.target_study_id || 0,
-      acf_phone_number: applicationData.phone || '',
-      acf_birth_year: applicationData.birth_year || '',
-      acf_gender: applicationData.gender || '',
-      acf_city: applicationData.city || '',
-      acf_current_diseases: applicationData.current_diseases || '',
-      acf_current_medications: applicationData.current_medications || '',
-      acf_smoking_status: applicationData.smoking_status || '',
-      acf_additional_health_info: applicationData.additional_health_info || '',
-    };
+    console.log('📤 CREATE APPLICATION - Sending data:', applicationData);
     
-    const response = await fetch(`${API_URL}/wp-json/wp/v2/applications`, {
+    // Use custom endpoint with X-Auth-Token (like all other endpoints)
+    const response = await fetch(`${API_URL}/wp-json/zdravei/v1/create-application`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        'X-Auth-Token': token,
       },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(applicationData),
     });
 
     const data = await response.json();
+    
+    console.log('📥 CREATE APPLICATION - Response:', data);
 
     if (!response.ok) {
-      console.error('Application creation failed:', data);
+      console.error('❌ Application creation failed:', data);
       throw new Error(data.message || 'Грешка при създаване на кандидатурата');
     }
 
     return data;
   } catch (error) {
-    console.error('Application creation error:', error);
+    console.error('❌ Application creation error:', error);
     throw error;
   }
 }
