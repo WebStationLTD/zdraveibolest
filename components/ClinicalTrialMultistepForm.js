@@ -79,6 +79,7 @@ const step2Schema = z.object({
     ),
   gender: z.string().optional(),
   city: z.string().optional(),
+  therapeutic_area: z.string().optional(),
 });
 
 const step3Schema = z.object({
@@ -106,6 +107,7 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
+  const [therapeuticAreas, setTherapeuticAreas] = useState([]);
 
   // Get the appropriate schema for current step
   const getCurrentSchema = () => {
@@ -128,21 +130,45 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
     watch,
     setValue,
     trigger,
-  } = useForm({
-    resolver: zodResolver(getCurrentSchema()),
-    mode: "onChange",
-  });
+    setError: setFieldError,
+  } = useForm();
 
   const watchedFields = watch();
+
+  // Fetch therapeutic areas from API
+  useEffect(() => {
+    const fetchTherapeuticAreas = async () => {
+      try {
+        const response = await fetch(
+          "https://zdraveibolest.admin-panels.com/wp-json/wp/v2/services?_fields=id,slug,title&per_page=100&orderby=date&order=desc"
+        );
+        if (response.ok) {
+          const data = await response.json();
+          setTherapeuticAreas(data);
+          console.log("✅ Therapeutic areas loaded:", data);
+        } else {
+          console.error("Failed to fetch therapeutic areas:", response.status);
+        }
+      } catch (error) {
+        console.error("Error fetching therapeutic areas:", error);
+      }
+    };
+    fetchTherapeuticAreas();
+  }, []);
 
   // Pre-fill form with user data on mount
   useEffect(() => {
     if (user && !authLoading) {
+      // ВАЖНО: Винаги инициализирай privacy_consent с false
+      setValue("privacy_consent", false);
+      
       // Check if we have saved form data in session storage
       const savedData = sessionStorage.getItem(STORAGE_KEY);
       if (savedData) {
         try {
           const parsedData = JSON.parse(savedData);
+          // ВАЖНО: НЕ зареждай privacy_consent от sessionStorage!
+          delete parsedData.privacy_consent;
           Object.keys(parsedData).forEach((key) => {
             setValue(key, parsedData[key]);
           });
@@ -160,6 +186,7 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
       setValue("birth_year", user.birth_year || user.acf_birth_year || "");
       setValue("gender", user.gender || user.acf_gender || "");
       setValue("city", user.city || user.acf_city || "");
+      setValue("therapeutic_area", user.therapeutic_area || user.acf_therapeutic_area || "");
       setValue("current_conditions", user.current_conditions || user.acf_current_diseases || "");
       setValue("current_medications", user.current_medications || user.acf_current_medications || "");
       setValue("smoking_status", user.smoking_status || user.acf_smoking_status || "");
@@ -169,6 +196,7 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
         birth_year: user.birth_year || user.acf_birth_year,
         city: user.city || user.acf_city,
         gender: user.gender || user.acf_gender,
+        therapeutic_area: user.therapeutic_area || user.acf_therapeutic_area,
       });
     }
   }, [user, authLoading, setValue]);
@@ -176,7 +204,9 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
   // Save form data to sessionStorage on every change
   useEffect(() => {
     if (Object.keys(watchedFields).length > 0) {
-      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(watchedFields));
+      // ВАЖНО: НЕ записвай privacy_consent в sessionStorage
+      const { privacy_consent, ...fieldsToSave } = watchedFields;
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(fieldsToSave));
     }
   }, [watchedFields]);
 
@@ -232,6 +262,29 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
   };
 
   const onSubmit = async (data) => {
+    // ВАЖНО: Submit само ако сме на стъпка 3!
+    if (currentStep !== 3) {
+      console.log("⚠️ Submit prevented - not on step 3");
+      return;
+    }
+
+    // Валидирай с step3Schema
+    try {
+      step3Schema.parse(data);
+    } catch (err) {
+      console.error("Validation error:", err);
+      if (err.errors) {
+        // Zod errors имат структура: [{ path: ["field_name"], message: "..." }]
+        err.errors.forEach((error) => {
+          const fieldName = error.path[0];
+          setFieldError(fieldName, { type: "manual", message: error.message });
+        });
+      }
+      setError("Моля, попълнете всички задължителни полета правилно.");
+      setSubmitting(false);
+      return;
+    }
+
     setSubmitting(true);
     setError("");
 
@@ -246,6 +299,7 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
         acf_birth_year: data.birth_year || "",
         acf_gender: data.gender || "",
         acf_city: data.city || "",
+        acf_therapeutic_area: data.therapeutic_area || "",
         acf_current_diseases: data.current_conditions || "",
         acf_current_medications: data.current_medications || "",
         acf_smoking_status: data.smoking_status || "",
@@ -270,14 +324,14 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
         target_study_id: studyId || 0,
         first_name: data.first_name,
         last_name: data.last_name,
-        phone: data.phone || "",
-        birth_year: data.birth_year || "",
-        gender: data.gender || "",
-        city: data.city || "",
-        current_diseases: data.current_conditions || "",
-        current_medications: data.current_medications || "",
-        smoking_status: data.smoking_status || "",
-        additional_health_info: data.additional_info || "",
+        phone: data.phone || user.phone || user.acf_phone_number || "",
+        birth_year: data.birth_year || user.birth_year || user.acf_birth_year || "",
+        gender: data.gender || user.gender || user.acf_gender || "",
+        city: data.city || user.city || user.acf_city || "",
+        current_diseases: data.current_conditions || user.current_conditions || user.acf_current_diseases || "",
+        current_medications: data.current_medications || user.current_medications || user.acf_current_medications || "",
+        smoking_status: data.smoking_status || user.smoking_status || user.acf_smoking_status || "",
+        additional_health_info: data.additional_info || user.additional_info || user.acf_additional_health_info || "",
       };
 
       const applicationResult = await createApplication(applicationData);
@@ -316,6 +370,7 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
       setValue("birth_year", user.birth_year || user.acf_birth_year || "");
       setValue("gender", user.gender || user.acf_gender || "");
       setValue("city", user.city || user.acf_city || "");
+      setValue("therapeutic_area", user.therapeutic_area || user.acf_therapeutic_area || "");
       setValue("current_conditions", user.current_conditions || user.acf_current_diseases || "");
       setValue("current_medications", user.current_medications || user.acf_current_medications || "");
       setValue("smoking_status", user.smoking_status || user.acf_smoking_status || "");
@@ -353,6 +408,7 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <button
+              type="button"
               onClick={handleNewApplication}
               className="px-8 py-3 bg-[#04737d] hover:bg-[#035057] text-white font-medium rounded-lg transition-colors"
             >
@@ -460,7 +516,11 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
         </div>
       )}
 
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} onKeyDown={(e) => {
+        if (e.key === 'Enter' && currentStep !== 3) {
+          e.preventDefault();
+        }
+      }}>
         <AnimatePresence mode="wait">
           {/* Step 1: Personal Information */}
           {currentStep === 1 && (
@@ -660,6 +720,54 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
               transition={{ duration: 0.3 }}
               className="space-y-6"
             >
+              <div>
+                <label
+                  htmlFor="therapeutic_area"
+                  className="block text-sm font-medium text-gray-700 mb-1.5"
+                >
+                  За коя болест проявявате интерес?{" "}
+                  <span className="text-red-500">*</span>
+                </label>
+                {user?.therapeutic_area || user?.acf_therapeutic_area ? (
+                  // Ако вече има попълнена терапевтична област - показваме я като текст
+                  <div className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-gray-50 text-gray-700">
+                    {therapeuticAreas.find(
+                      (area) =>
+                        area.slug ===
+                        (user.therapeutic_area || user.acf_therapeutic_area)
+                    )?.title?.rendered ||
+                      user.therapeutic_area ||
+                      user.acf_therapeutic_area}
+                    <input
+                      type="hidden"
+                      {...register("therapeutic_area")}
+                      value={user.therapeutic_area || user.acf_therapeutic_area}
+                    />
+                  </div>
+                ) : (
+                  // Ако няма - показваме dropdown
+                  <>
+                    <select
+                      id="therapeutic_area"
+                      {...register("therapeutic_area")}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent transition-all bg-white appearance-none cursor-pointer"
+                    >
+                      <option value="">Изберете терапевтична област</option>
+                      {therapeuticAreas.map((area) => (
+                        <option key={area.id} value={area.slug}>
+                          {area.title.rendered}
+                        </option>
+                      ))}
+                    </select>
+                    <p className="mt-2 text-xs text-gray-500">
+                      Тази информация ни помага да Ви предоставим по-качествена
+                      и персонализирана информация за клиничните проучвания,
+                      които могат да Ви бъдат полезни.
+                    </p>
+                  </>
+                )}
+              </div>
+
               <div>
                 <label
                   htmlFor="current_conditions"

@@ -262,48 +262,41 @@ export function AuthProvider({ children }) {
 
       console.log('📥 UPDATE PROFILE - Backend response:', response);
 
-      // Get current user from localStorage
-      const currentUser = getStoredUser();
+      // ВАЖНО: След update, вземи АКТУАЛНИТЕ данни от базата чрез validate
+      console.log('🔄 FETCHING UPDATED USER DATA...');
+      const validateResponse = await validateToken(token);
       
-      // Normalize ACF field names: create both prefixed and non-prefixed versions
-      // This ensures compatibility with both backend response and frontend checks
-      const normalizedData = {};
-      Object.keys(profileData).forEach(key => {
-        if (key.startsWith('acf_')) {
-          // If field has acf_ prefix, also save without prefix
-          const fieldWithoutPrefix = key.replace('acf_', '');
-          normalizedData[fieldWithoutPrefix] = profileData[key];
-          normalizedData[key] = profileData[key]; // Keep original too
-        } else {
-          normalizedData[key] = profileData[key];
-        }
-      });
+      if (validateResponse) {
+        const updatedUserData = {
+          ...validateResponse,
+          // Normalize ACF field names
+          phone: validateResponse.phone || validateResponse.acf_phone_number,
+          birth_year: validateResponse.birth_year || validateResponse.acf_birth_year,
+          gender: validateResponse.gender || validateResponse.acf_gender,
+          city: validateResponse.city || validateResponse.acf_city,
+          therapeutic_area: validateResponse.therapeutic_area || validateResponse.acf_therapeutic_area,
+          current_conditions: validateResponse.current_conditions || validateResponse.acf_current_diseases,
+          current_medications: validateResponse.current_medications || validateResponse.acf_current_medications,
+          smoking_status: validateResponse.smoking_status || validateResponse.acf_smoking_status,
+          additional_info: validateResponse.additional_info || validateResponse.acf_additional_health_info,
+        };
+        
+        updatedUserData.profile_completed = isProfileCompleted(updatedUserData);
+        
+        console.log('💾 SAVING UPDATED USER DATA:', updatedUserData);
+        
+        // Save to localStorage
+        saveAuthData(token, updatedUserData);
+        
+        // Force update state
+        setUser(updatedUserData);
+        
+        console.log('✅ PROFILE UPDATE COMPLETE');
+        
+        return { success: true, user: updatedUserData };
+      }
       
-      // Merge: current user + backend response + normalized profile data
-      const mergedUserData = {
-        ...currentUser,
-        ...response.user,
-        ...normalizedData,
-        // Keep user ID and email from current user
-        id: currentUser?.id || response.user?.id,
-        user_id: currentUser?.user_id || response.user?.user_id,
-        email: currentUser?.email || response.user?.email,
-      };
-      
-      // Re-validate profile completion
-      mergedUserData.profile_completed = isProfileCompleted(mergedUserData);
-      
-      console.log('💾 SAVING MERGED DATA:', mergedUserData);
-      
-      // Save to localStorage
-      saveAuthData(token, mergedUserData);
-      
-      // Force update state
-      setUser(mergedUserData);
-      
-      console.log('✅ PROFILE UPDATE COMPLETE');
-      
-      return { success: true, user: mergedUserData };
+      return { success: true, user: response.user };
     } catch (error) {
       console.error("❌ Profile update error:", error);
       return { success: false, error: error.message };
