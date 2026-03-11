@@ -18,6 +18,7 @@ import {
   ChevronDownIcon,
   UserCircleIcon,
   ArrowRightOnRectangleIcon,
+  BeakerIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useAuth } from "../contexts/AuthContext";
@@ -253,6 +254,20 @@ export default function Navigation({ therapeuticAreas = [] }) {
                   <SearchButton />
                 </div>
               </div>
+
+              {/* Клинични проучвания - Mobile - само за логнати, скрит на клинични страниците */}
+              {!loading && isAuthenticated && !isClinicalTrialsSection && (
+                <div className="flow-root">
+                  <Link
+                    href="/klinichni-prouchvaniya"
+                    className="flex items-center gap-2 -m-2 p-2 font-semibold text-[#04737d] hover:text-[#035057] transition-colors"
+                    onClick={() => setOpen(false)}
+                  >
+                    <BeakerIcon className="h-5 w-5 flex-shrink-0" />
+                    Клинични проучвания
+                  </Link>
+                </div>
+              )}
 
               {/* Auth Buttons - Mobile */}
               <div className="border-t border-gray-200 pt-4 mt-4 space-y-3">
@@ -532,6 +547,18 @@ export default function Navigation({ therapeuticAreas = [] }) {
 
             {/* Auth Buttons - Desktop */}
             <div className="hidden xl:flex items-center justify-end gap-2">
+              {/* Клинични проучвания - само за логнати, скрит на клинични страниците */}
+              {!loading && isAuthenticated && !isClinicalTrialsSection && (
+                <Link
+                  href="/klinichni-prouchvaniya"
+                  className="flex items-center justify-center gap-1.5 px-3 py-2 text-sm font-semibold text-white bg-gradient-to-r from-[#238C96] to-[#04737d] hover:from-[#04737d] hover:to-[#035057] rounded-lg transition-all duration-200 shadow-sm hover:shadow-md"
+                  title="Клинични проучвания"
+                >
+                  <BeakerIcon className="h-4 w-4 flex-shrink-0" />
+                  <span className="hidden 2xl:inline whitespace-nowrap">Клинични проучвания</span>
+                </Link>
+              )}
+
               {/* Auth Buttons */}
               {!loading && (
                 <>
