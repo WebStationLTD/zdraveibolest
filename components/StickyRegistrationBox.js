@@ -32,25 +32,23 @@ export default function StickyRegistrationBox() {
             Регистрирайте се през кратка контактна форма, а ние ще се свържем с Вас.
           </p>
 
-          {/* Capsule Image */}
-          <div className="mb-8 flex justify-center">
-            <div className="relative w-56 h-28">
-              <Image
-                src="/capsule-zib.png"
-                alt="Capsule"
-                fill
-                className="object-contain"
-                priority
-              />
-            </div>
-          </div>
-
-          {/* CTA Button */}
+          {/* Capsule Button */}
           <Link
             href={registrationLink}
-            className="inline-block w-full bg-gradient-to-b from-[#5FA8B3] via-[#5FA8B3] to-[#4A8A94] hover:from-[#4A8A94] hover:to-[#3A7A84] text-white font-bold text-lg py-4 px-8 rounded-full shadow-xl transition-all duration-300 transform hover:scale-[1.02] hover:shadow-2xl"
+            className="relative block w-56 h-28 mx-auto transition-all duration-300 transform hover:scale-105 hover:drop-shadow-2xl cursor-pointer"
           >
-            Регистрация
+            <Image
+              src="/capsule-zib-new.png"
+              alt="Capsule"
+              fill
+              className="object-contain"
+              priority
+            />
+            <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center">
+              <span className="text-white font-bold text-lg tracking-wide drop-shadow-lg">
+                Регистрация
+              </span>
+            </div>
           </Link>
         </div>
       </div>
