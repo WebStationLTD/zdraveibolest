@@ -20,78 +20,93 @@ const steps = [
   {
     number: 1,
     icon: ClipboardDocumentListIcon,
-    title: "Регистрирайте интереса си",
+    title: "Регистрация на интерес",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.",
+      "Първата стъпка е да попълните кратка форма за регистрация. Ще ви зададем няколко основни въпроса, свързани с възраст, здравословно състояние и навици. Това ни помага да проверим дали има клинично проучване, за което бихте могли да отговаряте на условията.",
     bullets: null,
-    extra: null,
+    extra:
+      "Регистрацията не ви задължава да участвате и служи само за първоначална оценка.",
   },
   {
     number: 2,
     icon: HeartIcon,
-    title: "Скрининг преглед",
+    title: "Предварителен разговор и информация",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      "Ако има подходящо клинично проучване, член на нашия екип ще се свърже с вас, за да ви предостави повече информация. Ще научите:",
     bullets: [
-      "Физически преглед",
-      "Кръвни и урейни изследвания",
-      "ЕКГ и здравни оценки",
+      "Каква е целта на проучването",
+      "Каква е неговата продължителност",
+      "Какви посещения или престой са необходими",
+      "Какво възнаграждение е предвидено",
     ],
     extra:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud exercitation. Участието е изцяло доброволно.",
+      "Ще имате възможност спокойно да зададете всички свои въпроси, преди да решите дали желаете да продължите.",
   },
   {
     number: 3,
-    icon: BeakerIcon,
-    title: "Участие в проучването",
+    icon: ShieldCheckIcon,
+    title: "Първоначален преглед",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.",
+      "Ако проявявате интерес към участие, ще бъдете поканени на предварителен медицински преглед. Скринингът може да включва:",
     bullets: [
-      "Дневни визити като амбулаторен пациент",
-      "Краткосрочен престой (нощувка или няколко дни)",
-      "По-дълъг престой до няколко седмици",
-      "Проследяващи визити на място или по телефон",
+      "Физически преглед",
+      "Кръвни и уринни изследвания",
+      "Електрокардиограма (ЕКГ)",
+      "Преглед на медицинска история и др. оценки",
     ],
     extra:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor. Лекари и сестри са на ваше разположение 24/7.",
+      "Преди да започне проучването ще получите подробна информация и документ за информирано съгласие.",
   },
   {
     number: 4,
-    icon: CalendarDaysIcon,
-    title: "Текущо проследяване",
+    icon: BeakerIcon,
+    title: "Участие в клиничното проучване",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi.",
+      "Ако сте одобрени и желаете да участвате, ще бъдете включени в клиничното проучване. В зависимост от конкретния проект участието може да включва:",
+    bullets: [
+      "Посещения в клиничния център",
+      "Кратък или по-дълъг престой",
+      "Медицински изследвания и наблюдение",
+      "Последващи контролни прегледи",
+    ],
+    extra:
+      "За отделеното време и ангажираност обикновено се предвижда възнаграждение, като размерът му зависи от конкретното проучване.",
+  },
+  {
+    number: 5,
+    icon: CalendarDaysIcon,
+    title: "Проследяване след проучването",
+    description:
+      "След приключване на основната част на проучването може да има кратко проследяващо посещение или телефонен разговор.",
     bullets: null,
-    extra: null,
+    extra:
+      "Това позволява на медицинския екип да се увери, че всичко протича нормално след участието.",
   },
 ];
 
-const safetyFeatures = [
+const compensationReasons = [
   {
     icon: GlobeAltIcon,
-    text: "Клиники, разположени в близост до основни медицински центрове",
-  },
-  {
-    icon: CalendarDaysIcon,
-    text: "Лекари и медицински персонал на място 24/7 и при спешност",
-  },
-  {
-    icon: ShieldCheckIcon,
-    text: "Проучвания, одобрени от независими комисии по етика",
-  },
-  {
-    icon: LockClosedIcon,
-    text: "Строги протоколи за защита на личните данни и поверителност",
+    text: "Помагат за развитието на нови лекарства",
   },
   {
     icon: ClipboardDocumentCheckIcon,
-    text: "Над 2,500 успешно завършени ранни проучвания",
+    text: "Получават безплатни медицински изследвания",
+  },
+  {
+    icon: LockClosedIcon,
+    text: "Получават възнаграждение за отделеното време",
+  },
+  {
+    icon: BeakerIcon,
+    text: "Участват активно в научни изследвания",
   },
 ];
 
 const quickLinks = [
   { name: "Как работи", href: "#how-it-works" },
-  { name: "Безопасност", href: "#safety" },
+  { name: "Стъпките", href: "#steps" },
+  { name: "Възнаграждение", href: "#safety" },
   { name: "Кандидатствай", href: "#apply" },
 ];
 
@@ -142,17 +157,17 @@ export default function ZdraviDobrovolciPage() {
               <p className="text-xl text-blue-200 font-semibold mb-4">
                 Участие като здрав доброволец в клинично проучване
               </p>
+              <p className="text-blue-100/75 leading-relaxed mb-4 max-w-lg text-base">
+                Участието на здрави доброволци в клинични проекти е важна част от развитието на нови лекарства и терапии. Участието е изцяло доброволно и се извършва под медицински контрол.
+              </p>
               <p className="text-blue-100/75 leading-relaxed mb-8 max-w-lg text-base">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris.
-                Duis aute irure dolor in reprehenderit in voluptate velit esse.
+                За отделеното време и ангажираност се предвижда възнаграждение. В зависимост от клиничната програма възнаграждението може да бъде различно, тъй като зависи от продължителността и необходимите посещения.
               </p>
               <Link
                 href="#apply"
                 className="inline-flex items-center gap-2 bg-[#2D8CFF] hover:bg-[#1a6fd4] text-white font-bold px-8 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
               >
-                Провери допустимостта си
+                Кандидатствай
               </Link>
             </div>
 
@@ -178,8 +193,15 @@ export default function ZdraviDobrovolciPage() {
         3 gap-а × 1.5rem = 4.5rem
         card_width = (92.5vw - 4.5rem) / 3.333
       */}
-      <section className="py-16 bg-white overflow-hidden">
+      <section id="steps" className="py-16 bg-white overflow-hidden">
         <div className="ml-[2.5%] md:ml-[7.5%]">
+          {/* Section heading */}
+          <div className="mb-10 pr-[2.5%] md:pr-[7.5%]">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-[#0A2540] leading-tight">
+              Стъпки за участие като{" "}
+              <span className="text-[#2D8CFF]">здрав доброволец</span>
+            </h2>
+          </div>
           <div
             ref={stepsRef}
             className="flex gap-6 overflow-x-auto pb-6"
@@ -235,7 +257,7 @@ export default function ZdraviDobrovolciPage() {
               href="#apply"
               className="inline-flex items-center gap-2 bg-[#1a7a4a] hover:bg-[#145f3a] text-white font-semibold px-7 py-3.5 rounded-full text-sm transition-all duration-200 shadow hover:shadow-md"
             >
-              Провери допустимостта си
+              Кандидатствай
               <span className="text-base">›</span>
             </Link>
             <div className="flex items-center gap-3">
@@ -265,32 +287,34 @@ export default function ZdraviDobrovolciPage() {
             {/* Left: content */}
             <div>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-[#0A2540] mb-6 leading-tight">
-                Защо{" "}
-                <span className="text-[#2D8CFF]">безопасността</span>{" "}
-                е приоритет
+                Възнаграждение за{" "}
+                <span className="text-[#2D8CFF]">участие</span>
               </h2>
               <p className="text-gray-700 leading-relaxed mb-3">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris.
+                Участието в клинични проучвания със здрави доброволци обикновено включва възнаграждение за отделеното време и ангажираност.
               </p>
-              <p className="text-gray-700 leading-relaxed font-medium mb-8">
-                Lorem ipsum dolor sit amet, consectetur adipiscing:
+              <p className="text-gray-700 leading-relaxed mb-8">
+                Размерът на възнаграждението не е еднакъв за всички проучвания и зависи от: продължителността, посещенията или престоя, изследванията и др.
               </p>
-              {/* Features grid */}
+              <p className="text-[#0A2540] font-bold text-lg mb-6">
+                Защо хората участват като здрави доброволци?
+              </p>
+              {/* Reasons grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6 mb-8">
-                {safetyFeatures.map((feature, i) => (
-                  <div key={i} className="flex flex-col gap-2">
-                    <feature.icon className="w-8 h-8 text-[#2D8CFF]" strokeWidth={1.5} />
-                    <p className="text-sm text-gray-600 leading-snug">{feature.text}</p>
+                {compensationReasons.map((item, i) => (
+                  <div key={i} className="flex items-start gap-3">
+                    <div className="w-10 h-10 bg-[#2D8CFF]/10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <item.icon className="w-5 h-5 text-[#2D8CFF]" strokeWidth={1.5} />
+                    </div>
+                    <p className="text-sm text-gray-600 leading-snug pt-2">{item.text}</p>
                   </div>
                 ))}
               </div>
               <Link
                 href="#apply"
-                className="inline-flex items-center gap-2 bg-[#1a7a4a] hover:bg-[#145f3a] text-white font-semibold px-6 py-3 rounded-full text-sm transition-all duration-200 shadow hover:shadow-md"
+                className="inline-flex items-center gap-2 bg-[#2D8CFF] hover:bg-[#1a6fd4] text-white font-semibold px-6 py-3 rounded-full text-sm transition-all duration-200 shadow hover:shadow-md"
               >
-                Научи повече
+                Кандидатствай
                 <span className="text-base">›</span>
               </Link>
             </div>
@@ -331,12 +355,13 @@ export default function ZdraviDobrovolciPage() {
               {/* Text + buttons */}
               <div>
                 <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-white mb-5 leading-tight">
-                  Готови ли сте да участвате и да помогнете за бъдещето на медицината?
+                  Проявявате интерес към участие като здрав доброволец?
                 </h2>
+                <p className="text-blue-200 leading-relaxed mb-3">
+                  Регистрирайте се и нашият екип ще се свърже с вас.
+                </p>
                 <p className="text-blue-200 leading-relaxed mb-8">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-                  eiusmod tempor incididunt ut labore et dolore, quis nostrud
-                  exercitation ullamco.
+                  Ще получите информация за текущи или бъдещи клинични проучвания, включително условията за участие и предвиденото възнаграждение.
                 </p>
                 <div className="flex flex-wrap gap-4">
                   <Link
