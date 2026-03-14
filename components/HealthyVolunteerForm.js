@@ -206,7 +206,7 @@ export default function HealthyVolunteerForm() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <a
               href="/klinichni-prouchvaniya/nameri-klinichno-prouchvane"
-              className="px-8 py-3 border-2 border-[#04737d] text-[#04737d] hover:bg-[#04737d] hover:text-white font-medium rounded-lg transition-colors"
+              className="px-8 py-3 border-2 border-[#2D8CFF] text-[#2D8CFF] hover:bg-[#2D8CFF] hover:text-white font-medium rounded-lg transition-colors"
             >
               Разгледай проучвания
             </a>
@@ -228,7 +228,7 @@ export default function HealthyVolunteerForm() {
         <p className="text-gray-600">
           Попълнете формата по-долу и ще се свържем с Вас
         </p>
-        <div className="w-16 h-1 bg-[#04737d] mx-auto rounded-full mt-3"></div>
+        <div className="w-16 h-1 bg-[#2D8CFF] mx-auto rounded-full mt-3"></div>
       </div>
 
       {/* Progress Bar */}
@@ -243,7 +243,7 @@ export default function HealthyVolunteerForm() {
         </div>
         <div className="w-full bg-gray-200 rounded-full h-2.5">
           <motion.div
-            className="bg-[#04737d] h-2.5 rounded-full"
+            className="bg-[#2D8CFF] h-2.5 rounded-full"
             initial={{ width: 0 }}
             animate={{ width: `${progress}%` }}
             transition={{ duration: 0.3 }}
@@ -254,13 +254,13 @@ export default function HealthyVolunteerForm() {
         <div className="flex justify-around mt-4 max-w-2xl mx-auto">
           <div
             className={`flex flex-col items-center ${
-              currentStep >= 1 ? "text-[#04737d]" : "text-gray-400"
+              currentStep >= 1 ? "text-[#2D8CFF]" : "text-gray-400"
             }`}
           >
             <div
               className={`w-10 h-10 rounded-full flex items-center justify-center mb-2 ${
                 currentStep >= 1
-                  ? "bg-[#04737d] text-white"
+                  ? "bg-[#2D8CFF] text-white"
                   : "bg-gray-200 text-gray-400"
               }`}
             >
@@ -270,13 +270,13 @@ export default function HealthyVolunteerForm() {
           </div>
           <div
             className={`flex flex-col items-center ${
-              currentStep >= 2 ? "text-[#04737d]" : "text-gray-400"
+              currentStep >= 2 ? "text-[#2D8CFF]" : "text-gray-400"
             }`}
           >
             <div
               className={`w-10 h-10 rounded-full flex items-center justify-center mb-2 ${
                 currentStep >= 2
-                  ? "bg-[#04737d] text-white"
+                  ? "bg-[#2D8CFF] text-white"
                   : "bg-gray-200 text-gray-400"
               }`}
             >
@@ -286,13 +286,13 @@ export default function HealthyVolunteerForm() {
           </div>
           <div
             className={`flex flex-col items-center ${
-              currentStep >= 3 ? "text-[#04737d]" : "text-gray-400"
+              currentStep >= 3 ? "text-[#2D8CFF]" : "text-gray-400"
             }`}
           >
             <div
               className={`w-10 h-10 rounded-full flex items-center justify-center mb-2 ${
                 currentStep >= 3
-                  ? "bg-[#04737d] text-white"
+                  ? "bg-[#2D8CFF] text-white"
                   : "bg-gray-200 text-gray-400"
               }`}
             >
@@ -546,7 +546,7 @@ export default function HealthyVolunteerForm() {
                           type="radio"
                           value="Да"
                           {...register("nicotine_use")}
-                          className="w-4 h-4 text-[#04737d] border-gray-300 focus:ring-[#04737d]"
+                          className="w-4 h-4 text-[#2D8CFF] border-gray-300 focus:ring-[#2D8CFF]"
                         />
                         <span className="text-gray-700">Да</span>
                       </label>
@@ -555,7 +555,7 @@ export default function HealthyVolunteerForm() {
                           type="radio"
                           value="Не"
                           {...register("nicotine_use")}
-                          className="w-4 h-4 text-[#04737d] border-gray-300 focus:ring-[#04737d]"
+                          className="w-4 h-4 text-[#2D8CFF] border-gray-300 focus:ring-[#2D8CFF]"
                         />
                         <span className="text-gray-700">Не</span>
                       </label>
@@ -577,7 +577,7 @@ export default function HealthyVolunteerForm() {
                           type="radio"
                           value="Да"
                           {...register("medications")}
-                          className="w-4 h-4 text-[#04737d] border-gray-300 focus:ring-[#04737d]"
+                          className="w-4 h-4 text-[#2D8CFF] border-gray-300 focus:ring-[#2D8CFF]"
                         />
                         <span className="text-gray-700">Да</span>
                       </label>
@@ -586,7 +586,7 @@ export default function HealthyVolunteerForm() {
                           type="radio"
                           value="Не"
                           {...register("medications")}
-                          className="w-4 h-4 text-[#04737d] border-gray-300 focus:ring-[#04737d]"
+                          className="w-4 h-4 text-[#2D8CFF] border-gray-300 focus:ring-[#2D8CFF]"
                         />
                         <span className="text-gray-700">Не</span>
                       </label>
@@ -642,7 +642,7 @@ export default function HealthyVolunteerForm() {
                           type="radio"
                           value="Да"
                           {...register("allergies")}
-                          className="w-4 h-4 text-[#04737d] border-gray-300 focus:ring-[#04737d]"
+                          className="w-4 h-4 text-[#2D8CFF] border-gray-300 focus:ring-[#2D8CFF]"
                         />
                         <span className="text-gray-700">Да</span>
                       </label>
@@ -651,7 +651,7 @@ export default function HealthyVolunteerForm() {
                           type="radio"
                           value="Не"
                           {...register("allergies")}
-                          className="w-4 h-4 text-[#04737d] border-gray-300 focus:ring-[#04737d]"
+                          className="w-4 h-4 text-[#2D8CFF] border-gray-300 focus:ring-[#2D8CFF]"
                         />
                         <span className="text-gray-700">Не</span>
                       </label>
@@ -673,7 +673,7 @@ export default function HealthyVolunteerForm() {
                           type="radio"
                           value="Да"
                           {...register("asthma")}
-                          className="w-4 h-4 text-[#04737d] border-gray-300 focus:ring-[#04737d]"
+                          className="w-4 h-4 text-[#2D8CFF] border-gray-300 focus:ring-[#2D8CFF]"
                         />
                         <span className="text-gray-700">Да</span>
                       </label>
@@ -682,7 +682,7 @@ export default function HealthyVolunteerForm() {
                           type="radio"
                           value="Не"
                           {...register("asthma")}
-                          className="w-4 h-4 text-[#04737d] border-gray-300 focus:ring-[#04737d]"
+                          className="w-4 h-4 text-[#2D8CFF] border-gray-300 focus:ring-[#2D8CFF]"
                         />
                         <span className="text-gray-700">Не</span>
                       </label>
@@ -748,7 +748,7 @@ export default function HealthyVolunteerForm() {
                       type="checkbox"
                       value="С престой (пренощуване)"
                       {...register("trial_type")}
-                      className="w-4 h-4 text-[#04737d] border-gray-300 rounded focus:ring-[#04737d]"
+                      className="w-4 h-4 text-[#2D8CFF] border-gray-300 rounded focus:ring-[#2D8CFF]"
                     />
                     <span className="text-gray-700">С престой (пренощуване)</span>
                   </label>
@@ -757,7 +757,7 @@ export default function HealthyVolunteerForm() {
                       type="checkbox"
                       value="БЕЗ престой (пренощуване)"
                       {...register("trial_type")}
-                      className="w-4 h-4 text-[#04737d] border-gray-300 rounded focus:ring-[#04737d]"
+                      className="w-4 h-4 text-[#2D8CFF] border-gray-300 rounded focus:ring-[#2D8CFF]"
                     />
                     <span className="text-gray-700">БЕЗ престой (пренощуване)</span>
                   </label>
@@ -798,7 +798,7 @@ export default function HealthyVolunteerForm() {
                   type="checkbox"
                   id="privacy_consent"
                   {...register("privacy_consent")}
-                  className="mt-1 w-4 h-4 text-[#04737d] border-gray-300 rounded focus:ring-[#04737d] cursor-pointer"
+                  className="mt-1 w-4 h-4 text-[#2D8CFF] border-gray-300 rounded focus:ring-[#2D8CFF] cursor-pointer"
                 />
                 <label
                   htmlFor="privacy_consent"
@@ -808,7 +808,7 @@ export default function HealthyVolunteerForm() {
                   на регистрация в базата данни за клинични проучвания, съгласно{" "}
                   <Link
                     href="/privacy-policy"
-                    className="text-[#04737d] hover:underline"
+                    className="text-[#2D8CFF] hover:underline"
                     target="_blank"
                   >
                     Политика за поверителност
@@ -844,7 +844,7 @@ export default function HealthyVolunteerForm() {
             <button
               type="button"
               onClick={handleNext}
-              className="px-8 py-3 bg-[#04737d] hover:bg-[#035057] text-white font-medium rounded-lg transition-colors"
+              className="px-8 py-3 bg-[#2D8CFF] hover:bg-[#1a6fd4] text-white font-medium rounded-lg transition-colors"
             >
               Напред
             </button>
@@ -852,7 +852,7 @@ export default function HealthyVolunteerForm() {
             <button
               type="submit"
               disabled={submitting}
-              className="px-10 py-3 bg-[#f5a524] hover:bg-[#e09000] text-white font-semibold rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-10 py-3 bg-[#1a7a4a] hover:bg-[#145f3a] text-white font-semibold rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {submitting ? "Изпращане..." : "Изпрати кандидатурата"}
             </button>

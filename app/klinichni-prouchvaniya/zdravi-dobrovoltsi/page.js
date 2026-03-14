@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import HealthyVolunteerForm from "../../../components/HealthyVolunteerForm";
 import {
   ClipboardDocumentListIcon,
@@ -130,7 +131,7 @@ export default function ZdraviDobrovolciPage() {
     <main className="min-h-screen">
 
       {/* ===== HERO ===== */}
-      <section id="how-it-works" className="relative bg-[#0A2540] overflow-hidden">
+      <section id="how-it-works" className="relative bg-[#0A2540] overflow-visible">
         {/* Dots pattern top right */}
         <div className="absolute top-8 right-48 grid grid-cols-9 gap-2.5 opacity-25 pointer-events-none select-none">
           {[...Array(54)].map((_, i) => (
@@ -144,10 +145,10 @@ export default function ZdraviDobrovolciPage() {
           <div className="absolute right-36 bottom-8 w-32 h-32 rounded-full border border-[#2D8CFF]/30" />
         </div>
 
-        <div className="mx-auto w-[95%] md:w-[85%] py-20 lg:py-28 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="mx-auto w-[95%] md:w-[85%] relative z-10" style={{ paddingTop: '80px', paddingBottom: 0 }}>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-center min-h-[600px]">
             {/* Text */}
-            <div className="text-white">
+            <div className="text-white pb-12">
               <p className="text-[#60B4FF] font-semibold text-sm uppercase tracking-widest mb-4">
                 Здрави доброволци
               </p>
@@ -172,14 +173,30 @@ export default function ZdraviDobrovolciPage() {
               </Link>
             </div>
 
-            {/* Right decorative */}
-            <div className="hidden lg:flex justify-end items-center">
-              <div className="relative w-[400px] h-[340px]">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-64 h-64 rounded-full bg-gradient-to-br from-[#2D8CFF]/25 to-[#4B0082]/25 border border-[#2D8CFF]/20" />
+            {/* Right image - кръгла с декорации */}
+            <div className="hidden lg:flex justify-center items-start pt-8">
+              <div className="relative">
+                {/* Dots decoration - горе вдясно */}
+                <div className="absolute -right-12 -top-12 grid grid-cols-8 gap-2.5 opacity-30 pointer-events-none">
+                  {[...Array(48)].map((_, i) => (
+                    <div key={i} className="w-1.5 h-1.5 rounded-full bg-white" />
+                  ))}
                 </div>
-                <div className="absolute top-8 right-8 w-48 h-48 rounded-full bg-[#6B48FF]/10" />
-                <div className="absolute bottom-4 left-12 w-20 h-20 rounded-full border-2 border-[#60B4FF]/25" />
+                {/* Dots decoration - долу вляво */}
+                <div className="absolute -left-10 -bottom-6 grid grid-cols-6 gap-2 opacity-25 pointer-events-none">
+                  {[...Array(30)].map((_, i) => (
+                    <div key={i} className="w-1.5 h-1.5 rounded-full bg-[#60B4FF]" />
+                  ))}
+                </div>
+                {/* Main circular image */}
+                <div className="w-[420px] h-[420px] rounded-full overflow-hidden bg-gradient-to-br from-[#2D8CFF]/25 to-[#4B0082]/25 border-4 border-white shadow-2xl">
+                  <img
+                    src="/images/hero-volunteers.png"
+                    alt="Здрави доброволци"
+                    className="w-full h-full object-cover"
+                    style={{ objectPosition: '50% 20%' }}
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -320,7 +337,7 @@ export default function ZdraviDobrovolciPage() {
               </Link>
             </div>
 
-            {/* Right: circular image placeholder */}
+            {/* Right: circular image */}
             <div className="hidden lg:flex justify-center items-center">
               <div className="relative">
                 {/* Dots decoration */}
@@ -329,11 +346,12 @@ export default function ZdraviDobrovolciPage() {
                     <div key={i} className="w-1.5 h-1.5 rounded-full bg-[#2D8CFF]" />
                   ))}
                 </div>
-                <div className="w-[340px] h-[340px] rounded-full overflow-hidden bg-gradient-to-br from-[#2D8CFF]/20 to-[#0A2540]/20 border-4 border-white shadow-2xl flex items-center justify-center">
-                  <div className="text-center text-[#2D8CFF]/40">
-                    <ShieldCheckIcon className="w-24 h-24 mx-auto mb-3" strokeWidth={1} />
-                    <p className="text-sm font-medium text-[#1a56a0]/60">Снимка на лекар</p>
-                  </div>
+                <div className="w-[340px] h-[340px] rounded-full overflow-hidden border-4 border-white shadow-2xl">
+                  <img
+                    src="/images/doctor-safety.png"
+                    alt="Медицински специалист"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               </div>
             </div>
