@@ -108,7 +108,7 @@ const quickLinks = [
   { name: "Как работи", href: "#how-it-works" },
   { name: "Стъпките", href: "#steps" },
   { name: "Възнаграждение", href: "#safety" },
-  { name: "Кандидатствай", href: "#apply" },
+  { name: "Кандидатствай", href: "#apply-form" },
 ];
 
 export default function ZdraviDobrovolciPage() {
@@ -165,7 +165,7 @@ export default function ZdraviDobrovolciPage() {
                 За отделеното време и ангажираност се предвижда възнаграждение. В зависимост от клиничната програма възнаграждението може да бъде различно, тъй като зависи от продължителността и необходимите посещения.
               </p>
               <Link
-                href="#apply"
+                href="#apply-form"
                 className="inline-flex items-center gap-2 bg-[#2D8CFF] hover:bg-[#1a6fd4] text-white font-bold px-8 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
               >
                 Кандидатствай
@@ -255,7 +255,7 @@ export default function ZdraviDobrovolciPage() {
           {/* Navigation row */}
           <div className="flex items-center justify-between mt-4 pr-[2.5%] md:pr-[7.5%]">
             <Link
-              href="#apply"
+              href="#apply-form"
               className="inline-flex items-center gap-2 bg-[#1a7a4a] hover:bg-[#145f3a] text-white font-semibold px-7 py-3.5 rounded-full text-sm transition-all duration-200 shadow hover:shadow-md"
             >
               Кандидатствай
@@ -312,7 +312,7 @@ export default function ZdraviDobrovolciPage() {
                 ))}
               </div>
               <Link
-                href="#apply"
+                href="#apply-form"
                 className="inline-flex items-center gap-2 bg-[#2D8CFF] hover:bg-[#1a6fd4] text-white font-semibold px-6 py-3 rounded-full text-sm transition-all duration-200 shadow hover:shadow-md"
               >
                 Кандидатствай
@@ -396,7 +396,7 @@ export default function ZdraviDobrovolciPage() {
       </section>
 
       {/* ===== FORM SECTION ===== */}
-      <section className="py-20 bg-gradient-to-b from-white to-gray-50">
+      <section id="apply-form" className="py-20 bg-gradient-to-b from-white to-gray-50">
         <div className="mx-auto w-[95%] md:w-[85%]">
           <HealthyVolunteerForm />
         </div>
