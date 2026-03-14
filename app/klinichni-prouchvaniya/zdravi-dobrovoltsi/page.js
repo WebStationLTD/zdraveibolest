@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import Link from "next/link";
+import HealthyVolunteerForm from "../../../components/HealthyVolunteerForm";
 import {
   ClipboardDocumentListIcon,
   BeakerIcon,
@@ -391,6 +392,13 @@ export default function ZdraviDobrovolciPage() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* ===== FORM SECTION ===== */}
+      <section className="py-20 bg-gradient-to-b from-white to-gray-50">
+        <div className="mx-auto w-[95%] md:w-[85%]">
+          <HealthyVolunteerForm />
         </div>
       </section>
 
