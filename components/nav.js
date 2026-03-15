@@ -19,6 +19,7 @@ import {
   UserCircleIcon,
   ArrowRightOnRectangleIcon,
   BeakerIcon,
+  HeartIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useAuth } from "../contexts/AuthContext";
@@ -198,6 +199,18 @@ export default function Navigation({ therapeuticAreas = [] }) {
                       Регистрация
                     </Link>
                   </div>
+
+                  {/* Здрави доброволци - BUTTON */}
+                  <div className="flow-root">
+                    <Link
+                      href="/klinichni-prouchvaniya/zdravi-dobrovoltsi"
+                      className="flex items-center justify-center gap-2 -m-2 p-2 px-4 font-normal text-white bg-[#04737d] hover:bg-[#035057] rounded-lg transition-colors"
+                      onClick={() => setOpen(false)}
+                    >
+                      <HeartIcon className="h-5 w-5 flex-shrink-0" />
+                      Здрави доброволци
+                    </Link>
+                  </div>
                 </>
               )}
 
@@ -231,6 +244,19 @@ export default function Navigation({ therapeuticAreas = [] }) {
                     </div>
                   </div>
                 )}
+                </div>
+              )}
+
+              {/* Здрави доброволци - Show ONLY outside Clinical Trials */}
+              {!isClinicalTrialsSection && (
+                <div className="flow-root">
+                  <Link
+                    href="/klinichni-prouchvaniya/zdravi-dobrovoltsi"
+                    className="-m-2 block p-2 font-normal text-gray-700 hover:text-[#04737d] transition-colors"
+                    onClick={() => setOpen(false)}
+                  >
+                    Здрави доброволци
+                  </Link>
                 </div>
               )}
 
@@ -527,6 +553,16 @@ export default function Navigation({ therapeuticAreas = [] }) {
                   </div>
                 )}
 
+                {/* Здрави доброволци - Show ONLY outside Clinical Trials */}
+                {!isClinicalTrialsSection && (
+                  <Link
+                    href="/klinichni-prouchvaniya/zdravi-dobrovoltsi"
+                    className="text-sm font-normal text-gray-700 hover:text-[#04737d] transition-colors whitespace-nowrap"
+                  >
+                    Здрави доброволци
+                  </Link>
+                )}
+
                 {/* Останалите страници - Hide in Clinical Trials section */}
                 {!isClinicalTrialsSection && navigation.pages.slice(1).map((page) => (
                   <Link
@@ -547,6 +583,18 @@ export default function Navigation({ therapeuticAreas = [] }) {
 
             {/* Auth Buttons - Desktop */}
             <div className="hidden xl:flex items-center justify-end gap-2">
+              {/* Здрави доброволци BUTTON - Show ONLY in Clinical Trials section */}
+              {isClinicalTrialsSection && (
+                <Link
+                  href="/klinichni-prouchvaniya/zdravi-dobrovoltsi"
+                  className="flex items-center justify-center gap-1.5 px-4 py-2 text-sm font-normal text-white bg-[#04737d] hover:bg-[#035057] rounded-lg transition-colors whitespace-nowrap"
+                >
+                  <HeartIcon className="h-4 w-4 flex-shrink-0" />
+                  <span className="hidden 2xl:inline">Здрави доброволци</span>
+                  <span className="inline 2xl:hidden">Доброволци</span>
+                </Link>
+              )}
+
               {/* Клинични проучвания - само за логнати, скрит на клинични страниците */}
               {!loading && isAuthenticated && !isClinicalTrialsSection && (
                 <Link
