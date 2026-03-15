@@ -204,7 +204,7 @@ export default function Navigation({ therapeuticAreas = [] }) {
                   <div className="flow-root">
                     <Link
                       href="/klinichni-prouchvaniya/zdravi-dobrovoltsi"
-                      className="flex items-center justify-center gap-2 -m-2 p-2 px-4 font-normal text-white bg-[#04737d] hover:bg-[#035057] rounded-lg transition-colors"
+                      className="flex items-center justify-center gap-2 -m-2 p-2 px-4 font-normal text-white bg-[#2D8CFF] hover:bg-[#1a6fd4] rounded-lg transition-colors"
                       onClick={() => setOpen(false)}
                     >
                       <HeartIcon className="h-5 w-5 flex-shrink-0" />
@@ -587,7 +587,7 @@ export default function Navigation({ therapeuticAreas = [] }) {
               {isClinicalTrialsSection && (
                 <Link
                   href="/klinichni-prouchvaniya/zdravi-dobrovoltsi"
-                  className="flex items-center justify-center gap-1.5 px-4 py-2 text-sm font-normal text-white bg-[#04737d] hover:bg-[#035057] rounded-lg transition-colors whitespace-nowrap"
+                  className="flex items-center justify-center gap-1.5 px-4 py-2 text-sm font-normal text-white bg-[#2D8CFF] hover:bg-[#1a6fd4] rounded-lg transition-colors whitespace-nowrap"
                 >
                   <HeartIcon className="h-4 w-4 flex-shrink-0" />
                   <span className="hidden 2xl:inline">Здрави доброволци</span>
