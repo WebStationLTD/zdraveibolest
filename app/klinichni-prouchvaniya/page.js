@@ -80,7 +80,7 @@ export default function ClinicalTrialsPage() {
                   150<span className="text-[#fd9300]">+</span>
                 </div>
                 <div className="text-sm text-gray-600 leading-tight">
-                  Research Completed<br />for Industry Partners
+                  Завършени проучвания<br />за индустриални партньори
                 </div>
               </div>
             </div>
@@ -176,7 +176,7 @@ export default function ClinicalTrialsPage() {
                     <BeakerIcon className="w-7 h-7 md:w-8 md:h-8 text-white" />
                   </div>
                   <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-3">
-                    Фаза 1 (Phase I)
+                    Фаза 1
                   </h3>
                   <p className="text-gray-600 leading-relaxed text-sm">
                     Безопасност и поносимост на продукта. Малък брой участници, често здрави доброволци. Определяне на безопасна доза.
@@ -184,7 +184,7 @@ export default function ClinicalTrialsPage() {
                   
                   {/* Hover Popup */}
                   <div className="absolute inset-0 bg-white rounded-2xl p-6 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 overflow-y-auto shadow-2xl z-10">
-                    <h4 className="text-lg font-bold text-[#238C96] mb-3">Фаза 1 (Phase I)</h4>
+                    <h4 className="text-lg font-bold text-[#238C96] mb-3">Фаза 1</h4>
                     <div className="text-left space-y-3 text-sm text-gray-700">
                       <p><strong>Основна цел:</strong> безопасност и поносимост на продукта.</p>
                       <p><strong>Какво се изследва:</strong></p>
@@ -208,7 +208,7 @@ export default function ClinicalTrialsPage() {
                     <ShieldCheckIcon className="w-7 h-7 md:w-8 md:h-8 text-white" />
                   </div>
                   <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-3">
-                    Фаза 3 (Phase III)
+                    Фаза 3
                   </h3>
                   <p className="text-gray-600 leading-relaxed text-sm">
                     Потвърждение на ефективността в голяма популация. Основата за регистрация. Стотици до хиляди участници.
@@ -216,7 +216,7 @@ export default function ClinicalTrialsPage() {
                   
                   {/* Hover Popup */}
                   <div className="absolute inset-0 bg-white rounded-2xl p-6 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 overflow-y-auto shadow-2xl z-10">
-                    <h4 className="text-lg font-bold text-[#238C96] mb-3">Фаза 3 (Phase III)</h4>
+                    <h4 className="text-lg font-bold text-[#238C96] mb-3">Фаза 3</h4>
                     <div className="text-left space-y-3 text-sm text-gray-700">
                       <p><strong>Основна цел:</strong> потвърждение на ефективността и безопасността в голяма популация – основата за регистрация.</p>
                       <p><strong>Какво се изследва:</strong></p>
@@ -252,7 +252,7 @@ export default function ClinicalTrialsPage() {
                     <UserGroupIcon className="w-7 h-7 md:w-8 md:h-8 text-white" />
                   </div>
                   <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-3">
-                    Фаза 2 (Phase II)
+                    Фаза 2
                   </h3>
                   <p className="text-gray-600 leading-relaxed text-sm">
                     Ефективност и оптимална доза при пациенти. По-широка оценка на безопасността. Десетки до стотици участници.
@@ -260,7 +260,7 @@ export default function ClinicalTrialsPage() {
                   
                   {/* Hover Popup */}
                   <div className="absolute inset-0 bg-white rounded-2xl p-6 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 overflow-y-auto shadow-2xl z-10">
-                    <h4 className="text-lg font-bold text-[#238C96] mb-3">Фаза 2 (Phase II)</h4>
+                    <h4 className="text-lg font-bold text-[#238C96] mb-3">Фаза 2</h4>
                     <div className="text-left space-y-3 text-sm text-gray-700">
                       <p><strong>Основна цел:</strong> дали работи (ефективност) и каква е оптималната доза при пациенти.</p>
                       <p><strong>Какво се изследва:</strong></p>
@@ -284,7 +284,7 @@ export default function ClinicalTrialsPage() {
                     <ClipboardDocumentCheckIcon className="w-7 h-7 md:w-8 md:h-8 text-white" />
                   </div>
                   <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-3">
-                    Фаза 4 (Phase IV)
+                    Фаза 4
                   </h3>
                   <p className="text-gray-600 leading-relaxed text-sm">
                     Наблюдение след одобрение. Дългосрочна безопасност и реална ефективност в &ldquo;реалния живот&rdquo;.
@@ -292,7 +292,7 @@ export default function ClinicalTrialsPage() {
                   
                   {/* Hover Popup */}
                   <div className="absolute inset-0 bg-white rounded-2xl p-6 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 overflow-y-auto shadow-2xl z-10">
-                    <h4 className="text-lg font-bold text-[#238C96] mb-3">Фаза 4 (Phase IV)</h4>
+                    <h4 className="text-lg font-bold text-[#238C96] mb-3">Фаза 4</h4>
                     <div className="text-left space-y-3 text-sm text-gray-700">
                       <p><strong>Основна цел:</strong> наблюдение след одобрение – дългосрочна безопасност и реална ефективност.</p>
                       <p><strong>Кога се прави:</strong> след като продуктът вече е на пазара</p>
@@ -527,14 +527,14 @@ export default function ClinicalTrialsPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Role Card 1 - Principal Investigator */}
-            <TeamRoleCard iconName="UserGroupIcon" title="Главен изследовател (Principal Investigator – PI)">
+            <TeamRoleCard iconName="UserGroupIcon" title="Главен изследовател">
               <p><strong>Образование и роля:</strong> Лекар със специализация и дългогодишен опит, който отговаря за научната, етичната и медицинската страна на проучването.</p>
               <p><strong>Основни отговорности:</strong> Подписва документацията, осигурява информирано съгласие, следи за спазване на протокола и стандартите GCP, медицински наблюдава участниците.</p>
               <p><strong>Как комуникира с вас:</strong> PI може да ви прегледа при включване и при медицински въпроси. Обсъждане на рискове, лекарства и симптоми.</p>
             </TeamRoleCard>
 
             {/* Role Card 2 - Sub-Investigators */}
-            <TeamRoleCard iconName="BeakerIcon" title="Подизследователи (Sub-Investigators)">
+            <TeamRoleCard iconName="BeakerIcon" title="Подизследователи">
               <p><strong>Роля:</strong> Лекари или специалисти, които подпомагат PI в конкретни медицински дейности – невролог, кардиолог, ендокринолог и др.</p>
               <p><strong>Какво правят:</strong> Провеждат целенасочени прегледи и тестове, интерпретират резултати, наблюдават участниците, водят медицинска документация, съветват PI.</p>
               <p><strong>Защо са важни:</strong> Гарантират мултидисциплинарен подход и специализирана експертиза.</p>
@@ -542,21 +542,21 @@ export default function ClinicalTrialsPage() {
             </TeamRoleCard>
 
             {/* Role Card 3 - Study Coordinator */}
-            <TeamRoleCard iconName="ClipboardDocumentCheckIcon" title="Изследователски координатор (Study Coordinator)">
+            <TeamRoleCard iconName="ClipboardDocumentCheckIcon" title="Изследователски координатор">
               <p><strong>Профил:</strong> Връзката между всички участници - пациенти, лекари, медицински сестри, монитор, спонсор, лаборатории. Обикновено медицински специалист с GCP обучение.</p>
               <p><strong>Основни функции:</strong> Организира и координира ежедневната работа, подготвя графика на визитите, контролира процедурите, въвежда данни в системите, поддържа връзка с CRA.</p>
               <p><strong>Връзка с пациента:</strong> Човекът, който ще ви се обади, ще ви насочи, ще ви помогне при всяко посещение и ще отговори на въпросите ви.</p>
             </TeamRoleCard>
 
             {/* Role Card 4 - Study Nurse */}
-            <TeamRoleCard iconName="HeartIcon" title="Изследователска медицинска сестра (Study Nurse)">
+            <TeamRoleCard iconName="HeartIcon" title="Изследователска медицинска сестра">
               <p><strong>Образование:</strong> Регистрирани медицински специалисти с обучения по ICH-GCP, безопасност на пациента, фармаконаблюдение, вземане на биологични проби.</p>
               <p><strong>Основни дейности:</strong> Взема кръв, урина и други проби, измерва жизнени показатели, извършва тестове (ЕКГ, спирометрия), подготвя пациента за изследвания, следи за нежелани реакции.</p>
               <p><strong>Отношение към участника:</strong> Човекът, който се грижи за вашия комфорт, безопасност и спокойствие при всяко посещение. Следи вашето състояние и съобщава на изследователя при промяна.</p>
             </TeamRoleCard>
 
             {/* Role Card 5 - Clinical Monitor (CRA) */}
-            <TeamRoleCard iconName="ShieldCheckIcon" title="Клиничен монитор (CRA)">
+            <TeamRoleCard iconName="ShieldCheckIcon" title="Клиничен монитор">
               <p><strong>Кой е той:</strong> Представител на компанията (спонсор или CRO), която организира проучването. Не е част от медицинския екип, но има критична функция.</p>
               <p><strong>Функции:</strong> Наблюдава, проверява и гарантира, че всичко се извършва по правилата на медицинската етика, закона и международните стандарти ICH-GCP.</p>
               <p><strong>Какво прави:</strong> Посещава центъра (pre-study visit), проверява оборудването, помещенията, документацията, уверява се че PI и екипът имат нужния опит, съобщава на спонсора дали центърът може да бъде включен.</p>
