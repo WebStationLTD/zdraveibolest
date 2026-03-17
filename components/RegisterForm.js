@@ -330,7 +330,7 @@ export default function RegisterForm({
           <p className="text-sm text-blue-800 font-medium mb-2">Как да активирате акаунта си:</p>
           <ol className="text-sm text-blue-700 space-y-1 list-decimal list-inside">
             <li>Отворете имейла, който сме изпратили</li>
-            <li>Кликнете на бутона <strong>„Потвърди имейл"</strong></li>
+            <li>Кликнете на бутона <strong>&bdquo;Потвърди имейл&ldquo;</strong></li>
             <li>Акаунтът ви ще бъде активиран автоматично</li>
           </ol>
         </div>
