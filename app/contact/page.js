@@ -89,13 +89,19 @@ export default async function ContactPage() {
                     <dt className="flex-none">
                       <EnvelopeIcon className="h-7 w-6 text-gray-400" />
                     </dt>
-                    <dd>
-                      <Link
-                        href={`mailto:${contactInfo.email}`}
-                        className="hover:text-gray-900"
-                      >
-                        {contactInfo.email}
-                      </Link>
+                    <dd className="flex flex-col gap-1">
+                      {contactInfo.email.split(/[,;\n]+/).map((email, index) => {
+                        const trimmedEmail = email.trim();
+                        return trimmedEmail ? (
+                          <Link
+                            key={index}
+                            href={`mailto:${trimmedEmail}`}
+                            className="hover:text-gray-900"
+                          >
+                            {trimmedEmail}
+                          </Link>
+                        ) : null;
+                      })}
                     </dd>
                   </div>
                 </>
