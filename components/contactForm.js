@@ -4,7 +4,7 @@ import { useState } from "react";
 import Swal from "sweetalert2";
 
 const URL_FORM =
-  "https://zdraveibolest.admin-panels.com/wp-json/contact-form-7/v1/contact-forms/43/feedback";
+  "https://zdraveibolest.admin-panels.com/wp-json/contact-form-7/v1/contact-forms/aa9d837/feedback";
 
 export default function ContactForm() {
   const [errors, setErrors] = useState({});
@@ -22,11 +22,11 @@ export default function ContactForm() {
     const phoneNumber = e.target["phone-number"].value;
     const message = e.target.message.value;
 
-    formData.append("_wpcf7_unit_tag", "43");
+    formData.append("_wpcf7_unit_tag", "aa9d837");
     formData.append("your-name", name);
     formData.append("your-email", email);
     formData.append("your-subject", subject);
-    formData.append("your-tel", phoneNumber);
+    formData.append("tel-603", phoneNumber);
     formData.append("your-message", message);
 
     const reqOptions = {
@@ -146,9 +146,9 @@ export default function ContactForm() {
                   className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
                 />
               </div>
-              {errors["your-tel"] && (
+              {errors["tel-603"] && (
                 <p className="text-red-600 text-sm mt-1">
-                  {errors["your-tel"]}
+                  {errors["tel-603"]}
                 </p>
               )}
             </div>
