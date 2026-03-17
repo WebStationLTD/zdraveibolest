@@ -4,7 +4,7 @@ import { useState } from "react";
 import Swal from "sweetalert2";
 
 const URL_FORM =
-  "https://zdraveibolest.admin-panels.com/wp-json/contact-form-7/v1/contact-forms/aa9d837/feedback";
+  "https://zdraveibolest.admin-panels.com/wp-json/contact-form-7/v1/contact-forms/6/feedback";
 
 export default function ContactForm() {
   const [errors, setErrors] = useState({});
@@ -22,7 +22,7 @@ export default function ContactForm() {
     const phoneNumber = e.target["phone-number"].value;
     const message = e.target.message.value;
 
-    formData.append("_wpcf7_unit_tag", "aa9d837");
+    formData.append("_wpcf7_unit_tag", "6");
     formData.append("your-name", name);
     formData.append("your-email", email);
     formData.append("your-subject", subject);
