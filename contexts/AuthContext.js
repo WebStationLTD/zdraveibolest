@@ -159,17 +159,19 @@ export function AuthProvider({ children }) {
     try {
       const response = await apiRegister(userData);
       
+      // Email verification required — backend returns no token, just success
+      if (response.requires_verification || !response.token) {
+        return { success: true, requiresVerification: true };
+      }
+
+      // Fallback: if backend still returns token (old behaviour), log in normally
       if (response.token && response.user) {
-        // Save token first
         if (typeof window !== 'undefined') {
           localStorage.setItem('auth_token', response.token);
         }
-        
-        // Fetch full user data via validateToken to get extended fields
         try {
           const fullUserData = await validateToken(response.token);
           if (fullUserData && (fullUserData.id || fullUserData.user_id)) {
-            // IMPORTANT: Validate profile completion before saving
             const userWithValidatedProfile = {
               ...fullUserData,
               profile_completed: isProfileCompleted(fullUserData)
@@ -181,21 +183,11 @@ export function AuthProvider({ children }) {
             return { success: true, user: userWithStatus };
           }
         } catch (validationError) {
-          // If validation fails, fall back to register response user
-          console.warn('Failed to fetch full user data, using register response:', validationError);
-          const userWithValidatedProfile = {
-            ...response.user,
-            profile_completed: isProfileCompleted(response.user)
-          };
-          saveAuthData(response.token, userWithValidatedProfile);
-          const userWithStatus = getStoredUser();
-          setUser(userWithStatus);
-          setIsAuthenticated(true);
-          return { success: true, user: userWithStatus };
+          console.warn('Failed to fetch full user data:', validationError);
         }
-      } else {
-        throw new Error('Invalid response from server');
       }
+
+      return { success: true, requiresVerification: true };
     } catch (error) {
       console.error('Registration error:', error);
       return { success: false, error: error.message };
@@ -206,17 +198,19 @@ export function AuthProvider({ children }) {
     try {
       const response = await apiQuickRegister(userData);
 
+      // Email verification required — backend returns no token, just success
+      if (response.requires_verification || !response.token) {
+        return { success: true, requiresVerification: true };
+      }
+
+      // Fallback: if backend still returns token (old behaviour), log in normally
       if (response.token && response.user) {
-        // Save token first
         if (typeof window !== 'undefined') {
           localStorage.setItem('auth_token', response.token);
         }
-        
-        // Fetch full user data via validateToken to get extended fields
         try {
           const fullUserData = await validateToken(response.token);
           if (fullUserData && (fullUserData.id || fullUserData.user_id)) {
-            // IMPORTANT: Validate profile completion before saving
             const userWithValidatedProfile = {
               ...fullUserData,
               profile_completed: isProfileCompleted(fullUserData)
@@ -228,21 +222,11 @@ export function AuthProvider({ children }) {
             return { success: true, user: userWithStatus };
           }
         } catch (validationError) {
-          // If validation fails, fall back to quick register response user
-          console.warn('Failed to fetch full user data, using quick register response:', validationError);
-          const userWithValidatedProfile = {
-            ...response.user,
-            profile_completed: isProfileCompleted(response.user)
-          };
-          saveAuthData(response.token, userWithValidatedProfile);
-          const userWithStatus = getStoredUser();
-          setUser(userWithStatus);
-          setIsAuthenticated(true);
-          return { success: true, user: userWithStatus };
+          console.warn('Failed to fetch full user data:', validationError);
         }
-      } else {
-        throw new Error("Invalid response from server");
       }
+
+      return { success: true, requiresVerification: true };
     } catch (error) {
       console.error("Quick registration error:", error);
       return { success: false, error: error.message };

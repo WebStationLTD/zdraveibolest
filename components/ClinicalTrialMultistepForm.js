@@ -8,6 +8,180 @@ import { z } from "zod";
 import { useAuth } from "../contexts/AuthContext";
 import Link from "next/link";
 
+// Diseases grouped by therapeutic area slug (identical to RegisterForm)
+const DISEASES_BY_AREA = {
+  "akusher-ginekologia": [
+    "Лейомиома на матката (маточни миоми)",
+    "Ендометриоза – тазова",
+    "Аденомиоза",
+    "Синдром на поликистозните яйчници (PCOS)",
+    "Хиперменорея",
+    "Дисменорея",
+    "Аменорея",
+    "Бактериална вагиноза",
+    "Вулвовагинална кандидоза",
+    "HPV инфекция",
+    "Цервикална дисплазия (CIN I–III)",
+    "Инфертилитет – женски фактор",
+    "Прееклампсия",
+    "Гестационен диабет",
+    "Преждевременно раждане",
+  ],
+  alergologia: [
+    "Сезонен алергичен ринит",
+    "Целогодишен алергичен ринит",
+    "Алергична бронхиална астма",
+    "Атопичен дерматит",
+    "Ангиоедем (оток на Квинке)",
+    "Хронична спонтанна уртикария",
+    "Физикална уртикария",
+    "Анафилактична реакция",
+    "Хранителна алергия – IgE-медиирана",
+    "Лекарствена алергия",
+    "Алергия към ужилвания от насекоми",
+    "Алергичен конюнктивит",
+    "Контактен алергичен дерматит",
+  ],
+  pulmologia: [
+    "Бронхиална астма",
+    "ХОББ – GOLD I–IV",
+    "Хроничен бронхит",
+    "Емфизем",
+    "Пневмония – бактериална",
+    "Пневмония – вирусна",
+    "Интерстициална белодробна фиброза",
+    "Идиопатична белодробна фиброза",
+    "Обструктивна сънна апнея",
+    "Белодробна хипертония",
+    "Бронхоекстазии",
+    "Туберкулоза – белодробна",
+  ],
+  kardiologia: [
+    "Артериална хипертония",
+    "Исхемична болест на сърцето",
+    "Стабилна стенокардия",
+    "Нестабилна стенокардия",
+    "Остър миокарден инфаркт",
+    "Хронична сърдечна недостатъчност",
+    "Предсърдно мъждене",
+    "Суправентрикуларни тахикардии",
+    "Камерни аритмии",
+    "Дилатативна кардиомиопатия",
+    "Хипертрофична кардиомиопатия",
+    "Аортна стеноза",
+    "Митрална регургитация",
+  ],
+  gastroenterologia: [
+    "Остър гастрит",
+    "Хроничен гастрит",
+    "Helicobacter pylori инфекция",
+    "ГЕРБ",
+    "Язва на стомаха",
+    "Язва на дванадесетопръстника",
+    "Синдром на раздразненото черво",
+    "Болест на Крон",
+    "Улцерозен колит",
+    "Чернодробна стеатоза (NAFLD)",
+    "Неалкохолен стеатохепатит (NASH)",
+    "Хроничен хепатит B",
+    "Хроничен хепатит C",
+    "Жлъчнокаменна болест",
+    "Хроничен панкреатит",
+  ],
+  nefrologia: [
+    "Хронично бъбречно заболяване",
+    "Остър бъбречен увреда",
+    "Диабетна нефропатия",
+    "Хипертонична нефропатия",
+    "Гломерулонефрит",
+    "Пиелонефрит",
+    "Поликистозна бъбречна болест",
+    "Нефролитиаза",
+    "Нефротичен синдром",
+  ],
+  nevrologia: [
+    "Исхемичен инсулт",
+    "Хеморагичен инсулт",
+    "Мигрена",
+    "Епилепсия",
+    "Болест на Паркинсон",
+    "Алцхаймерова болест",
+    "Множествена склероза – RRMS",
+    "Множествена склероза – прогресивна форма",
+    "Полиневропатия",
+    "Радикулопатия",
+    "Дискова херния",
+  ],
+  revmatologia: [
+    "Ревматоиден артрит",
+    "Остеоартрит",
+    "Анкилозиращ спондилит",
+    "Псориатичен артрит",
+    "Подагра",
+    "Системен лупус еритематозус",
+    "Синдром на Сьогрен",
+    "Васкулити – ANCA-асоциирани",
+    "Остеопороза",
+  ],
+  hematologia: [
+    "Желязодефицитна анемия",
+    "Мегалобластна анемия",
+    "Апластична анемия",
+    "Хронична лимфоцитна левкемия",
+    "Остра миелоидна левкемия",
+    "Ходжкинов лимфом",
+    "Неходжкинов лимфом",
+    "Множествен миелом",
+    "Тромбоцитопения",
+    "Тромбофилия",
+    "Хемофилия",
+    "Полицитемия вера",
+  ],
+  onkologia: [
+    "Карцином на млечната жлеза",
+    "Недребноклетъчен рак на белия дроб",
+    "Дребноклетъчен рак на белия дроб",
+    "Колоректален карцином",
+    "Простатен карцином",
+    "Овариален карцином",
+    "Цервикален карцином",
+    "Хепатоцелуларен карцином",
+    "Панкреасен аденокарцином",
+    "Меланом",
+    "Рак на бъбрека",
+    "Рак на пикочния мехур",
+  ],
+  endokrinologia: [
+    "Захарен диабет тип 1",
+    "Захарен диабет тип 2",
+    "Предиабет (Инсулинова резистентност)",
+    "Хипотиреоидизъм",
+    "Хипертиреоидизъм",
+    "Тиреоидит на Хашимото",
+    "Базедова болест",
+    "Нодуларна гуша",
+    "Затлъстяване",
+    "Метаболитен синдром",
+    "Хиперпаратиреоидизъм",
+    "Остеопороза",
+    "Хипофизен аденом",
+  ],
+  dermatologia: [
+    "Атопичен дерматит",
+    "Псориазис вулгарис",
+    "Акне вулгарис",
+    "Розацея",
+    "Себореен дерматит",
+    "Контактен дерматит",
+    "Уртикария",
+    "Гъбични кожни инфекции",
+    "Херпес симплекс",
+    "Херпес зостер",
+    "Меланом",
+    "Базоцелуларен карцином",
+  ],
+};
+
 // Bulgarian cities list
 const BULGARIAN_CITIES = [
   "София",
@@ -70,7 +244,7 @@ const step1Schema = z.object({
 
 const step2Schema = z.object({
   therapeutic_area: z.string().optional(),
-  current_conditions: z.string().optional(),
+  current_conditions: z.string().min(1, "Моля, изберете конкретно заболяване"),
   current_medications: z.string().optional(),
   smoking_status: z.string().optional(),
   additional_info: z.string().optional(),
@@ -96,6 +270,10 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
   const [error, setError] = useState("");
   const [therapeuticAreas, setTherapeuticAreas] = useState([]);
 
+  // Diseases for the current user's therapeutic area
+  const userAreaSlug = user?.therapeutic_area || user?.acf_therapeutic_area || "";
+  const availableDiseases = DISEASES_BY_AREA[userAreaSlug] || [];
+
   // Get the appropriate schema for current step
   const getCurrentSchema = () => {
     switch (currentStep) {
@@ -114,9 +292,18 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
     formState: { errors },
     watch,
     setValue,
+    getValues,
     trigger,
     setError: setFieldError,
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      current_conditions: "",
+      current_medications: "",
+      smoking_status: "",
+      additional_info: "",
+      privacy_consent: false,
+    },
+  });
 
   const watchedFields = watch();
 
@@ -146,6 +333,7 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
     if (user && !authLoading) {
       // ВАЖНО: Винаги инициализирай privacy_consent с false
       setValue("privacy_consent", false);
+
       
       // Check if we have saved form data in session storage
       const savedData = sessionStorage.getItem(STORAGE_KEY);
@@ -154,9 +342,24 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
           const parsedData = JSON.parse(savedData);
           // ВАЖНО: НЕ зареждай privacy_consent от sessionStorage!
           delete parsedData.privacy_consent;
+          // Приложи sessionStorage данните
           Object.keys(parsedData).forEach((key) => {
             setValue(key, parsedData[key]);
           });
+          // За всяко поле което е празно в sessionStorage (записано преди user данните да са заредени),
+          // попълни от user обекта — readOnly полетата ВИНАГИ идват от user
+          setValue("first_name", user.first_name || "");
+          setValue("last_name", user.last_name || "");
+          setValue("email", user.email || "");
+          setValue("phone", parsedData.phone || user.phone || user.acf_phone_number || "");
+          setValue("birth_year", parsedData.birth_year || user.birth_year || user.acf_birth_year || "");
+          setValue("gender", parsedData.gender || user.gender || user.acf_gender || "");
+          setValue("city", parsedData.city || user.city || user.acf_city || "");
+          setValue("therapeutic_area", parsedData.therapeutic_area || user.therapeutic_area || user.acf_therapeutic_area || "");
+          setValue("current_conditions", parsedData.current_conditions || user.current_conditions || user.acf_current_diseases || "");
+          setValue("current_medications", parsedData.current_medications || user.current_medications || user.acf_current_medications || "");
+          setValue("smoking_status", parsedData.smoking_status || user.smoking_status || user.acf_smoking_status || "");
+          setValue("additional_info", parsedData.additional_info || user.additional_info || user.acf_additional_health_info || "");
           return;
         } catch (e) {
           console.error("Error parsing saved form data:", e);
@@ -257,12 +460,10 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
     try {
       step2Schema.parse(data);
     } catch (err) {
-      console.error("Validation error:", err);
       if (err.errors) {
-        // Zod errors имат структура: [{ path: ["field_name"], message: "..." }]
-        err.errors.forEach((error) => {
-          const fieldName = error.path[0];
-          setFieldError(fieldName, { type: "manual", message: error.message });
+        err.errors.forEach((validationError) => {
+          const fieldName = validationError.path[0];
+          setFieldError(fieldName, { type: "manual", message: validationError.message });
         });
       }
       setError("Моля, попълнете всички задължителни полета правилно.");
@@ -277,9 +478,11 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
       console.log("📤 MULTISTEP FORM - Изпращане на данни:", data);
 
       // Step 1: Update user profile with correct ACF field names
+      // Изпращаме first_name/last_name само ако са непразни,
+      // за да не изтрием съществуващата стойност в WordPress
       const profilePayload = {
-        first_name: data.first_name,
-        last_name: data.last_name,
+        ...(data.first_name ? { first_name: data.first_name } : {}),
+        ...(data.last_name ? { last_name: data.last_name } : {}),
         acf_phone_number: data.phone || "",
         acf_birth_year: data.birth_year || "",
         acf_gender: data.gender || "",
@@ -340,28 +543,29 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
   };
 
   const handleNewApplication = () => {
-    // Reset form state
+    // Запазваме текущите стойности на формата преди ресет
+    // (handleSubmit не ресетва формата, така те са налични)
+    const prevValues = getValues();
+
     setSuccess(false);
     setCurrentStep(1);
     setError("");
-    // Clear session storage
     sessionStorage.removeItem(STORAGE_KEY);
-    // Reset form to user data (don't clear personal info)
-    if (user) {
-      setValue("first_name", user.first_name || "");
-      setValue("last_name", user.last_name || "");
-      setValue("email", user.email || "");
-      setValue("phone", user.phone || user.acf_phone_number || "");
-      setValue("birth_year", user.birth_year || user.acf_birth_year || "");
-      setValue("gender", user.gender || user.acf_gender || "");
-      setValue("city", user.city || user.acf_city || "");
-      setValue("therapeutic_area", user.therapeutic_area || user.acf_therapeutic_area || "");
-      setValue("current_conditions", user.current_conditions || user.acf_current_diseases || "");
-      setValue("current_medications", user.current_medications || user.acf_current_medications || "");
-      setValue("smoking_status", user.smoking_status || user.acf_smoking_status || "");
-      setValue("additional_info", user.additional_info || user.acf_additional_health_info || "");
-      setValue("privacy_consent", false);
-    }
+
+    // За всяко поле: приоритет е user обекта, fallback — стойността от предишната попълнена форма
+    setValue("first_name", user?.first_name || prevValues.first_name || "");
+    setValue("last_name", user?.last_name || prevValues.last_name || "");
+    setValue("email", user?.email || prevValues.email || "");
+    setValue("phone", user?.phone || user?.acf_phone_number || prevValues.phone || "");
+    setValue("birth_year", user?.birth_year || user?.acf_birth_year || prevValues.birth_year || "");
+    setValue("gender", user?.gender || user?.acf_gender || prevValues.gender || "");
+    setValue("city", user?.city || user?.acf_city || prevValues.city || "");
+    setValue("therapeutic_area", user?.therapeutic_area || user?.acf_therapeutic_area || prevValues.therapeutic_area || "");
+    setValue("current_conditions", user?.current_conditions || user?.acf_current_diseases || "");
+    setValue("current_medications", user?.current_medications || user?.acf_current_medications || "");
+    setValue("smoking_status", user?.smoking_status || user?.acf_smoking_status || "");
+    setValue("additional_info", user?.additional_info || user?.acf_additional_health_info || "");
+    setValue("privacy_consent", false);
   };
 
   if (success) {
@@ -722,15 +926,39 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
                   htmlFor="current_conditions"
                   className="block text-sm font-medium text-gray-700 mb-1.5"
                 >
-                  Настоящи заболявания
+                  Настоящи заболявания <span className="text-red-500">*</span>
                 </label>
-                <input
-                  type="text"
-                  id="current_conditions"
-                  {...register("current_conditions")}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent transition-all bg-white"
-                  placeholder="Напр. диабет тип 2, хипертония..."
-                />
+                {availableDiseases.length > 0 ? (
+                  <select
+                    id="current_conditions"
+                    {...register("current_conditions")}
+                    className={`w-full px-4 py-3 border ${
+                      errors.current_conditions ? "border-red-300" : "border-gray-300"
+                    } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent transition-all bg-white appearance-none cursor-pointer`}
+                  >
+                    <option value="">Изберете заболяване</option>
+                    {availableDiseases.map((disease) => (
+                      <option key={disease} value={disease}>
+                        {disease}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <input
+                    type="text"
+                    id="current_conditions"
+                    {...register("current_conditions")}
+                    className={`w-full px-4 py-3 border ${
+                      errors.current_conditions ? "border-red-300" : "border-gray-300"
+                    } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent transition-all bg-white`}
+                    placeholder="Напишете вашето заболяване..."
+                  />
+                )}
+                {errors.current_conditions && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.current_conditions.message}
+                  </p>
+                )}
               </div>
 
               <div>

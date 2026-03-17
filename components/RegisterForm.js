@@ -216,39 +216,8 @@ export default function RegisterForm({
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [registeredEmail, setRegisteredEmail] = useState("");
   const [availableDiseases, setAvailableDiseases] = useState([]);
-  const [countdown, setCountdown] = useState(4); // For redirect countdown
-
-  // Countdown effect
-  useEffect(() => {
-    let timer;
-    if (success && redirectAfterSuccess && countdown > 0) {
-      timer = setTimeout(() => {
-        setCountdown(countdown - 1);
-      }, 1000);
-    }
-    return () => clearTimeout(timer);
-  }, [success, redirectAfterSuccess, countdown]);
-
-  // Redirect effect (separate from countdown to avoid setState in render)
-  useEffect(() => {
-    if (success && redirectAfterSuccess && countdown === 0) {
-      router.push("/");
-    }
-  }, [success, redirectAfterSuccess, countdown, router]);
-
-  // Modal close effect
-  useEffect(() => {
-    let timer;
-    if (success && !redirectAfterSuccess) {
-      timer = setTimeout(() => {
-        if (onSuccess) {
-          onSuccess();
-        }
-      }, 3000);
-    }
-    return () => clearTimeout(timer);
-  }, [success, redirectAfterSuccess, onSuccess]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -324,12 +293,12 @@ export default function RegisterForm({
         first_name: formData.first_name,
         last_name: formData.last_name,
         acf_therapeutic_area: formData.therapeutic_area,
-        disease: formData.disease,
+        acf_current_diseases: formData.disease,
       });
 
       if (result.success) {
+        setRegisteredEmail(formData.email);
         setSuccess(true);
-        // No manual redirect/close here, useEffect handles it
       } else {
         setErrors({ general: result.error || "Регистрацията не беше успешна" });
       }
@@ -343,47 +312,31 @@ export default function RegisterForm({
   if (success) {
     return (
       <div className="text-center py-8">
-        <div className="mb-4">
-          <svg
-            className="mx-auto h-16 w-16 text-[#04737d]"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-        </div>
-        <h3 className="text-2xl font-bold text-gray-900 mb-2">
-          Регистрацията е успешна! 🎉
-        </h3>
-        <p className="text-gray-600 mb-4">
-          Вашият акаунт беше създаден успешно.
-        </p>
-        <div className="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg relative mb-6">
-          <div className="flex items-center">
-            <svg
-              className="h-5 w-5 text-green-500 mr-2"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-              <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+        <div className="mb-6">
+          <div className="mx-auto w-20 h-20 bg-[#04737d]/10 rounded-full flex items-center justify-center">
+            <svg className="w-10 h-10 text-[#04737d]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
             </svg>
-            <span className="block sm:inline">
-              Изпратихме ви welcome email с данни за вход и полезна информация.
-            </span>
           </div>
         </div>
-        {redirectAfterSuccess && (
-          <p className="text-sm text-gray-500">
-            Пренасочване след {countdown} секунди...
-          </p>
-        )}
+        <h3 className="text-2xl font-bold text-gray-900 mb-3">
+          Потвърдете имейл адреса си
+        </h3>
+        <p className="text-gray-600 mb-2">
+          Изпратихме имейл за потвърждение на:
+        </p>
+        <p className="font-semibold text-[#04737d] mb-6 text-lg">{registeredEmail}</p>
+        <div className="bg-blue-50 border border-blue-200 rounded-xl px-5 py-4 mb-6 text-left">
+          <p className="text-sm text-blue-800 font-medium mb-2">Как да активирате акаунта си:</p>
+          <ol className="text-sm text-blue-700 space-y-1 list-decimal list-inside">
+            <li>Отворете имейла, който сме изпратили</li>
+            <li>Кликнете на бутона <strong>„Потвърди имейл"</strong></li>
+            <li>Акаунтът ви ще бъде активиран автоматично</li>
+          </ol>
+        </div>
+        <p className="text-xs text-gray-500">
+          Не получихте имейл? Проверете папката <strong>Спам</strong>.
+        </p>
       </div>
     );
   }

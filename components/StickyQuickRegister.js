@@ -191,9 +191,9 @@ export default function StickyQuickRegister() {
   const [isMinimized, setIsMinimized] = useState(false);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [registeredEmail, setRegisteredEmail] = useState("");
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [countdown, setCountdown] = useState(5); // For closing countdown
   const [therapeuticAreas, setTherapeuticAreas] = useState([]);
   const [availableDiseases, setAvailableDiseases] = useState([]);
 
@@ -229,23 +229,6 @@ export default function StickyQuickRegister() {
     return () => clearTimeout(delayTimer);
   }, []); // Empty dependency array - runs only once on mount
 
-  // Countdown effect
-  useEffect(() => {
-    let timer;
-    if (success && countdown > 0) {
-      timer = setTimeout(() => {
-        setCountdown(countdown - 1);
-      }, 1000);
-    }
-    return () => clearTimeout(timer);
-  }, [success, countdown]);
-
-  // Close effect (separate from countdown to avoid setState in render)
-  useEffect(() => {
-    if (success && countdown === 0) {
-      setIsOpen(false);
-    }
-  }, [success, countdown]);
 
   // Don't show if user is already authenticated, auth is loading, or visibility delay hasn't passed
   if (isAuthenticated || authLoading || !isVisible) {
@@ -303,8 +286,8 @@ export default function StickyQuickRegister() {
       });
 
       if (result.success) {
+        setRegisteredEmail(formData.email);
         setSuccess(true);
-        // No manual close here, useEffect handles it
       } else {
         setError(result.error || "Регистрацията не беше успешна");
       }
@@ -364,45 +347,18 @@ export default function StickyQuickRegister() {
             {success ? (
               // Success State
               <div className="text-center py-4">
-                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <svg
-                    className="w-6 h-6 text-green-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M5 13l4 4L19 7"
-                    />
+                <div className="w-12 h-12 bg-[#04737d]/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <svg className="w-6 h-6 text-[#04737d]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
                 </div>
-                <h4 className="text-base font-bold text-gray-900 mb-2">
-                  Регистрацията е успешна! 🎉
+                <h4 className="text-sm font-bold text-gray-900 mb-2">
+                  Потвърдете имейл адреса си
                 </h4>
-                <p className="text-xs text-gray-600 mb-4">
-                  Вашият акаунт беше създаден успешно.
-                </p>
-                <div className="bg-green-50 border border-green-200 text-green-800 px-3 py-2 rounded-lg relative mb-4">
-                  <div className="flex items-center">
-                    <svg
-                      className="h-4 w-4 text-green-500 mr-2"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                      <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                    </svg>
-                    <span className="block sm:inline text-xs">
-                      Изпратихме ви welcome email с данни за вход и полезна
-                      информация.
-                    </span>
-                  </div>
-                </div>
+                <p className="text-xs text-gray-500 mb-1">Изпратихме линк за потвърждение на:</p>
+                <p className="text-xs font-semibold text-[#04737d] mb-3 break-all">{registeredEmail}</p>
                 <p className="text-xs text-gray-500">
-                  Формата ще се затвори след {countdown} секунди...
+                  Кликнете на линка в имейла, за да активирате акаунта си. Проверете и папката <strong>Спам</strong>.
                 </p>
               </div>
             ) : (

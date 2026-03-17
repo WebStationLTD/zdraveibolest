@@ -60,7 +60,12 @@ export default function LoginForm({ onSuccess, redirectAfterSuccess = true }) {
           router.push('/');
         }
       } else {
-        setErrors({ general: result.error || 'Грешно потребителско име или парола' });
+        const errorMsg = result.error || 'Грешно потребителско име или парола';
+        if (errorMsg.toLowerCase().includes('потвърдете имейл') || errorMsg.toLowerCase().includes('requires_verification')) {
+          setErrors({ verification: errorMsg });
+        } else {
+          setErrors({ general: errorMsg });
+        }
       }
     } catch (error) {
       setErrors({ general: 'Възникна грешка. Моля, опитайте отново.' });
@@ -74,6 +79,14 @@ export default function LoginForm({ onSuccess, redirectAfterSuccess = true }) {
       {errors.general && (
         <div className="rounded-lg bg-red-50 p-4 border border-red-200">
           <p className="text-sm text-red-600">{errors.general}</p>
+        </div>
+      )}
+      {errors.verification && (
+        <div className="rounded-lg bg-yellow-50 p-4 border border-yellow-200 flex items-start gap-3">
+          <svg className="w-5 h-5 text-yellow-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+          <p className="text-sm text-yellow-800">{errors.verification}</p>
         </div>
       )}
 

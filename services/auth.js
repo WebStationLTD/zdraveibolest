@@ -52,7 +52,7 @@ export async function quickRegisterUser(userData) {
       password: userData.password,
       phone: userData.phone,
       therapeutic_area: userData.therapeutic_area || '',
-      disease: userData.disease || '',
+      acf_current_diseases: userData.acf_current_diseases || userData.disease || '',
       role: 'site_member'
     };
     
