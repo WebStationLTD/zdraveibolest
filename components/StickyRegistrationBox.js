@@ -44,9 +44,12 @@ export default function StickyRegistrationBox() {
               className="object-contain"
               priority
             />
-            <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center">
-              <span className="text-white font-bold text-lg tracking-wide drop-shadow-lg">
-                Регистрация
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span
+                className="text-white font-semibold drop-shadow"
+                style={{ fontSize: "10px", letterSpacing: "0.15em" }}
+              >
+                РЕГИСТРАЦИЯ
               </span>
             </div>
           </Link>

@@ -197,10 +197,14 @@ export default function StickyQuickRegister() {
   const [therapeuticAreas, setTherapeuticAreas] = useState([]);
   const [availableDiseases, setAvailableDiseases] = useState([]);
 
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState({
+    first_name: "",
+    last_name: "",
     email: "",
     phone: "",
     password: "",
+    confirm_password: "",
     therapeutic_area: "",
     disease: "",
     privacy_consent: false,
@@ -254,11 +258,17 @@ export default function StickyQuickRegister() {
   };
 
   const validateForm = () => {
+    if (!formData.first_name.trim()) return "Името е задължително";
+    if (!formData.last_name.trim()) return "Фамилията е задължителна";
     if (!formData.email.trim()) return "Имейлът е задължителен";
     if (!/\S+@\S+\.\S+/.test(formData.email)) return "Невалиден имейл адрес";
+    if (!formData.phone.trim()) return "Телефонът е задължителен";
+    if (!/^(\+359|0)[0-9\s\-]{7,14}$/.test(formData.phone.trim())) return "Невалиден телефонен номер (пр. 0888 123 456)";
     if (!formData.password) return "Паролата е задължителна";
     if (formData.password.length < 6)
       return "Паролата трябва да е минимум 6 символа";
+    if (formData.password !== formData.confirm_password)
+      return "Паролите не съвпадат";
     if (!formData.privacy_consent)
       return "Трябва да се съгласите с политиката за поверителност";
     return null;
@@ -278,11 +288,13 @@ export default function StickyQuickRegister() {
 
     try {
       const result = await quickRegister({
+        first_name: formData.first_name,
+        last_name: formData.last_name,
         email: formData.email,
-        phone: formData.phone,
+        acf_phone_number: formData.phone,
         password: formData.password,
         acf_therapeutic_area: formData.therapeutic_area,
-        disease: formData.disease,
+        acf_current_diseases: formData.disease,
       });
 
       if (result.success) {
@@ -304,16 +316,16 @@ export default function StickyQuickRegister() {
   }
 
   return (
-    <div className="fixed left-0 top-1/2 -translate-y-1/2 z-40 hidden lg:block">
+    <div className="fixed left-0 top-[70px] z-40 hidden lg:block">
       <div
-        className={`bg-white rounded-r-2xl shadow-2xl border border-l-0 border-gray-200 transition-all duration-300 ${
-          isMinimized ? "w-12" : "w-[280px]"
+        className={`relative bg-white rounded-r-2xl shadow-2xl border border-l-0 border-gray-200 transition-all duration-300 ${
+          isMinimized ? "w-12" : "w-[300px]"
         }`}
       >
         {/* Minimize/Maximize Toggle */}
         <button
           onClick={() => setIsMinimized(!isMinimized)}
-          className="absolute -right-3 top-14 w-6 h-6 bg-[#04737d] rounded-full flex items-center justify-center text-white shadow-lg hover:bg-[#035057] transition-colors"
+          className="absolute -right-3 top-14 w-6 h-6 bg-[#04737d] rounded-full flex items-center justify-center text-white shadow-lg hover:bg-[#035057] transition-colors z-10"
           aria-label={isMinimized ? "Разгъни" : "Сгъни"}
         >
           {isMinimized ? (
@@ -335,7 +347,7 @@ export default function StickyQuickRegister() {
           </div>
         ) : (
           // Expanded State
-          <div className="p-5">
+          <div className="p-5 max-h-[calc(100vh-80px)] overflow-y-auto overflow-x-hidden">
             {/* Header */}
             <div className="mb-4">
               <h3 className="text-base font-bold text-gray-900 leading-tight">
@@ -370,13 +382,47 @@ export default function StickyQuickRegister() {
                   </div>
                 )}
 
+                {/* First Name + Last Name */}
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label htmlFor="quick_first_name" className="block text-xs font-medium text-gray-700 mb-1">
+                      Име<span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="quick_first_name"
+                      name="first_name"
+                      value={formData.first_name}
+                      onChange={handleChange}
+                      className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent"
+                      placeholder="Вашето име"
+                      autoComplete="given-name"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="quick_last_name" className="block text-xs font-medium text-gray-700 mb-1">
+                      Фамилия<span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="quick_last_name"
+                      name="last_name"
+                      value={formData.last_name}
+                      onChange={handleChange}
+                      className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent"
+                      placeholder="Вашата фамилия"
+                      autoComplete="family-name"
+                    />
+                  </div>
+                </div>
+
                 {/* Email */}
                 <div>
                   <label
                     htmlFor="quick_email"
                     className="block text-xs font-medium text-gray-700 mb-1"
                   >
-                    Имейл<span className="text-red-500">*</span>
+                    Имейл адрес<span className="text-red-500">*</span>
                   </label>
                   <input
                     type="email"
@@ -517,6 +563,41 @@ export default function StickyQuickRegister() {
                             strokeWidth={2}
                             d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
                           />
+                        </svg>
+                      )}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Confirm Password */}
+                <div>
+                  <label htmlFor="quick_confirm_password" className="block text-xs font-medium text-gray-700 mb-1">
+                    Потвърди парола<span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <input
+                      type={showConfirmPassword ? "text" : "password"}
+                      id="quick_confirm_password"
+                      name="confirm_password"
+                      value={formData.confirm_password}
+                      onChange={handleChange}
+                      className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent pr-10"
+                      placeholder="Повторете паролата"
+                      autoComplete="new-password"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    >
+                      {showConfirmPassword ? (
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                        </svg>
+                      ) : (
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                         </svg>
                       )}
                     </button>

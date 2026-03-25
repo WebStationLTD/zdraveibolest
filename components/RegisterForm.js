@@ -248,6 +248,8 @@ export default function RegisterForm({
 
     if (!formData.phone.trim()) {
       newErrors.phone = "Телефонът е задължителен";
+    } else if (!/^(\+359|0)[0-9\s\-]{7,14}$/.test(formData.phone.trim())) {
+      newErrors.phone = "Невалиден телефонен номер (пр. 0888 123 456 или +359888123456)";
     }
 
     if (!formData.first_name.trim()) {
@@ -288,7 +290,7 @@ export default function RegisterForm({
     try {
       const result = await register({
         email: formData.email,
-        phone: formData.phone,
+        acf_phone_number: formData.phone,
         password: formData.password,
         first_name: formData.first_name,
         last_name: formData.last_name,

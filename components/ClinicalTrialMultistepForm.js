@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -951,7 +951,7 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
                     className={`w-full px-4 py-3 border ${
                       errors.current_conditions ? "border-red-300" : "border-gray-300"
                     } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent transition-all bg-white`}
-                    placeholder="Напишете вашето заболяване..."
+                    placeholder="Напишете Вашето заболяване..."
                   />
                 )}
                 {errors.current_conditions && (

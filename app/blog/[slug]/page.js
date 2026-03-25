@@ -2,6 +2,7 @@ import { getPostBySlug } from "../../../services/posts";
 import { getServices } from "../../../services/services";
 import BlogPostContent from "../../../components/BlogPostContent";
 import StickyRegistrationBox from "../../../components/StickyRegistrationBox";
+import HealthyVolunteerForm from "../../../components/HealthyVolunteerForm";
 
 // Force dynamic rendering to avoid build timeout
 export const dynamic = 'force-dynamic';
@@ -41,6 +42,9 @@ export default async function PostPage({ params }) {
     const meta = post[0].yoast_head_json;
     const ogImage =
       meta?.og_image && meta.og_image.length > 0 ? meta.og_image[0].url : "";
+
+    // Check if post has the 'zdravi-dobrovoltsi' tag (ID=27)
+    const hasHealthyVolunteerTag = Array.isArray(post[0].tags) && post[0].tags.includes(27);
 
     return (
       <>
@@ -108,6 +112,13 @@ export default async function PostPage({ params }) {
                 <StickyRegistrationBox />
               </aside>
             </div>
+
+            {/* Healthy Volunteer Form - shown for posts tagged zdravi-dobrovoltsi */}
+            {hasHealthyVolunteerTag && (
+              <div className="mt-16 pt-12 border-t border-gray-100">
+                <HealthyVolunteerForm />
+              </div>
+            )}
           </div>
         </div>
       </>

@@ -1,6 +1,11 @@
+"use client";
+
 import Link from "next/link";
+import { useState } from "react";
 
 export default function Hero() {
+  const [videoOpen, setVideoOpen] = useState(false);
+
   return (
     <>
       {/* Hero Section */}
@@ -25,43 +30,35 @@ export default function Hero() {
                   Нашата мисия е да направим медицината човешка и достъпна.
                 </p>
 
-                {/* CTA Button */}
-                <div>
-                  <Link
-                    href="/nashata-misiya"
-                    className="inline-block px-8 py-3.5 bg-[#fd9300] hover:bg-[#e48400] text-white text-base font-medium rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl"
+                {/* CTA Buttons */}
+                <div className="flex flex-wrap gap-3">
+                  <button
+                    onClick={() => setVideoOpen(true)}
+                    className="inline-flex items-center gap-2 px-8 py-3.5 bg-[#fd9300] hover:bg-[#e48400] text-white text-base font-medium rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl"
                   >
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
                     Научи повече
-                  </Link>
+                  </button>
                 </div>
               </div>
             </div>
 
             {/* Right: Image with decorative elements */}
             <div className="relative h-[150px] md:h-[250px] lg:h-auto">
-              {/* Mountain Effect Background - Hero-Element-3 - Най-отзад (z-0) */}
-              <img
-                src="/Hero-Element-3.svg"
-                alt=""
-                className="absolute bottom-0 right-0 h-auto z-0"
-              />
-
-              {/* Decorative Orange Circles - Hero-Element-1 - Долу вляво, половината излиза (z-10) */}
+              <img src="/Hero-Element-3.svg" alt="" className="absolute bottom-0 right-0 h-auto z-0" />
               <img
                 src="/Hero-Element-1.svg"
                 alt=""
                 className="absolute bottom-0 left-0 w-72 md:w-96 lg:w-[28rem] xl:w-[32rem] h-auto z-10"
                 style={{ transform: "translateX(-20%) translateY(40%)" }}
               />
-
-              {/* Woman image - Долу, най-висок z-index (z-30) */}
               <img
                 src="/hero-woman-bg.png"
                 alt="Усмихната жена"
                 className="hidden lg:block absolute bottom-0 left-0 lg:left-8 xl:left-32 h-[85%] md:h-[90%] lg:h-[95%] w-auto z-30"
               />
-
-              {/* Decorative Orange Plant - Hero-Element-2 - Горе вдясно (z-20) */}
               <img
                 src="/Hero-Element-2.svg"
                 alt=""
@@ -71,6 +68,34 @@ export default function Hero() {
           </div>
         </div>
       </div>
+
+      {/* Video Modal */}
+      {videoOpen && (
+        <div
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/80 p-4"
+          onClick={() => setVideoOpen(false)}
+        >
+          <div
+            className="relative w-full max-w-4xl rounded-2xl overflow-hidden shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setVideoOpen(false)}
+              className="absolute top-3 right-3 z-10 w-9 h-9 bg-black/60 hover:bg-black/80 text-white rounded-full flex items-center justify-center transition-colors"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            <video
+              className="w-full aspect-video"
+              controls
+              autoPlay
+              src="/zdraveibolest-video.mp4"
+            />
+          </div>
+        </div>
+      )}
     </>
   );
 }

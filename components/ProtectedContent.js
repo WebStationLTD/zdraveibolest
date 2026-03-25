@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useAuth } from "../contexts/AuthContext";
 import { useState, useEffect } from "react";
@@ -107,7 +107,7 @@ export default function ProtectedContent({
           <div className="space-y-3 mb-8">
             {[
               "Достъп до пълна информация за всички терапевтични области",
-              "Персонализирани препоръки съобразено с вашите интереси и здравни нужди",
+              "Персонализирани препоръки съобразено с Вашите интереси и здравни нужди",
               "Актуални новини, статии и информация за иновативни терапии",
               "Напълно безплатно – без скрити такси",
             ].map((benefit, index) => (

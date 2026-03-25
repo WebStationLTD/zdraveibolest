@@ -204,44 +204,39 @@ export default async function CategoryPage({ params }) {
                   <div
                     className={`${imageOnLeft ? "lg:order-2" : "lg:order-1"} flex items-center px-6 py-12 md:px-12 lg:px-16 xl:px-20`}
                   >
-                    <Link
-                      href={`/blog/${post.slug}`}
-                      className="group block w-full"
-                    >
+                    <div className="group block w-full">
                       {/* Category Label */}
                       <p className="text-xs md:text-sm font-medium tracking-wider text-[#fd9300] mb-3 uppercase">
                         {category.name}
                       </p>
 
                       {/* Post Title */}
-                      <h2 
-                        className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-4 group-hover:text-[#04737d] transition-colors"
-                        dangerouslySetInnerHTML={{ __html: post.title.rendered }}
-                      />
+                      <Link href={`/blog/${post.slug}`}>
+                        <h2
+                          className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-4 group-hover:text-[#04737d] transition-colors"
+                          dangerouslySetInnerHTML={{ __html: post.title.rendered }}
+                        />
+                      </Link>
 
-                      {/* Excerpt */}
-                      <p className="text-base md:text-lg text-gray-600 mb-6 leading-relaxed">
-                        {excerpt}
-                      </p>
+                      {/* Excerpt - 2 lines + blur fade */}
+                      <div className="relative mb-6 overflow-hidden" style={{ maxHeight: "3.6em" }}>
+                        <p className="text-base md:text-lg text-gray-600 leading-relaxed line-clamp-2">
+                          {excerpt}
+                        </p>
+                        <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-white to-transparent pointer-events-none" />
+                      </div>
 
-                      {/* CTA Link */}
-                      <span className="inline-flex items-center gap-2 text-[#04737d] font-medium hover:gap-3 transition-all duration-200">
+                      {/* CTA Button */}
+                      <Link
+                        href={`/blog/${post.slug}`}
+                        className="inline-flex items-center gap-2 text-[#04737d] font-medium hover:gap-3 transition-all duration-200"
+                      >
                         Прочети статията
-                        <svg
-                          className="w-5 h-5"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M17 8l4 4m0 0l-4 4m4-4H3"
-                          />
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                         </svg>
-                      </span>
-                    </Link>
+                      </Link>
+                    </div>
                   </div>
                 </div>
               );

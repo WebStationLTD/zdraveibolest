@@ -8,7 +8,7 @@ import { cache } from "react";
  */
 export const getPostBySlug = cache(async (slug) => {
   return await fetchAPI(
-    `posts?slug=${slug}&_fields=id,slug,yoast_head_json,date,title,content`
+    `posts?slug=${slug}&_fields=id,slug,yoast_head_json,date,title,content,tags`
   );
 });
 
