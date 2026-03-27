@@ -390,13 +390,7 @@ export default function ZdraviDobrovolciPage() {
                     Намери проучване
                     <span className="text-base">›</span>
                   </Link>
-                  <Link
-                    href="/klinichni-prouchvaniya#registration"
-                    className="inline-flex items-center gap-2 bg-white text-[#1B4F8A] hover:bg-blue-50 font-semibold px-6 py-3 rounded-full transition-all duration-200 shadow-md"
-                  >
-                    Регистрирай се
-                    <span className="text-base">›</span>
-                  </Link>
+                
                 </div>
               </div>
 
