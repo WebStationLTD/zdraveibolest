@@ -1,12 +1,30 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Footer() {
-  const navigation = [
+  const pathname = usePathname();
+  const isClinicalTrialsSection = pathname?.startsWith("/klinichni-prouchvaniya");
+
+  const standardNavigation = [
     { name: "Начало", href: "/" },
     { name: "Терапевтични области", href: "/#therapeutic-areas" },
     { name: "Здравна информация", href: "/blog/category/статии" },
+    { name: "Здрави доброволци", href: "/klinichni-prouchvaniya/zdravi-dobrovoltsi" },
     { name: "За нас", href: "/nashata-misiya" },
+    { name: "Контакти", href: "/contact" },
   ];
+
+  const clinicalNavigation = [
+    { name: "Начало", href: "/" },
+    { name: "Участие", href: "/patiat-na-patsienta" },
+    { name: "Намери клинично проучване", href: "/klinichni-prouchvaniya/nameri-klinichno-prouchvane" },
+    { name: "Регистрация", href: "/klinichni-prouchvaniya#registration" },
+    { name: "Контакти", href: "/contact" },
+  ];
+
+  const navigation = isClinicalTrialsSection ? clinicalNavigation : standardNavigation;
 
   return (
     <footer className="bg-[#035057] text-white py-12 md:py-16">
@@ -57,7 +75,7 @@ export default function Footer() {
 
           {/* Copyright */}
           <div className="text-center text-sm text-white/80">
-            All Rights Reserved © Brand Name 2025
+            All Rights Reserved &copy; Zdraveibolest {new Date().getFullYear()}
           </div>
         </div>
       </div>

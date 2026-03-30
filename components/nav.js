@@ -38,6 +38,7 @@ export default function Navigation({ therapeuticAreas = [] }) {
   const pathname = usePathname();
   
   const isClinicalTrialsSection = pathname?.startsWith('/klinichni-prouchvaniya');
+  const isHealthyVolunteersPage = pathname === '/klinichni-prouchvaniya/zdravi-dobrovoltsi';
 
   const navigation = {
     pages: [
@@ -200,17 +201,30 @@ export default function Navigation({ therapeuticAreas = [] }) {
                     </Link>
                   </div>
 
-                  {/* Здрави доброволци - BUTTON */}
+                  {/* Контакти - Clinical section */}
                   <div className="flow-root">
                     <Link
-                      href="/klinichni-prouchvaniya/zdravi-dobrovoltsi"
-                      className="flex items-center justify-center gap-2 -m-2 p-2 px-4 font-normal text-white bg-[#2D8CFF] hover:bg-[#1a6fd4] rounded-lg transition-colors"
+                      href="/contact"
+                      className="-m-2 block p-2 font-normal text-gray-700 hover:text-[#04737d] transition-colors"
                       onClick={() => setOpen(false)}
                     >
-                      <HeartIcon className="h-5 w-5 flex-shrink-0" />
-                      Здрави доброволци
+                      Контакти
                     </Link>
                   </div>
+
+                  {/* Здрави доброволци - BUTTON - NOT on its own page */}
+                  {!isHealthyVolunteersPage && (
+                    <div className="flow-root">
+                      <Link
+                        href="/klinichni-prouchvaniya/zdravi-dobrovoltsi"
+                        className="flex items-center justify-center gap-2 -m-2 p-2 px-4 font-normal text-white bg-[#2D8CFF] hover:bg-[#1a6fd4] rounded-lg transition-colors"
+                        onClick={() => setOpen(false)}
+                      >
+                        <HeartIcon className="h-5 w-5 flex-shrink-0" />
+                        Здрави доброволци
+                      </Link>
+                    </div>
+                  )}
                 </>
               )}
 
@@ -247,8 +261,8 @@ export default function Navigation({ therapeuticAreas = [] }) {
                 </div>
               )}
 
-              {/* Здрави доброволци - Show ONLY outside Clinical Trials */}
-              {!isClinicalTrialsSection && (
+              {/* Здрави доброволци - Show ONLY outside Clinical Trials and NOT on its own page */}
+              {!isClinicalTrialsSection && !isHealthyVolunteersPage && (
                 <div className="flow-root">
                   <Link
                     href="/klinichni-prouchvaniya/zdravi-dobrovoltsi"
@@ -272,6 +286,19 @@ export default function Navigation({ therapeuticAreas = [] }) {
                   </Link>
                 </div>
               ))}
+
+              {/* Контакти - Standard menu */}
+              {!isClinicalTrialsSection && (
+                <div className="flow-root">
+                  <Link
+                    href="/contact"
+                    className="-m-2 block p-2 font-normal text-gray-700 hover:text-[#04737d] transition-colors"
+                    onClick={() => setOpen(false)}
+                  >
+                    Контакти
+                  </Link>
+                </div>
+              )}
 
               {/* Search Button - Mobile */}
               <div className="flow-root pt-4 border-t border-gray-200">
@@ -553,8 +580,8 @@ export default function Navigation({ therapeuticAreas = [] }) {
                   </div>
                 )}
 
-                {/* Здрави доброволци - Show ONLY outside Clinical Trials */}
-                {!isClinicalTrialsSection && (
+                {/* Здрави доброволци - Show ONLY outside Clinical Trials and NOT on its own page */}
+                {!isClinicalTrialsSection && !isHealthyVolunteersPage && (
                   <Link
                     href="/klinichni-prouchvaniya/zdravi-dobrovoltsi"
                     className="text-sm font-normal text-gray-700 hover:text-[#04737d] transition-colors whitespace-nowrap"
@@ -574,6 +601,26 @@ export default function Navigation({ therapeuticAreas = [] }) {
                   </Link>
                 ))}
 
+                {/* Контакти - Standard menu */}
+                {!isClinicalTrialsSection && (
+                  <Link
+                    href="/contact"
+                    className="text-sm font-normal text-gray-700 hover:text-[#04737d] transition-colors whitespace-nowrap"
+                  >
+                    Контакти
+                  </Link>
+                )}
+
+                {/* Контакти - Clinical section */}
+                {isClinicalTrialsSection && (
+                  <Link
+                    href="/contact"
+                    className="text-sm font-normal text-gray-700 hover:text-[#04737d] transition-colors whitespace-nowrap"
+                  >
+                    Контакти
+                  </Link>
+                )}
+
                 {/* Search Button - Desktop */}
                 <div className="ml-3 pl-3 border-l border-gray-300">
                   <SearchButton />
@@ -583,8 +630,8 @@ export default function Navigation({ therapeuticAreas = [] }) {
 
             {/* Auth Buttons - Desktop */}
             <div className="hidden xl:flex items-center justify-end gap-2">
-              {/* Здрави доброволци BUTTON - Show ONLY in Clinical Trials section */}
-              {isClinicalTrialsSection && (
+              {/* Здрави доброволци BUTTON - Show ONLY in Clinical Trials section, NOT on its own page */}
+              {isClinicalTrialsSection && !isHealthyVolunteersPage && (
                 <Link
                   href="/klinichni-prouchvaniya/zdravi-dobrovoltsi"
                   className="flex items-center justify-center gap-1.5 px-4 py-2 text-sm font-normal text-white bg-[#2D8CFF] hover:bg-[#1a6fd4] rounded-lg transition-colors whitespace-nowrap"

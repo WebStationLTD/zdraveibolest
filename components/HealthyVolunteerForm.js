@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -21,30 +21,36 @@ const MARKETING_CHANNELS = [
   { value: "Друго", label: "Друго" },
 ];
 
+const strReq = (msg) =>
+  z.string({ required_error: msg, invalid_type_error: msg }).min(1, msg);
+
 // Zod validation schemas for each step
 const step1Schema = z.object({
-  first_name: z.string().min(1, "Името е задължително"),
-  last_name: z.string().min(1, "Фамилията е задължителна"),
-  phone: z.string().min(1, "Телефонът е задължителен"),
-  email: z.string().email("Невалиден имейл адрес"),
-  gender: z.string().min(1, "Полът е задължителен"),
-  birth_date: z.string().min(1, "Датата на раждане е задължителна"),
-  height: z.string().min(1, "Ръстът е задължителен"),
-  weight: z.string().min(1, "Теглото е задължително"),
+  first_name: strReq("Името е задължително"),
+  last_name: strReq("Фамилията е задължителна"),
+  phone: strReq("Телефонът е задължителен"),
+  email: z
+    .string({ required_error: "Невалиден имейл адрес", invalid_type_error: "Невалиден имейл адрес" })
+    .email("Невалиден имейл адрес"),
+  gender: strReq("Полът е задължителен"),
+  birth_date: strReq("Датата на раждане е задължителна"),
+  height: strReq("Ръстът е задължителен"),
+  weight: strReq("Теглото е задължително"),
 });
 
 const step2Schema = z.object({
-  nicotine_use: z.string().min(1, "Моля, отговорете на този въпрос"),
-  allergies: z.string().min(1, "Моля, отговорете на този въпрос"),
-  asthma: z.string().min(1, "Моля, отговорете на този въпрос"),
-  other_conditions: z.string().min(1, "Моля, попълнете това поле"),
-  medications: z.string().min(1, "Моля, отговорете на този въпрос"),
+  nicotine_use: strReq("Моля, отговорете на този въпрос"),
+  allergies: strReq("Моля, отговорете на този въпрос"),
+  asthma: strReq("Моля, отговорете на този въпрос"),
+  other_conditions: strReq("Моля, попълнете това поле"),
+  medications: strReq("Моля, отговорете на този въпрос"),
   medications_text: z.string().optional(),
 });
 
 const step3Schema = z.object({
   trial_type: z.array(z.string()).min(1, "Моля, изберете поне един тип проучване"),
-  marketing_channel: z.string().min(1, "Моля, отговорете на този въпрос"),
+  marketing_channels: z.array(z.string()).min(1, "Моля, отговорете на този въпрос"),
+  other_channel_text: z.string().optional(),
   privacy_consent: z.boolean().refine((val) => val === true, {
     message: "Трябва да се съгласите с политиката за поверителност",
   }),
@@ -55,6 +61,7 @@ export default function HealthyVolunteerForm() {
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
+  const [submitAttempted, setSubmitAttempted] = useState(false);
 
   const {
     register,
@@ -62,41 +69,48 @@ export default function HealthyVolunteerForm() {
     formState: { errors },
     watch,
     setValue,
-    trigger,
     setError: setFieldError,
+    clearErrors,
   } = useForm({
     defaultValues: {
       trial_type: [],
       medications: "",
+      marketing_channels: [],
+      other_channel_text: "",
       privacy_consent: false,
     }
   });
 
   const watchedFields = watch();
   const medicationsValue = watch("medications");
+  const marketingChannels = watch("marketing_channels") || [];
 
-  const handleNext = async () => {
-    let fieldsToValidate;
-    
-    if (currentStep === 1) {
-      fieldsToValidate = ["first_name", "last_name", "phone", "email", "gender", "birth_date", "height", "weight"];
-    } else if (currentStep === 2) {
-      fieldsToValidate = ["nicotine_use", "allergies", "asthma", "other_conditions", "medications"];
-      if (medicationsValue === "Да") {
-        fieldsToValidate.push("medications_text");
-      }
-    }
-
-    const isValid = await trigger(fieldsToValidate);
-    if (isValid) {
-      setCurrentStep((prev) => Math.min(prev + 1, 3));
-      setError("");
-    }
+  const handleNext = () => {
+    setCurrentStep((prev) => Math.min(prev + 1, 3));
+    setError("");
   };
 
   const handlePrev = () => {
     setCurrentStep((prev) => Math.max(prev - 1, 1));
     setError("");
+  };
+
+  // Валидира всички стъпки чрез Zod и задава грешки за всяко невалидно поле
+  const validateAllSteps = (data) => {
+    let hasErrors = false;
+
+    const schemas = [step1Schema, step2Schema, step3Schema];
+    schemas.forEach((schema) => {
+      const result = schema.safeParse(data);
+      if (!result.success) {
+        hasErrors = true;
+        result.error.errors.forEach((err) => {
+          setFieldError(err.path[0], { type: "manual", message: err.message });
+        });
+      }
+    });
+
+    return !hasErrors;
   };
 
   const onSubmit = async (data) => {
@@ -106,17 +120,14 @@ export default function HealthyVolunteerForm() {
       return;
     }
 
-    // Ръчна валидация за step 3
-    try {
-      step3Schema.parse(data);
-    } catch (err) {
-      console.error("Validation error:", err);
-      if (err.errors) {
-        err.errors.forEach((error) => {
-          const fieldName = error.path[0];
-          setFieldError(fieldName, { type: "manual", message: error.message });
-        });
-      }
+    // Маркираме, че е опитано изпращане
+    setSubmitAttempted(true);
+
+    // Изчистваме предишните грешки и валидираме ВСИЧКИ стъпки
+    clearErrors();
+    const isValid = validateAllSteps(data);
+
+    if (!isValid) {
       setError("Моля, попълнете всички задължителни полета правилно.");
       return;
     }
@@ -144,7 +155,8 @@ export default function HealthyVolunteerForm() {
         acf_current_medications: data.medications,
         acf_current_medications_text: data.medications === "Да" ? data.medications_text : "",
         acf_trial_type: data.trial_type,
-        acf_marketing_channel: data.marketing_channel,
+        acf_marketing_channel: data.marketing_channels.join(", "),
+        acf_marketing_field_other: data.marketing_channels.includes("Друго") ? data.other_channel_text : "",
       };
 
       console.log("📤 Payload:", payload);
@@ -777,19 +789,30 @@ export default function HealthyVolunteerForm() {
                   {MARKETING_CHANNELS.map((channel) => (
                     <label key={channel.value} className="flex items-center space-x-2 cursor-pointer">
                       <input
-                        type="radio"
+                        type="checkbox"
                         value={channel.value}
-                        {...register("marketing_channel")}
-                        className="w-4 h-4 text-[#04737d] border-gray-300 focus:ring-[#04737d]"
+                        {...register("marketing_channels")}
+                        className="w-4 h-4 text-[#04737d] border-gray-300 rounded focus:ring-[#04737d]"
                       />
                       <span className="text-gray-700">{channel.label}</span>
                     </label>
                   ))}
                 </div>
-                {errors.marketing_channel && (
+                {errors.marketing_channels && (
                   <p className="mt-1 text-sm text-red-600">
-                    {errors.marketing_channel.message}
+                    {errors.marketing_channels.message}
                   </p>
+                )}
+                {/* Поле за обяснение когато е избрано "Друго" */}
+                {marketingChannels.includes("Друго") && (
+                  <div className="mt-3">
+                    <input
+                      type="text"
+                      {...register("other_channel_text")}
+                      placeholder="Моля, уточнете откъде разбрахте за нас"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent transition-all bg-white"
+                    />
+                  </div>
                 )}
               </div>
 

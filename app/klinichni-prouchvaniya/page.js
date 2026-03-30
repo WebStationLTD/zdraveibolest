@@ -96,25 +96,44 @@ export default function ClinicalTrialsPage() {
           </h2>
           <div className="flex flex-wrap justify-center items-center gap-6 md:gap-8">
             {[
-              "IQVIA",
-              "ICON",
-              "Parexel",
-              "Medpace",
-              "Pfizer",
-              "AstraZeneca",
-              "Janssen",
-              "Bayer",
-              "Sanofi",
-              "Novartis",
-              "Amgen",
+              { name: "IQVIA", src: "/IQVIA_logo.png" },
+              { name: "ICON", src: "/ICON_logo.svg" },
+              { name: "Parexel", src: "/Parexel_logo.png" },
+              { name: "Medpace", src: "/Medpace_logo.png" },
+              { name: "Labcorp", src: "/Labcorp_logo.png" },
+              { name: "PSI", src: "/PSI_logo.png" },
+              { name: "Syneos Health", src: "/Syneos_Health_logo.png" },
+              { name: "Fortrea", src: "/Fortrea_logo.webp" },
+              { name: "Pfizer", src: "/Pfizer_logo.png" },
+              { name: "AstraZeneca", src: "/logo-Astra-Zeneka.png" },
+              { name: "Bayer", src: "/Bayer_logo.svg" },
+              { name: "Sanofi", src: "/Sanofi_logo.png" },
+              { name: "Novartis", src: "/Novartis-Logo.svg.png" },
+              { name: "Amgen", src: "/Amgen_logo.svg" },
+              { name: "Roche", src: "/Hoffmann-La_Roche_logo.svg.png" },
+              { name: "GSK", src: "/GSK_logo.png" },
+              { name: "AbbVie", src: "/abbvie_logo.svg" },
+              { name: "Merck", src: "/merck_logo.jpeg" },
+              { name: "Takeda", src: "/Takeda_logo.svg" },
+              { name: "Teva", src: "/teva_logo.svg" },
+              { name: "Boehringer", src: "/Boehringer_logo.svg" },
+              { name: "argenx", src: "/argenx-logo.svg" },
+              { name: "Vertex", src: "/vertex-logo.png" },
+              { name: "Thermo Fisher", src: "/Thermo_Fisher_Scientific_Logo.svg.png" },
+              { name: "SCR", src: "/scr logo.png" },
             ].map((partner, index) => (
               <div
                 key={index}
-                className="flex items-center justify-center px-8 py-6 bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                className="flex items-center justify-center p-4 md:p-6 bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 w-36 h-20 md:w-44 md:h-24"
               >
-                <div className="text-2xl md:text-3xl font-bold text-[#238C96]">
-                  {partner}
-                </div>
+                <Image
+                  src={partner.src}
+                  alt={partner.name}
+                  width={140}
+                  height={70}
+                  className="object-contain w-full h-full"
+                  unoptimized
+                />
               </div>
             ))}
           </div>

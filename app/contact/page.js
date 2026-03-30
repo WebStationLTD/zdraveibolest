@@ -4,7 +4,8 @@ import {
   PhoneIcon,
 } from "@heroicons/react/24/outline";
 import { getContactInfo } from "../../services/contacts";
-import ContactForm from "../../components/contactForm"; // Вкарваме клиентската форма
+import ContactForm from "../../components/contactForm";
+import ContactMap from "../../components/ContactMap";
 import Link from "next/link";
 
 // Force dynamic rendering to avoid build timeout
@@ -111,6 +112,13 @@ export default async function ContactPage() {
         </div>
         <ContactForm />
       </div>
+
+      {/* Interactive Map */}
+      <ContactMap
+        address={contactInfo?.address}
+        phone={contactInfo?.phone_number}
+        email={contactInfo?.email?.split(/[,;\n]+/)[0]?.trim()}
+      />
     </div>
   );
 }
