@@ -122,6 +122,18 @@ export function AuthProvider({ children }) {
         try {
           const fullUserData = await validateToken(response.token);
           if (fullUserData && (fullUserData.id || fullUserData.user_id)) {
+            // Block login for unverified (pending) accounts
+            const accountStatus = fullUserData.acf_account_status || fullUserData.account_status;
+            if (accountStatus === 'pending') {
+              if (typeof window !== 'undefined') {
+                localStorage.removeItem('auth_token');
+              }
+              return {
+                success: false,
+                error: 'Моля, потвърдете имейла си преди да влезете. Проверете пощата си за писмото с линк за активация.'
+              };
+            }
+
             // IMPORTANT: Validate profile completion before saving
             const userWithValidatedProfile = {
               ...fullUserData,
@@ -136,6 +148,17 @@ export function AuthProvider({ children }) {
         } catch (validationError) {
           // If validation fails, fall back to login response user
           console.warn('Failed to fetch full user data, using login response:', validationError);
+          // Also check pending status in raw login response as fallback
+          const rawStatus = response.user?.acf_account_status || response.user?.account_status;
+          if (rawStatus === 'pending') {
+            if (typeof window !== 'undefined') {
+              localStorage.removeItem('auth_token');
+            }
+            return {
+              success: false,
+              error: 'Моля, потвърдете имейла си преди да влезете. Проверете пощата си за писмото с линк за активация.'
+            };
+          }
           const userWithValidatedProfile = {
             ...response.user,
             profile_completed: isProfileCompleted(response.user)

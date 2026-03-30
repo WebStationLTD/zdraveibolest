@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -270,9 +270,7 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
   const [error, setError] = useState("");
   const [therapeuticAreas, setTherapeuticAreas] = useState([]);
 
-  // Diseases for the current user's therapeutic area
   const userAreaSlug = user?.therapeutic_area || user?.acf_therapeutic_area || "";
-  const availableDiseases = DISEASES_BY_AREA[userAreaSlug] || [];
 
   // Get the appropriate schema for current step
   const getCurrentSchema = () => {
@@ -306,6 +304,16 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
   });
 
   const watchedFields = watch();
+  const watchedTherapeuticArea = watch("therapeutic_area");
+
+  // Diseases се изчисляват от текущо ИЗБРАНАТА терапевтична област в dropdown-а
+  const selectedAreaSlug = watchedTherapeuticArea || userAreaSlug;
+  const availableDiseases = DISEASES_BY_AREA[selectedAreaSlug] || [];
+
+  // При смяна на терапевтична област нулираме избраната болест
+  useEffect(() => {
+    setValue("current_conditions", "");
+  }, [watchedTherapeuticArea, setValue]);
 
   // Fetch therapeutic areas from API
   useEffect(() => {
@@ -881,44 +889,23 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
                   За коя болест проявявате интерес?{" "}
                   <span className="text-red-500">*</span>
                 </label>
-                {user?.therapeutic_area || user?.acf_therapeutic_area ? (
-                  // Ако вече има попълнена терапевтична област - показваме я като текст
-                  <div className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-gray-50 text-gray-700">
-                    {therapeuticAreas.find(
-                      (area) =>
-                        area.slug ===
-                        (user.therapeutic_area || user.acf_therapeutic_area)
-                    )?.title?.rendered ||
-                      user.therapeutic_area ||
-                      user.acf_therapeutic_area}
-                    <input
-                      type="hidden"
-                      {...register("therapeutic_area")}
-                      value={user.therapeutic_area || user.acf_therapeutic_area}
-                    />
-                  </div>
-                ) : (
-                  // Ако няма - показваме dropdown
-                  <>
-                    <select
-                      id="therapeutic_area"
-                      {...register("therapeutic_area")}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent transition-all bg-white appearance-none cursor-pointer"
-                    >
-                      <option value="">Изберете терапевтична област</option>
-                      {therapeuticAreas.map((area) => (
-                        <option key={area.id} value={area.slug}>
-                          {area.title.rendered}
-                        </option>
-                      ))}
-                    </select>
-                    <p className="mt-2 text-xs text-gray-500">
-                      Тази информация ни помага да Ви предоставим по-качествена
-                      и персонализирана информация за клиничните проучвания,
-                      които могат да Ви бъдат полезни.
-                    </p>
-                  </>
-                )}
+                <select
+                  id="therapeutic_area"
+                  {...register("therapeutic_area")}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent transition-all bg-white appearance-none cursor-pointer"
+                >
+                  <option value="">Изберете терапевтична област</option>
+                  {therapeuticAreas.map((area) => (
+                    <option key={area.id} value={area.slug}>
+                      {area.title.rendered}
+                    </option>
+                  ))}
+                </select>
+                <p className="mt-2 text-xs text-gray-500">
+                  Тази информация ни помага да Ви предоставим по-качествена
+                  и персонализирана информация за клиничните проучвания,
+                  които могат да Ви бъдат полезни.
+                </p>
               </div>
 
               <div>
