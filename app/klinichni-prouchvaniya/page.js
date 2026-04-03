@@ -89,7 +89,7 @@ export default function ClinicalTrialsPage() {
       </section>
 
       {/* Partners Section */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-gray-200">
         <div className="mx-auto w-[95%] md:w-[85%]">
           <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-12">
             Активно си сътрудничим с водещи CRO и фармацевтични компании
@@ -120,11 +120,10 @@ export default function ClinicalTrialsPage() {
               { name: "argenx", src: "/argenx-logo.svg" },
               { name: "Vertex", src: "/vertex-logo.png" },
               { name: "Thermo Fisher", src: "/Thermo_Fisher_Scientific_Logo.svg.png" },
-              { name: "SCR", src: "/scr logo.png" },
             ].map((partner, index) => (
               <div
                 key={index}
-                className="flex items-center justify-center p-4 md:p-6 bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 w-36 h-20 md:w-44 md:h-24"
+                className="flex items-center justify-center p-4 md:p-6 bg-transparent border border-gray-300 rounded-2xl hover:border-gray-400 hover:shadow-md transition-all duration-300 hover:-translate-y-1 w-36 h-20 md:w-44 md:h-24"
               >
                 <Image
                   src={partner.src}
@@ -140,36 +139,114 @@ export default function ClinicalTrialsPage() {
         </div>
       </section>
 
-      {/* About Section */}
-      <section className="py-20 md:py-28">
-        <div className="mx-auto w-[95%] md:w-[85%] grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left Image */}
-          <div className="relative h-[500px] rounded-2xl overflow-hidden">
-            <Image
-              src="/our-mission.jpg"
-              alt="Laboratory Solutions"
-              fill
-              className="object-cover"
-            />
-          </div>
+      {/* Research Studies Section */}
+      <section className="py-20 bg-white">
+        <div className="mx-auto w-[95%] md:w-[85%]">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+            <div>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+                Направи следващата крачка
+              </h2>
+              <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+                Провери дали има проучване, което отговаря на твоето състояние или интерес.
+              </p>
+              <Link
+                href="/klinichni-prouchvaniya/nameri-klinichno-prouchvane"
+                className="inline-block px-8 py-4 bg-[#fd9300] text-white font-semibold hover:bg-[#e48400] transition-colors rounded-lg"
+              >
+                НАМЕРИ КЛИНИЧНО ПРОУЧВАНЕ
+              </Link>
+            </div>
 
-          {/* Right Content */}
-          <div>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-              Как протича участието?
-            </h2>
-            <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-              Всяка стъпка е внимателно планирана за вашата безопасност и
-              комфорт. От първия контакт до финалното посещение, нашият екип е до
-              вас, за да осигури най-добрата грижа и подкрепа през целия процес.
-            </p>
+            <div className="space-y-8">
+              {/* Study Card 1 */}
+              <div className="bg-white shadow-lg hover:shadow-2xl transition-all rounded-2xl overflow-hidden">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="relative h-[200px] md:h-auto">
+                    <Image
+                      src="/our-mission.jpg"
+                      alt="Research Study"
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="md:col-span-2 p-6 flex flex-col justify-center">
+                    <span className="text-sm font-semibold text-[#238C96] mb-3">
+                      Кардиология
+                    </span>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-3">
+                      Клинични проучвания в областта на сърдечно-съдовите заболявания
+                    </h3>
+                    <p className="text-gray-600 mb-4">
+                      Изследване на нови терапии за сърдечна недостатъчност и превенция на инфаркт.
+                    </p>
+                    <Link
+                      href="#"
+                      className="text-[#fd9300] font-semibold flex items-center gap-2 hover:gap-4 transition-all"
+                    >
+                      ВИЖТЕ ДЕТАЙЛИ
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </Link>
+                  </div>
+                </div>
+              </div>
 
-            <Link
-              href="/nashata-misiya"
-              className="inline-block px-8 py-4 bg-[#fd9300] text-white font-semibold hover:bg-[#e48400] transition-colors rounded-lg"
-            >
-              НАУЧЕТЕ ПОВЕЧЕ
-            </Link>
+              {/* Study Card 2 */}
+              <div className="bg-white shadow-lg hover:shadow-2xl transition-all rounded-2xl overflow-hidden">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="relative h-[200px] md:h-auto">
+                    <Image
+                      src="/who-we-are.jpg"
+                      alt="Research Study"
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="md:col-span-2 p-6 flex flex-col justify-center">
+                    <span className="text-sm font-semibold text-[#238C96] mb-3">
+                      Онкология
+                    </span>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-3">
+                      Иновативни терапии за лечение на рак
+                    </h3>
+                    <p className="text-gray-600 mb-4">
+                      Проучване на нови имунотерапии и таргетни лечения за различни видове рак.
+                    </p>
+                    <Link
+                      href="#"
+                      className="text-[#fd9300] font-semibold flex items-center gap-2 hover:gap-4 transition-all"
+                    >
+                      ВИЖТЕ ДЕТАЙЛИ
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -411,118 +488,6 @@ export default function ClinicalTrialsPage() {
                 >
                   <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
                 </svg>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Research Studies Section */}
-      <section className="py-20 bg-white">
-        <div className="mx-auto w-[95%] md:w-[85%]">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-            <div>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-                Направи следващата крачка
-              </h2>
-              <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                Провери дали има проучване, което отговаря на твоето състояние или интерес.
-              </p>
-              <Link
-                href="/klinichni-prouchvaniya/nameri-klinichno-prouchvane"
-                className="inline-block px-8 py-4 bg-[#fd9300] text-white font-semibold hover:bg-[#e48400] transition-colors rounded-lg"
-              >
-                НАМЕРИ КЛИНИЧНО ПРОУЧВАНЕ
-              </Link>
-            </div>
-
-            <div className="space-y-8">
-              {/* Study Card 1 */}
-              <div className="bg-white shadow-lg hover:shadow-2xl transition-all rounded-2xl overflow-hidden">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div className="relative h-[200px] md:h-auto">
-                    <Image
-                      src="/our-mission.jpg"
-                      alt="Research Study"
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="md:col-span-2 p-6 flex flex-col justify-center">
-                    <span className="text-sm font-semibold text-[#238C96] mb-3">
-                      Кардиология
-                    </span>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                      Клинични проучвания в областта на сърдечно-съдовите заболявания
-                    </h3>
-                    <p className="text-gray-600 mb-4">
-                      Изследване на нови терапии за сърдечна недостатъчност и превенция на инфаркт.
-                    </p>
-                    <Link
-                      href="#"
-                      className="text-[#fd9300] font-semibold flex items-center gap-2 hover:gap-4 transition-all"
-                    >
-                      ВИЖТЕ ДЕТАЙЛИ
-                      <svg
-                        className="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M9 5l7 7-7 7"
-                        />
-                      </svg>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-
-              {/* Study Card 2 */}
-              <div className="bg-white shadow-lg hover:shadow-2xl transition-all rounded-2xl overflow-hidden">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div className="relative h-[200px] md:h-auto">
-                    <Image
-                      src="/who-we-are.jpg"
-                      alt="Research Study"
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="md:col-span-2 p-6 flex flex-col justify-center">
-                    <span className="text-sm font-semibold text-[#238C96] mb-3">
-                      Онкология
-                    </span>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                      Иновативни терапии за лечение на рак
-                    </h3>
-                    <p className="text-gray-600 mb-4">
-                      Проучване на нови имунотерапии и таргетни лечения за различни видове рак.
-                    </p>
-                    <Link
-                      href="#"
-                      className="text-[#fd9300] font-semibold flex items-center gap-2 hover:gap-4 transition-all"
-                    >
-                      ВИЖТЕ ДЕТАЙЛИ
-                      <svg
-                        className="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M9 5l7 7-7 7"
-                        />
-                      </svg>
-                    </Link>
-                  </div>
-                </div>
               </div>
             </div>
           </div>

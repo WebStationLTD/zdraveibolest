@@ -45,8 +45,8 @@ export default function VideoSection() {
                 ref={videoRef}
                 className="w-full h-full object-cover"
                 controls={playing}
-                preload="metadata"
-                src="/zdraveibolest-video.mp4"
+                preload="auto"
+                src="/zdraveibolest-video.mp4#t=0.001"
                 onPause={() => {}}
               />
 
@@ -56,8 +56,8 @@ export default function VideoSection() {
                   className="absolute inset-0 cursor-pointer group"
                   onClick={handlePlay}
                 >
-                  {/* Gradient background */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#04737d] via-[#035a63] to-[#024248]" />
+                  {/* Semi-transparent overlay - allows first frame to show through */}
+                  <div className="absolute inset-0 bg-black/55" />
 
                   {/* Decorative blobs */}
                   <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />

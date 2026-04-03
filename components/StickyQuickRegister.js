@@ -456,56 +456,6 @@ export default function StickyQuickRegister() {
                   />
                 </div>
 
-                {/* Therapeutic Area Select */}
-                <div>
-                  <label
-                    htmlFor="quick_therapeutic_area"
-                    className="block text-xs font-medium text-gray-700 mb-1"
-                  >
-                    За коя болест проявявате интерес?
-                  </label>
-                  <select
-                    id="quick_therapeutic_area"
-                    name="therapeutic_area"
-                    value={formData.therapeutic_area}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent bg-white"
-                  >
-                    <option value="">Изберете терапевтична област</option>
-                    {therapeuticAreas.map((area) => (
-                      <option key={area.id} value={area.slug}>
-                        {area.title.rendered}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Disease Select (Cascading) */}
-                {availableDiseases.length > 0 && (
-                  <div className="overflow-hidden transition-all duration-500 ease-in-out">
-                    <label
-                      htmlFor="quick_disease"
-                      className="block text-xs font-medium text-gray-700 mb-1"
-                    >
-                      Конкретно заболяване (по избор)
-                    </label>
-                    <select
-                      id="quick_disease"
-                      name="disease"
-                      value={formData.disease}
-                      onChange={handleChange}
-                      className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent bg-white"
-                    >
-                      <option value="">Изберете заболяване</option>
-                      {availableDiseases.map((disease, index) => (
-                        <option key={index} value={disease}>
-                          {disease}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                )}
-
                 {/* Password */}
                 <div>
                   <label
@@ -603,6 +553,58 @@ export default function StickyQuickRegister() {
                     </button>
                   </div>
                 </div>
+
+                {/* Therapeutic Area Select */}
+                <div>
+                  <label
+                    htmlFor="quick_therapeutic_area"
+                    className="block text-xs font-medium text-gray-700 mb-1"
+                  >
+                    За коя болест проявявате интерес?
+                  </label>
+                  <select
+                    id="quick_therapeutic_area"
+                    name="therapeutic_area"
+                    value={formData.therapeutic_area}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent bg-white"
+                  >
+                    <option value="">Изберете терапевтична област</option>
+                    {therapeuticAreas
+                      .filter((area) => area.title.rendered !== "Ранни фази")
+                      .map((area) => (
+                        <option key={area.id} value={area.slug}>
+                          {area.title.rendered}
+                        </option>
+                      ))}
+                  </select>
+                </div>
+
+                {/* Disease Select (Cascading) */}
+                {availableDiseases.length > 0 && (
+                  <div className="overflow-hidden transition-all duration-500 ease-in-out">
+                    <label
+                      htmlFor="quick_disease"
+                      className="block text-xs font-medium text-gray-700 mb-1"
+                    >
+                      Конкретно заболяване (по избор)
+                    </label>
+                    <select
+                      id="quick_disease"
+                      name="disease"
+                      value={formData.disease}
+                      onChange={handleChange}
+                      className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent bg-white"
+                    >
+                      <option value="">Изберете заболяване</option>
+                      {availableDiseases.map((disease, index) => (
+                        <option key={index} value={disease}>
+                          {disease}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
 
                 {/* Privacy Consent */}
                 <div className="flex items-start gap-2">

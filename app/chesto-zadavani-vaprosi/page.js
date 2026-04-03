@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ChevronDownIcon, PhoneIcon, EnvelopeIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 
@@ -253,6 +253,16 @@ function AccordionItem({ question, answer, accentColor, isOpen, onClick }) {
 export default function FAQPage() {
   const [activeSection, setActiveSection] = useState(0);
   const [openQuestionIndex, setOpenQuestionIndex] = useState(null);
+  const [contactInfo, setContactInfo] = useState(null);
+
+  useEffect(() => {
+    fetch("https://zdraveibolest.admin-panels.com/wp-json/wp/v2/contacts?_fields=acf")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data && data.length > 0) setContactInfo(data[0].acf);
+      })
+      .catch(() => {});
+  }, []);
 
   return (
     <div className="bg-white">
@@ -328,31 +338,58 @@ export default function FAQPage() {
               </p>
               
               {/* Contact Options */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                {/* Phone */}
-                <a 
-                  href="tel:+359000000000" 
-                  className="flex flex-col items-center justify-center p-6 bg-gradient-to-br from-[#04737d] to-[#035a63] rounded-2xl hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group"
-                >
-                  <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                    <PhoneIcon className="h-8 w-8 text-white" />
-                  </div>
-                  <p className="text-white/80 text-sm mb-2 font-medium">Обадете ни се</p>
-                  <p className="text-white text-lg font-bold">+359 XX XXX XXXX</p>
-                </a>
+              {(() => {
+                const phone = contactInfo?.phone_number || null;
+                const emails = contactInfo?.email
+                  ? contactInfo.email.split(/[,;\n]+/).map((e) => e.trim()).filter(Boolean)
+                  : [];
+                const totalItems = (phone ? 1 : 0) + emails.length;
+                const colClass = totalItems >= 3 ? "grid-cols-1 md:grid-cols-3" : "grid-cols-1 md:grid-cols-2";
+                return (
+                  <div className={`grid ${colClass} gap-6 mb-8`}>
+                    {/* Phone */}
+                    <a
+                      href={`tel:${phone || ""}`}
+                      className="flex flex-col items-center justify-center p-6 bg-gradient-to-br from-[#04737d] to-[#035a63] rounded-2xl hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group"
+                    >
+                      <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                        <PhoneIcon className="h-8 w-8 text-white" />
+                      </div>
+                      <p className="text-white/80 text-sm mb-2 font-medium">Обадете ни се</p>
+                      <p className="text-white text-lg font-bold">{phone || "—"}</p>
+                    </a>
 
-                {/* Email */}
-                <a 
-                  href="mailto:info@example.com" 
-                  className="flex flex-col items-center justify-center p-6 bg-gradient-to-br from-[#fd9300] to-[#e48400] rounded-2xl hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group"
-                >
-                  <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                    <EnvelopeIcon className="h-8 w-8 text-white" />
+                    {/* Emails */}
+                    {emails.map((email, i) => (
+                      <a
+                        key={i}
+                        href={`mailto:${email}`}
+                        className="flex flex-col items-center justify-center p-6 bg-gradient-to-br from-[#fd9300] to-[#e48400] rounded-2xl hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group"
+                      >
+                        <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                          <EnvelopeIcon className="h-8 w-8 text-white" />
+                        </div>
+                        <p className="text-white/80 text-sm mb-2 font-medium">Пишете ни</p>
+                        <p className="text-white text-base font-bold break-all text-center">{email}</p>
+                      </a>
+                    ))}
+
+                    {/* Fallback if no contact info loaded yet */}
+                    {emails.length === 0 && (
+                      <a
+                        href="mailto:"
+                        className="flex flex-col items-center justify-center p-6 bg-gradient-to-br from-[#fd9300] to-[#e48400] rounded-2xl hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group"
+                      >
+                        <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                          <EnvelopeIcon className="h-8 w-8 text-white" />
+                        </div>
+                        <p className="text-white/80 text-sm mb-2 font-medium">Пишете ни</p>
+                        <p className="text-white text-base font-bold">—</p>
+                      </a>
+                    )}
                   </div>
-                  <p className="text-white/80 text-sm mb-2 font-medium">Пишете ни</p>
-                  <p className="text-white text-lg font-bold">info@example.com</p>
-                </a>
-              </div>
+                );
+              })()}
 
               {/* CTA Button */}
               <Link

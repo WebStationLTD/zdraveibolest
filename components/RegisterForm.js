@@ -212,6 +212,7 @@ export default function RegisterForm({
     last_name: "",
     therapeutic_area: "",
     disease: "",
+    privacy_consent: false,
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -220,8 +221,8 @@ export default function RegisterForm({
   const [availableDiseases, setAvailableDiseases] = useState([]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: type === "checkbox" ? checked : value }));
 
     // Ако се променя терапевтичната област, актуализираме списъка със заболявания
     if (name === "therapeutic_area") {
@@ -272,6 +273,10 @@ export default function RegisterForm({
 
     if (!formData.therapeutic_area) {
       newErrors.therapeutic_area = "Моля, изберете терапевтична област";
+    }
+
+    if (!formData.privacy_consent) {
+      newErrors.privacy_consent = "Трябва да се съгласите с политиката за поверителност";
     }
 
     setErrors(newErrors);
@@ -520,11 +525,13 @@ export default function RegisterForm({
           } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent transition-colors bg-white`}
         >
           <option value="">Изберете терапевтична област</option>
-          {therapeuticAreas.map((area) => (
-            <option key={area.id} value={area.slug}>
-              {area.title.rendered}
-            </option>
-          ))}
+          {therapeuticAreas
+            .filter((area) => area.title.rendered !== "Ранни фази")
+            .map((area) => (
+              <option key={area.id} value={area.slug}>
+                {area.title.rendered}
+              </option>
+            ))}
         </select>
         {errors.therapeutic_area && (
           <p className="mt-1 text-sm text-red-600">{errors.therapeutic_area}</p>
@@ -572,6 +579,33 @@ export default function RegisterForm({
               <p className="mt-1 text-sm text-red-600">{errors.disease}</p>
             )}
           </div>
+        )}
+      </div>
+
+      {/* Privacy Consent */}
+      <div>
+        <div className="flex items-start gap-3">
+          <input
+            type="checkbox"
+            id="privacy_consent"
+            name="privacy_consent"
+            checked={formData.privacy_consent}
+            onChange={handleChange}
+            className={`mt-1 w-4 h-4 flex-shrink-0 rounded border-gray-300 text-[#04737d] focus:ring-[#04737d] cursor-pointer ${
+              errors.privacy_consent ? "border-red-300" : ""
+            }`}
+          />
+          <label htmlFor="privacy_consent" className="text-sm text-gray-600 leading-relaxed cursor-pointer">
+            Съгласен съм личните ми данни да бъдат обработвани за целите на
+            регистрация в базата данни за клинични проучвания, съгласно{" "}
+            <Link href="/privacy-policy" className="text-[#04737d] hover:text-[#035057] underline">
+              Политика за поверителност
+            </Link>
+            . <span className="text-red-500">*</span>
+          </label>
+        </div>
+        {errors.privacy_consent && (
+          <p className="mt-1 text-sm text-red-600">{errors.privacy_consent}</p>
         )}
       </div>
 

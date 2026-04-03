@@ -117,7 +117,13 @@ export default async function ContactPage() {
       <ContactMap
         address={contactInfo?.address}
         phone={contactInfo?.phone_number}
-        email={contactInfo?.email?.split(/[,;\n]+/)[0]?.trim()}
+        emails={
+          contactInfo?.email
+            ? contactInfo.email.split(/[,;\n]+/).map((e) => e.trim()).filter(Boolean)
+            : []
+        }
+        lat={42.664823240346024}
+        lng={23.28418869694393}
       />
     </div>
   );

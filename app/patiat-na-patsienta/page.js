@@ -1,5 +1,4 @@
 import StepsCarousel from "../../components/StepsCarousel";
-import ClinicalTrialMultistepForm from "../../components/ClinicalTrialMultistepForm";
 import {
   SparklesIcon,
   ShieldCheckIcon,
@@ -125,24 +124,15 @@ export default function PatientJourneyPage() {
         </div>
       </section>
 
-      {/* CTA Section with Multistep Form */}
-      <section className="relative pt-16 md:pt-20 lg:pt-24 pb-0">
-        <div className="px-5">
-          <div className="mx-auto w-[95%] md:w-[90%]">
-            <ClinicalTrialMultistepForm />
-          </div>
-        </div>
-
-        {/* Footer Illustration */}
-        <div className="relative mt-8">
-          <img
-            src="/Footer Illustration.svg"
-            alt="Медицински специалисти"
-            className="w-full h-auto"
-            loading="lazy"
-          />
-        </div>
-      </section>
+      {/* Footer Illustration */}
+      <div className="relative mt-8">
+        <img
+          src="/Footer Illustration.svg"
+          alt="Медицински специалисти"
+          className="w-full h-auto"
+          loading="lazy"
+        />
+      </div>
     </div>
   );
 }

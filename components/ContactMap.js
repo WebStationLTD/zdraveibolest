@@ -3,11 +3,13 @@
 import { useState } from "react";
 import { MapPinIcon, PhoneIcon, EnvelopeIcon } from "@heroicons/react/24/outline";
 
-export default function ContactMap({ address, phone, email }) {
+export default function ContactMap({ address, phone, emails = [], lat, lng }) {
   const [mapLoaded, setMapLoaded] = useState(false);
 
   const encodedAddress = encodeURIComponent(address || "София, България");
-  const mapSrc = `https://maps.google.com/maps?q=${encodedAddress}&output=embed&z=15&hl=bg`;
+  // When coordinates are provided, use them for a precise static pin; otherwise fall back to address search
+  const mapQuery = lat && lng ? `${lat},${lng}` : encodedAddress;
+  const mapSrc = `https://maps.google.com/maps?q=${mapQuery}&output=embed&z=17&hl=bg`;
 
   return (
     <section className="relative w-full h-[600px] overflow-hidden">
@@ -63,18 +65,18 @@ export default function ContactMap({ address, phone, email }) {
                 </a>
               </div>
             )}
-            {email && (
-              <div className="flex items-center gap-3">
+            {emails.length > 0 && emails.map((email, i) => (
+              <div key={i} className="flex items-center gap-3">
                 <EnvelopeIcon className="h-5 w-5 text-[#04737d] flex-shrink-0" />
                 <a href={`mailto:${email}`} className="text-sm text-gray-700 hover:text-[#04737d] transition-colors truncate">
                   {email}
                 </a>
               </div>
-            )}
+            ))}
 
             {/* Open in Google Maps button */}
             <a
-              href={`https://www.google.com/maps/search/?api=1&query=${encodedAddress}`}
+              href={`https://www.google.com/maps/search/?api=1&query=${encodedAddress}&zoom=17`}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-2 flex items-center justify-center gap-2 w-full py-2.5 px-4 bg-[#04737d] hover:bg-[#035057] text-white text-sm font-medium rounded-xl transition-colors duration-200"
