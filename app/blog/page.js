@@ -5,9 +5,9 @@ import Link from "next/link";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Блог - NextLevel Theme",
+  title: "Здравни теми обяснени просто и ясно - Здраве и Болест",
   description:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "Статии за заболявания и лечения, написани на език, който всеки разбира. Съвети и информация от експерти.",
 };
 
 export default async function Blog({ searchParams }) {

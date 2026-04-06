@@ -104,6 +104,7 @@ export default async function PostPage({ params }) {
                 <BlogPostContent 
                   content={post[0].content.rendered}
                   therapeuticAreas={therapeuticAreas}
+                  tags={post[0].tags || []}
                 />
               </article>
 

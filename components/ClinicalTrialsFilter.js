@@ -67,28 +67,46 @@ export default function ClinicalTrialsFilter({ tags, selectedTags, onTagsChange,
         role="group"
         aria-label="Филтриране по етикети"
       >
-        {filteredTags.map(tag => (
-          <label
-            key={tag.id}
-            className="flex items-start gap-3 cursor-pointer group py-2 px-3 rounded-lg hover:bg-white transition-all"
-          >
-            <input
-              type="checkbox"
-              checked={selectedTags.includes(tag.id)}
-              onChange={() => handleTagToggle(tag.id)}
-              className="mt-0.5 w-4 h-4 text-[#04737d] border-gray-300 rounded focus:ring-[#04737d] cursor-pointer"
-              aria-label={`Филтрирай по ${tag.name}`}
-            />
-            <span className="text-sm text-gray-700 group-hover:text-[#04737d] transition-colors flex-1 leading-tight">
-              {tag.name}
-            </span>
-            {tag.count > 0 && (
-              <span className="text-xs text-gray-400 bg-gray-200 px-2 py-0.5 rounded-full">
-                {tag.count}
+        {filteredTags.map(tag => {
+          const isHealthyVolunteer = tag.id === 27;
+          
+          return (
+            <label
+              key={tag.id}
+              className={`flex items-start gap-3 cursor-pointer group py-2 px-3 rounded-lg transition-all ${
+                isHealthyVolunteer
+                  ? 'bg-gradient-to-r from-[#2d8cff]/10 to-[#60B4FF]/10 border-2 border-[#2d8cff] hover:from-[#2d8cff]/20 hover:to-[#60B4FF]/20'
+                  : 'hover:bg-white'
+              }`}
+            >
+              <input
+                type="checkbox"
+                checked={selectedTags.includes(tag.id)}
+                onChange={() => handleTagToggle(tag.id)}
+                className={`mt-0.5 w-4 h-4 border-gray-300 rounded cursor-pointer ${
+                  isHealthyVolunteer ? 'text-[#2d8cff] accent-[#2d8cff] focus:ring-[#2d8cff]' : 'text-[#04737d] focus:ring-[#04737d]'
+                }`}
+                aria-label={`Филтрирай по ${tag.name}`}
+              />
+              <span className={`text-sm flex-1 leading-tight transition-colors ${
+                isHealthyVolunteer
+                  ? 'font-bold text-[#2d8cff]'
+                  : 'text-gray-700 group-hover:text-[#04737d]'
+              }`}>
+                {tag.name}
               </span>
-            )}
-          </label>
-        ))}
+              {tag.count > 0 && (
+                <span className={`text-xs px-2 py-0.5 rounded-full ${
+                  isHealthyVolunteer
+                    ? 'text-white bg-[#2d8cff] font-medium'
+                    : 'text-gray-400 bg-gray-200'
+                }`}>
+                  {tag.count}
+                </span>
+              )}
+            </label>
+          );
+        })}
       </div>
 
       {filteredTags.length === 0 && searchTerm && (

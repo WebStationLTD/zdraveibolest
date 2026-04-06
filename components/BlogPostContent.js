@@ -7,8 +7,9 @@ import ProtectedContent from "./ProtectedContent";
  * Handles displaying protected content
  * @param {string} content - HTML content of the blog post
  * @param {Array} therapeuticAreas - List of therapeutic areas
+ * @param {Array} tags - Post tags (for public access check)
  */
-export default function BlogPostContent({ content, therapeuticAreas = [] }) {
+export default function BlogPostContent({ content, therapeuticAreas = [], tags = [] }) {
   return (
     <>
       {/* Protected Content - shows preview for non-authenticated users */}
@@ -16,6 +17,7 @@ export default function BlogPostContent({ content, therapeuticAreas = [] }) {
         content={content}
         previewHeight={200}
         therapeuticAreas={therapeuticAreas}
+        postTags={tags}
       />
     </>
   );

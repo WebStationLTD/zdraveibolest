@@ -6,9 +6,9 @@ import Link from "next/link";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Регистрация - zdraveibolest.bg",
+  title: "Създайте профил за достъп до пълната информация - Здраве и Болест",
   description:
-    "Регистрирайте се за достъп до пълната информация за клинични проучвания",
+    "Безплатна регистрация за достъп до всички статии, персонализирани препоръки и възможности за участие.",
 };
 
 export default async function RegisterPage() {

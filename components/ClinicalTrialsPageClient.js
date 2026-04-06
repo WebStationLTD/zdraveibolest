@@ -13,7 +13,14 @@ import Breadcrumbs from "./Breadcrumbs";
  * Client component for clinical trials page with filtering and search
  */
 export default function ClinicalTrialsPageClient({ initialTags, initialPosts, categorySlug }) {
-  const [tags] = useState(initialTags);
+  // Sort tags: "Здрави доброволци" (ID 27) always first, then alphabetically
+  const sortedTags = [...initialTags].sort((a, b) => {
+    if (a.id === 27) return -1;
+    if (b.id === 27) return 1;
+    return a.name.localeCompare(b.name, 'bg');
+  });
+  
+  const [tags] = useState(sortedTags);
   const [selectedTags, setSelectedTags] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");

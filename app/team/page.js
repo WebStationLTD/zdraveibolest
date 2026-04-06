@@ -3,9 +3,9 @@ import Link from "next/link";
 import { getMembers } from "../../services/members";
 
 export const metadata = {
-  title: "Екип - NextLevel Theme",
+  title: "Хората зад информацията - Здраве и Болест",
   description:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "Лекари, специалисти и координатори, които създават и проверяват съдържанието на портала.",
 };
 
 export default async function Team() {

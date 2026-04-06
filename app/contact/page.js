@@ -13,9 +13,9 @@ export const dynamic = 'force-dynamic';
 
 export async function generateMetadata() {
   return {
-    title: "Контакти - NextLevel Theme",
+    title: "Имате въпроси? Ние сме тук - Здраве и Болест",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      "Свържете се с нас по телефон, имейл или чрез формата. Отговаряме бързо и с желание да помогнем.",
   };
 }
 

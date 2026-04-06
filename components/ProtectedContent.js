@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useAuth } from "../contexts/AuthContext";
 import { useState, useEffect } from "react";
@@ -12,10 +12,14 @@ export default function ProtectedContent({
   content,
   previewHeight = 450,
   therapeuticAreas = [],
+  postTags = [], // Array of tag objects with id property
 }) {
   const { isAuthenticated, loading } = useAuth();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
+  
+  // Check if post has "Здрави доброволци" tag (ID 27) - public access
+  const isPublicPost = postTags.some(tag => tag.id === 27 || tag === 27);
 
   // Handle ESC key to close modals
   useEffect(() => {
@@ -42,8 +46,8 @@ export default function ProtectedContent({
     );
   }
 
-  // Ако е logged in - показваме пълното съдържание
-  if (isAuthenticated) {
+  // Ако е logged in ИЛИ има публичен таг - показваме пълното съдържание
+  if (isAuthenticated || isPublicPost) {
     return (
       <div
         className="prose prose-lg max-w-none text-justify"
