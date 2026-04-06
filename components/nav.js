@@ -212,19 +212,19 @@ export default function Navigation({ therapeuticAreas = [] }) {
                     </Link>
                   </div>
 
-                  {/* Здрави доброволци - BUTTON - NOT on its own page */}
-                  {!isHealthyVolunteersPage && (
-                    <div className="flow-root">
-                      <Link
-                        href="/klinichni-prouchvaniya/zdravi-dobrovoltsi"
-                        className="flex items-center justify-center gap-2 -m-2 p-2 px-4 font-normal text-white bg-[#2D8CFF] hover:bg-[#1a6fd4] rounded-lg transition-colors"
-                        onClick={() => setOpen(false)}
-                      >
-                        <HeartIcon className="h-5 w-5 flex-shrink-0" />
-                        Здрави доброволци
-                      </Link>
-                    </div>
-                  )}
+              {/* Здрави доброволци - BUTTON - NOT on its own page */}
+              {!isHealthyVolunteersPage && (
+                <div className="flow-root">
+                  <Link
+                    href="/klinichni-prouchvaniya/zdravi-dobrovoltsi"
+                    className="flex items-center justify-center gap-2 -m-2 p-2 px-4 font-medium text-white bg-[#fd9300] hover:bg-[#e48400] rounded-lg transition-colors"
+                    onClick={() => setOpen(false)}
+                  >
+                    <HeartIcon className="h-4 w-4 flex-shrink-0" />
+                    Здрави доброволци
+                  </Link>
+                </div>
+              )}
                 </>
               )}
 
@@ -261,19 +261,6 @@ export default function Navigation({ therapeuticAreas = [] }) {
                 </div>
               )}
 
-              {/* Здрави доброволци - Show ONLY outside Clinical Trials and NOT on its own page */}
-              {!isClinicalTrialsSection && !isHealthyVolunteersPage && (
-                <div className="flow-root">
-                  <Link
-                    href="/klinichni-prouchvaniya/zdravi-dobrovoltsi"
-                    className="-m-2 block p-2 font-normal text-gray-700 hover:text-[#04737d] transition-colors"
-                    onClick={() => setOpen(false)}
-                  >
-                    Здрави доброволци
-                  </Link>
-                </div>
-              )}
-
               {/* Останалите страници - Hide in Clinical Trials section */}
               {!isClinicalTrialsSection && navigation.pages.slice(1).map((page) => (
                 <div key={page.name} className="flow-root">
@@ -296,6 +283,20 @@ export default function Navigation({ therapeuticAreas = [] }) {
                     onClick={() => setOpen(false)}
                   >
                     Контакти
+                  </Link>
+                </div>
+              )}
+
+              {/* Здрави доброволци - Show ONLY outside Clinical Trials and NOT on its own page */}
+              {!isClinicalTrialsSection && !isHealthyVolunteersPage && (
+                <div className="flow-root">
+                  <Link
+                    href="/klinichni-prouchvaniya/zdravi-dobrovoltsi"
+                    className="flex items-center justify-center gap-2 -m-2 p-2 px-4 font-medium text-white bg-[#fd9300] hover:bg-[#e48400] rounded-lg transition-colors"
+                    onClick={() => setOpen(false)}
+                  >
+                    <HeartIcon className="h-4 w-4 flex-shrink-0" />
+                    Здрави доброволци
                   </Link>
                 </div>
               )}
@@ -580,16 +581,6 @@ export default function Navigation({ therapeuticAreas = [] }) {
                   </div>
                 )}
 
-                {/* Здрави доброволци - Show ONLY outside Clinical Trials and NOT on its own page */}
-                {!isClinicalTrialsSection && !isHealthyVolunteersPage && (
-                  <Link
-                    href="/klinichni-prouchvaniya/zdravi-dobrovoltsi"
-                    className="text-sm font-normal text-gray-700 hover:text-[#04737d] transition-colors whitespace-nowrap"
-                  >
-                    Здрави доброволци
-                  </Link>
-                )}
-
                 {/* Останалите страници - Hide in Clinical Trials section */}
                 {!isClinicalTrialsSection && navigation.pages.slice(1).map((page) => (
                   <Link
@@ -608,6 +599,18 @@ export default function Navigation({ therapeuticAreas = [] }) {
                     className="text-sm font-normal text-gray-700 hover:text-[#04737d] transition-colors whitespace-nowrap"
                   >
                     Контакти
+                  </Link>
+                )}
+
+                {/* Здрави доброволци - Show ONLY outside Clinical Trials and NOT on its own page */}
+                {!isClinicalTrialsSection && !isHealthyVolunteersPage && (
+                  <Link
+                    href="/klinichni-prouchvaniya/zdravi-dobrovoltsi"
+                    className="flex items-center justify-center gap-1.5 px-3 py-1.5 text-sm font-medium text-white bg-[#fd9300] hover:bg-[#e48400] rounded-lg transition-colors whitespace-nowrap"
+                  >
+                    <HeartIcon className="h-4 w-4 flex-shrink-0" />
+                    <span className="hidden 2xl:inline">Здрави доброволци</span>
+                    <span className="inline 2xl:hidden">Доброволци</span>
                   </Link>
                 )}
 
@@ -634,7 +637,7 @@ export default function Navigation({ therapeuticAreas = [] }) {
               {isClinicalTrialsSection && !isHealthyVolunteersPage && (
                 <Link
                   href="/klinichni-prouchvaniya/zdravi-dobrovoltsi"
-                  className="flex items-center justify-center gap-1.5 px-4 py-2 text-sm font-normal text-white bg-[#2D8CFF] hover:bg-[#1a6fd4] rounded-lg transition-colors whitespace-nowrap"
+                  className="flex items-center justify-center gap-1.5 px-3 py-1.5 text-sm font-medium text-white bg-[#fd9300] hover:bg-[#e48400] rounded-lg transition-colors whitespace-nowrap"
                 >
                   <HeartIcon className="h-4 w-4 flex-shrink-0" />
                   <span className="hidden 2xl:inline">Здрави доброволци</span>

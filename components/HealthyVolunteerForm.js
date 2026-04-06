@@ -85,9 +85,41 @@ export default function HealthyVolunteerForm() {
   const medicationsValue = watch("medications");
   const marketingChannels = watch("marketing_channels") || [];
 
-  const handleNext = () => {
-    setCurrentStep((prev) => Math.min(prev + 1, 3));
+  const handleNext = async () => {
+    // Validate current step before proceeding
+    const data = watchedFields;
+    let schema;
+    
+    switch (currentStep) {
+      case 1:
+        schema = step1Schema;
+        break;
+      case 2:
+        schema = step2Schema;
+        break;
+      case 3:
+        schema = step3Schema;
+        break;
+      default:
+        schema = step1Schema;
+    }
+    
+    // Validate current step
+    const result = schema.safeParse(data);
+    
+    if (!result.success) {
+      // Set errors for invalid fields
+      result.error.errors.forEach((err) => {
+        setFieldError(err.path[0], { type: "manual", message: err.message });
+      });
+      setError(`Моля, попълнете всички задължителни полета преди да продължите към стъпка ${currentStep + 1}.`);
+      return;
+    }
+    
+    // Clear errors and proceed to next step
+    clearErrors();
     setError("");
+    setCurrentStep((prev) => Math.min(prev + 1, 3));
   };
 
   const handlePrev = () => {

@@ -115,15 +115,33 @@ const quickLinks = [
 export default function ZdraviDobrovolciPage() {
   const [quickLinksOpen, setQuickLinksOpen] = useState(false);
   const stepsRef = useRef(null);
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
 
   const scrollSteps = (direction) => {
     if (stepsRef.current) {
       const card = stepsRef.current.querySelector("div");
       const cardWidth = (card?.offsetWidth ?? 400) + 24; // card + gap-6
-      stepsRef.current.scrollBy({
-        left: direction === "left" ? -cardWidth : cardWidth,
-        behavior: "smooth",
-      });
+      const currentScroll = stepsRef.current.scrollLeft;
+      const maxScroll = stepsRef.current.scrollWidth - stepsRef.current.clientWidth;
+      
+      if (direction === "right") {
+        // Check if at the end
+        if (currentScroll >= maxScroll - 10) {
+          // Loop back to start
+          stepsRef.current.scrollTo({
+            left: 0,
+            behavior: "smooth",
+          });
+          setCurrentSlideIndex(0);
+        } else {
+          // Scroll right
+          stepsRef.current.scrollBy({
+            left: cardWidth,
+            behavior: "smooth",
+          });
+          setCurrentSlideIndex((prev) => Math.min(prev + 1, steps.length - 1));
+        }
+      }
     }
   };
 
@@ -279,30 +297,41 @@ export default function ZdraviDobrovolciPage() {
           </div>
 
           {/* Navigation row */}
-          <div className="flex items-center justify-between mt-4 pr-[2.5%] md:pr-[7.5%]">
-            <Link
-              href="#apply-form"
-              className="inline-flex items-center gap-2 bg-[#1a7a4a] hover:bg-[#145f3a] text-white font-semibold px-7 py-3.5 rounded-full text-sm transition-all duration-200 shadow hover:shadow-md"
-            >
-              Кандидатствай
-              <span className="text-base">›</span>
-            </Link>
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => scrollSteps("left")}
-                className="w-12 h-12 rounded-full border-2 border-[#2D8CFF] text-[#2D8CFF] hover:bg-[#2D8CFF] hover:text-white flex items-center justify-center transition-all duration-200"
-                aria-label="Предишна стъпка"
-              >
-                <ChevronLeftIcon className="w-5 h-5" />
-              </button>
-              <button
-                onClick={() => scrollSteps("right")}
-                className="w-12 h-12 rounded-full bg-[#2D8CFF] text-white hover:bg-[#1a6fd4] flex items-center justify-center transition-all duration-200"
-                aria-label="Следваща стъпка"
-              >
-                <ChevronRightIcon className="w-5 h-5" />
-              </button>
+          <div className="flex flex-col items-center gap-4 mt-6">
+            {/* Dots indicator */}
+            <div className="flex items-center gap-2">
+              {steps.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => {
+                    if (stepsRef.current) {
+                      const card = stepsRef.current.querySelector("div");
+                      const cardWidth = (card?.offsetWidth ?? 400) + 24;
+                      stepsRef.current.scrollTo({
+                        left: cardWidth * index,
+                        behavior: "smooth",
+                      });
+                      setCurrentSlideIndex(index);
+                    }
+                  }}
+                  className={`transition-all duration-300 rounded-full ${
+                    index === currentSlideIndex
+                      ? "w-8 h-3 bg-[#2D8CFF]"
+                      : "w-3 h-3 bg-gray-300 hover:bg-[#2D8CFF]/50"
+                  }`}
+                  aria-label={`Отиди на стъпка ${index + 1}`}
+                />
+              ))}
             </div>
+            
+            {/* Next button only */}
+            <button
+              onClick={() => scrollSteps("right")}
+              className="w-12 h-12 rounded-full bg-[#2D8CFF] text-white hover:bg-[#1a6fd4] flex items-center justify-center transition-all duration-200 shadow-md hover:shadow-lg"
+              aria-label="Следваща стъпка"
+            >
+              <ChevronRightIcon className="w-5 h-5" />
+            </button>
           </div>
         </div>
       </section>
