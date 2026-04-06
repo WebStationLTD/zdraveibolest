@@ -165,12 +165,21 @@ export default function ZdraviDobrovolciPage() {
               <p className="text-blue-100/75 leading-relaxed mb-8 max-w-lg text-base">
                 За отделеното време и ангажираност се предвижда възнаграждение. В зависимост от клиничната програма възнаграждението може да бъде различно, тъй като зависи от продължителността и необходимите посещения.
               </p>
-              <Link
-                href="#apply-form"
-                className="inline-flex items-center gap-2 bg-[#2D8CFF] hover:bg-[#1a6fd4] text-white font-bold px-8 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
-              >
-                Кандидатствай
-              </Link>
+              <div className="flex flex-wrap gap-4">
+                <Link
+                  href="#apply-form"
+                  className="inline-flex items-center gap-2 bg-[#2D8CFF] hover:bg-[#1a6fd4] text-white font-bold px-8 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+                >
+                  Кандидатствай
+                </Link>
+                <Link
+                  href="/klinichni-prouchvaniya/nameri-klinichno-prouchvane"
+                  className="inline-flex items-center gap-2 border-2 border-white/80 hover:border-white hover:bg-white/10 text-white font-bold px-8 py-4 rounded-full transition-all duration-300 hover:scale-105"
+                >
+                  Намери проучване
+                  <ChevronRightIcon className="w-5 h-5" />
+                </Link>
+              </div>
             </div>
 
             {/* Right image - кръгла с декорации */}
