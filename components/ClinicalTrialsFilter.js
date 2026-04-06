@@ -73,7 +73,7 @@ export default function ClinicalTrialsFilter({ tags, selectedTags, onTagsChange,
           return (
             <label
               key={tag.id}
-              className={`flex items-start gap-3 cursor-pointer group py-2 px-3 rounded-lg transition-all ${
+              className={`flex items-center gap-3 cursor-pointer group py-2 px-3 rounded-lg transition-all ${
                 isHealthyVolunteer
                   ? 'bg-gradient-to-r from-[#2d8cff]/10 to-[#60B4FF]/10 border-2 border-[#2d8cff] hover:from-[#2d8cff]/20 hover:to-[#60B4FF]/20'
                   : 'hover:bg-white'
@@ -83,12 +83,12 @@ export default function ClinicalTrialsFilter({ tags, selectedTags, onTagsChange,
                 type="checkbox"
                 checked={selectedTags.includes(tag.id)}
                 onChange={() => handleTagToggle(tag.id)}
-                className={`mt-0.5 w-4 h-4 border-gray-300 rounded cursor-pointer ${
+                className={`flex-shrink-0 w-4 h-4 border-gray-300 rounded cursor-pointer ${
                   isHealthyVolunteer ? 'text-[#2d8cff] accent-[#2d8cff] focus:ring-[#2d8cff]' : 'text-[#04737d] focus:ring-[#04737d]'
                 }`}
                 aria-label={`Филтрирай по ${tag.name}`}
               />
-              <span className={`text-sm flex-1 leading-tight transition-colors ${
+              <span className={`text-sm flex-1 leading-tight transition-colors whitespace-nowrap ${
                 isHealthyVolunteer
                   ? 'font-bold text-[#2d8cff]'
                   : 'text-gray-700 group-hover:text-[#04737d]'
@@ -96,7 +96,7 @@ export default function ClinicalTrialsFilter({ tags, selectedTags, onTagsChange,
                 {tag.name}
               </span>
               {tag.count > 0 && (
-                <span className={`text-xs px-2 py-0.5 rounded-full ${
+                <span className={`flex-shrink-0 text-xs px-2 py-0.5 rounded-full ${
                   isHealthyVolunteer
                     ? 'text-white bg-[#2d8cff] font-medium'
                     : 'text-gray-400 bg-gray-200'

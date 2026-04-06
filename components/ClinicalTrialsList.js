@@ -68,15 +68,15 @@ export default function ClinicalTrialsList({ posts }) {
               {/* Image */}
               <Link 
                 href={`/blog/${post.slug}`} 
-                className="relative h-[200px] md:h-[250px] block"
-                aria-label={`Виж статия: ${post.title.rendered}`}
+                className="relative h-[240px] sm:h-full block"
+                aria-label={`Виж проучване: ${post.title.rendered}`}
               >
                 <Image
                   src={featuredImage}
                   alt={post.title.rendered.replace(/<[^>]+>/g, '')}
                   fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  sizes="(max-width: 768px) 100vw, 25vw"
+                  className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                  sizes="(max-width: 640px) 100vw, (max-width: 768px) 33vw, 25vw"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </Link>
@@ -123,7 +123,7 @@ export default function ClinicalTrialsList({ posts }) {
                   href={`/blog/${post.slug}`}
                   className="inline-flex items-center gap-2 text-[#04737d] font-semibold hover:gap-3 transition-all group/link"
                 >
-                  <span>Прочети статията</span>
+                  <span>Виж проучването</span>
                   <svg
                     className="w-5 h-5 group-hover/link:translate-x-1 transition-transform"
                     fill="none"
