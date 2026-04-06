@@ -41,49 +41,41 @@ export default function VideoSection() {
 
             {/* Video Container */}
             <div className="relative aspect-video rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl z-10">
+              {/* Thumbnail image - always visible before play */}
+              {!playing && (
+                <img
+                  src="/zdraveibolest-homepage-video-tumbnail.png"
+                  alt="Video thumbnail"
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+              )}
+              
               <video
                 ref={videoRef}
                 className="w-full h-full object-cover"
                 controls={playing}
-                preload="auto"
+                preload="metadata"
                 src="/zdraveibolest-video.mp4#t=0.001"
                 onPause={() => {}}
               />
 
-              {/* Cover overlay - shown before play */}
+              {/* Play button overlay - shown before play */}
               {!playing && (
                 <div
                   className="absolute inset-0 cursor-pointer group"
                   onClick={handlePlay}
                 >
-                  {/* Semi-transparent overlay - allows first frame to show through */}
-                  <div className="absolute inset-0 bg-black/55" />
-
-                  {/* Decorative blobs */}
-                  <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
-                  <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#fd9300]/20 rounded-full translate-y-1/2 -translate-x-1/2" />
-
-                  {/* Decorative circles */}
-                  <div className="absolute top-6 left-6 w-16 h-16 rounded-full border-2 border-white/20" />
-                  <div className="absolute top-10 left-10 w-6 h-6 rounded-full bg-[#fd9300]/40" />
-                  <div className="absolute bottom-8 right-8 w-24 h-24 rounded-full border border-white/10" />
-
-                  {/* Content */}
-                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 p-6">
-                    {/* Pill label */}
-                    <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1.5">
-                      <span className="text-white/90 text-xs font-medium tracking-[0.15em] uppercase">
-                        zdraveibolest.bg
-                      </span>
-                    </div>
-
+                  {/* Content - centered play button */}
+                  <div className="absolute inset-0 flex items-center justify-center">
                     {/* Play button */}
-                    <div className="w-18 h-18 md:w-22 md:h-22 relative">
-                      {/* Pulse ring */}
-                      <div className="absolute inset-0 rounded-full bg-white/20 scale-110 group-hover:scale-125 transition-transform duration-500" />
-                      <div className="relative w-16 h-16 md:w-20 md:h-20 bg-white rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-300">
+                    <div className="relative">
+                      {/* Animated pulse ring */}
+                      <div className="absolute inset-0 rounded-full bg-white/30 animate-ping" style={{ animationDuration: '2s' }} />
+                      
+                      {/* Main play button - semi-transparent */}
+                      <div className="relative w-20 h-20 md:w-24 md:h-24 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 group-hover:bg-white group-hover:shadow-[0_0_40px_rgba(253,147,0,0.8)] transition-all duration-300">
                         <svg
-                          className="w-7 h-7 md:w-9 md:h-9 text-[#04737d] group-hover:text-[#fd9300] transition-colors ml-1"
+                          className="w-8 h-8 md:w-10 md:h-10 text-[#04737d] group-hover:text-[#fd9300] transition-colors ml-1"
                           fill="currentColor"
                           viewBox="0 0 24 24"
                         >
@@ -91,11 +83,6 @@ export default function VideoSection() {
                         </svg>
                       </div>
                     </div>
-
-                    {/* Label */}
-                    <p className="text-white text-sm md:text-base font-semibold tracking-wide">
-                      Гледай видеото
-                    </p>
                   </div>
                 </div>
               )}
