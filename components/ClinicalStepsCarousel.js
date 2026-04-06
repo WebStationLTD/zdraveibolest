@@ -20,63 +20,63 @@ const steps = [
     title: "Първа стъпка – свързване с нас",
     icon: PhoneIcon,
     description: "Попълнете форма за контакт или се обадете. Нашият екип ще отговори на всички ваши въпроси.",
-    image: "/our-mission.jpg"
+    image: "/zdraveibolest-klinichni-prouchvania-2.jpg"
   },
   {
     number: "02",
     title: "Разговор с координатор",
     icon: ChatBubbleLeftRightIcon,
     description: "Обсъждаме Вашето здравословно състояние и дали проучването е подходящо за вас.",
-    image: "/who-we-are.jpg"
+    image: "/zdraveibolest-klinichni-prouchvania-4.jpg"
   },
   {
     number: "03",
     title: "Посещение и информирано съгласие",
     icon: DocumentCheckIcon,
     description: "Получавате ясна информация и решавате дали да участвате доброволно.",
-    image: "/our-mission.jpg"
+    image: "/zdraveibolest-klinichni-prouchvania-5.jpg"
   },
   {
     number: "04",
     title: "Начални медицински изследвания",
     icon: BeakerIcon,
     description: "Стандартни тестове – кръв, урина, измервания и разговор с лекар, за да сме сигурни, че проучването е подходящо и безопасно за вас.",
-    image: "/who-we-are.jpg"
+    image: "/zdraveibolest-klinichni-prouchvania-6.jpg"
   },
   {
     number: "05",
     title: "Официално включване",
     icon: ClipboardDocumentCheckIcon,
     description: "След успешните изследвания започва Вашето участие. Може да получите иновативно лекарство или терапия.",
-    image: "/our-mission.jpg"
+    image: "/zdraveibolest-klinichni-prouchvania-8.jpg"
   },
   {
     number: "06",
     title: "Редовни посещения",
     icon: CalendarDaysIcon,
     description: "През целия период ще идвате при нас на редовни визити за лечение, изследвания и разговори за Вашето състояние.",
-    image: "/who-we-are.jpg"
+    image: "/zdraveibolest-klinichni-prouchvania-9.jpg"
   },
   {
     number: "07",
     title: "Вашата роля",
     icon: UserGroupIcon,
     description: "От вас се очаква да идвате на уговорените визити, да спазвате указанията на лекаря и да споделяте открито как се чувствате.",
-    image: "/our-mission.jpg"
+    image: "/zdraveibolest-klinichni-prouchvania-2.jpg"
   },
   {
     number: "08",
     title: "Финално посещение",
     icon: ChartBarIcon,
     description: "В края на проучването имате последна среща. Правим обобщаващи изследвания и обсъждаме следващите стъпки за Вашето здраве.",
-    image: "/who-we-are.jpg"
+    image: "/zdraveibolest-klinichni-prouchvania-4.jpg"
   },
   {
     number: "09",
     title: "Проследяване",
     icon: HeartIcon,
     description: "В някои проучвания има и допълнителни телефонни разговори или визити след края, за да се събере информация как се чувствате дългосрочно.",
-    image: "/our-mission.jpg"
+    image: "/zdraveibolest-klinichni-prouchvania-5.jpg"
   }
 ];
 

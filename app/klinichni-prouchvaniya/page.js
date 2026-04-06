@@ -164,7 +164,7 @@ export default function ClinicalTrialsPage() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div className="relative h-[200px] md:h-auto">
                     <Image
-                      src="/our-mission.jpg"
+                      src="/zdraveibolest-klinichni-prouchvania-1.jpg"
                       alt="Research Study"
                       fill
                       className="object-cover"
@@ -208,7 +208,7 @@ export default function ClinicalTrialsPage() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div className="relative h-[200px] md:h-auto">
                     <Image
-                      src="/who-we-are.jpg"
+                      src="/zdraveibolest-klinichni-prouchvania-2.jpg"
                       alt="Research Study"
                       fill
                       className="object-cover"
@@ -333,7 +333,7 @@ export default function ClinicalTrialsPage() {
               {/* Center Column - Large Image */}
               <div className="relative h-[400px] lg:h-full lg:min-h-[500px] order-first lg:order-none rounded-2xl overflow-hidden">
                 <Image
-                  src="/who-we-are.jpg"
+                  src="/zdraveibolest-klinichni-prouchvania-3.jpg"
                   alt="Research Team"
                   fill
                   className="object-cover"
@@ -456,7 +456,7 @@ export default function ClinicalTrialsPage() {
             {/* Left - Image */}
             <div className="relative h-[400px] lg:h-auto">
               <Image
-                src="/who-we-are.jpg"
+                src="/zdraveibolest-klinichni-prouchvania-7.jpg"
                 alt="Testimonial"
                 fill
                 className="object-cover"
