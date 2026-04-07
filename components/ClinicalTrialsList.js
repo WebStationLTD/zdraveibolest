@@ -68,7 +68,7 @@ export default function ClinicalTrialsList({ posts }) {
               {/* Image */}
               <Link 
                 href={`/blog/${post.slug}`} 
-                className="relative h-[240px] sm:h-full block"
+                className="relative h-[200px] sm:h-full sm:min-h-[280px] block"
                 aria-label={`Виж проучване: ${post.title.rendered}`}
               >
                 <Image
@@ -82,9 +82,9 @@ export default function ClinicalTrialsList({ posts }) {
               </Link>
 
               {/* Content */}
-              <div className="sm:col-span-2 md:col-span-3 p-6 md:p-8 flex flex-col justify-center">
+              <div className="sm:col-span-2 md:col-span-3 p-4 sm:p-6 md:p-8 flex flex-col">
                 {/* Tags & Category */}
-                <div className="flex flex-wrap items-center gap-2 mb-3">
+                <div className="flex flex-wrap items-center gap-2 mb-4">
                   {tags.length > 0 && tags.slice(0, 3).map(tag => (
                     <span
                       key={tag.id}
@@ -103,7 +103,7 @@ export default function ClinicalTrialsList({ posts }) {
                 {/* Title */}
                 <Link href={`/blog/${post.slug}`}>
                   <h3 
-                    className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-3 group-hover:text-[#04737d] transition-colors line-clamp-2 leading-tight"
+                    className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-4 group-hover:text-[#04737d] transition-colors line-clamp-3 leading-snug"
                     dangerouslySetInnerHTML={{ __html: post.title.rendered }}
                   />
                 </Link>
@@ -114,14 +114,14 @@ export default function ClinicalTrialsList({ posts }) {
                 </p>
 
                 {/* Excerpt */}
-                <p className="text-base text-gray-600 mb-4 line-clamp-2 leading-relaxed">
+                <p className="text-sm md:text-base text-gray-600 mb-5 line-clamp-2 leading-relaxed">
                   {excerpt}
                 </p>
 
                 {/* Read More Link */}
                 <Link
                   href={`/blog/${post.slug}`}
-                  className="inline-flex items-center gap-2 text-[#04737d] font-semibold hover:gap-3 transition-all group/link"
+                  className="inline-flex items-center gap-2 text-[#04737d] font-semibold hover:gap-3 transition-all group/link mt-auto"
                 >
                   <span>Виж проучването</span>
                   <svg
