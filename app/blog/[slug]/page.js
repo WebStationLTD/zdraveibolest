@@ -90,9 +90,9 @@ export default async function PostPage({ params }) {
         </div>
         <div className="bg-white py-16 md:py-20">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-              {/* Main Content - Left Column */}
-              <article className="lg:col-span-8">
+            <div className={hasHealthyVolunteerTag ? "flex justify-center" : "grid grid-cols-1 lg:grid-cols-12 gap-8"}>
+              {/* Main Content */}
+              <article className={hasHealthyVolunteerTag ? "max-w-4xl w-full" : "lg:col-span-8"}>
                 {ogImage && (
                   <img
                     src={ogImage}
@@ -108,10 +108,12 @@ export default async function PostPage({ params }) {
                 />
               </article>
 
-              {/* Sticky Registration Box - Right Column */}
-              <aside className="lg:col-span-4">
-                <StickyRegistrationBox />
-              </aside>
+              {/* Sticky Registration Box - Right Column - Hidden for Healthy Volunteer posts */}
+              {!hasHealthyVolunteerTag && (
+                <aside className="lg:col-span-4">
+                  <StickyRegistrationBox />
+                </aside>
+              )}
             </div>
 
             {/* Healthy Volunteer Form - shown for posts tagged zdravi-dobrovoltsi */}
