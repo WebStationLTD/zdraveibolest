@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { requestPasswordReset } from '../services/auth';
 
 export default function LoginForm({ onSuccess, redirectAfterSuccess = true }) {
   const { login } = useAuth();
@@ -14,6 +15,13 @@ export default function LoginForm({ onSuccess, redirectAfterSuccess = true }) {
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+
+  // Forgot password state
+  const [showForgot, setShowForgot] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState('');
+  const [forgotLoading, setForgotLoading] = useState(false);
+  const [forgotError, setForgotError] = useState('');
+  const [forgotSuccess, setForgotSuccess] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -74,6 +82,24 @@ export default function LoginForm({ onSuccess, redirectAfterSuccess = true }) {
     }
   };
 
+  const handleForgotSubmit = async (e) => {
+    e.preventDefault();
+    setForgotError('');
+    if (!forgotEmail.trim()) {
+      setForgotError('Моля въведете имейл адрес');
+      return;
+    }
+    setForgotLoading(true);
+    try {
+      await requestPasswordReset(forgotEmail.trim());
+      setForgotSuccess(true);
+    } catch (err) {
+      setForgotError(err.message || 'Възникна грешка. Моля, опитайте отново.');
+    } finally {
+      setForgotLoading(false);
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {errors.general && (
@@ -113,9 +139,18 @@ export default function LoginForm({ onSuccess, redirectAfterSuccess = true }) {
 
       {/* Password */}
       <div>
-        <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-          Парола <span className="text-red-500">*</span>
-        </label>
+        <div className="flex items-center justify-between mb-1">
+          <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            Парола <span className="text-red-500">*</span>
+          </label>
+          <button
+            type="button"
+            onClick={() => { setShowForgot(!showForgot); setForgotError(''); setForgotSuccess(false); setForgotEmail(''); }}
+            className="text-sm text-[#04737d] hover:text-[#035057] font-medium transition-colors"
+          >
+            Забравена парола?
+          </button>
+        </div>
         <input
           type="password"
           id="password"
@@ -131,6 +166,48 @@ export default function LoginForm({ onSuccess, redirectAfterSuccess = true }) {
           <p className="mt-1 text-sm text-red-600">{errors.password}</p>
         )}
       </div>
+
+      {/* Forgot Password Inline Panel */}
+      {showForgot && (
+        <div className="rounded-xl border border-[#04737d]/25 bg-[#04737d]/5 p-5 space-y-4">
+          <p className="text-sm font-medium text-gray-800">
+            Въведете имейл адреса си и ще ви изпратим линк за нулиране на паролата.
+          </p>
+          {forgotSuccess ? (
+            <div className="flex items-start gap-3 rounded-lg bg-green-50 border border-green-200 p-4">
+              <svg className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+              <p className="text-sm text-green-800">
+                Ако имейлът е регистриран в системата, ще получите линк за нулиране на паролата.
+              </p>
+            </div>
+          ) : (
+            <div className="flex gap-2">
+              <input
+                type="email"
+                value={forgotEmail}
+                onChange={(e) => { setForgotEmail(e.target.value); setForgotError(''); }}
+                placeholder="Вашият имейл адрес"
+                className={`flex-1 px-4 py-2.5 border ${
+                  forgotError ? 'border-red-300' : 'border-gray-300'
+                } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent transition-colors text-sm`}
+              />
+              <button
+                type="button"
+                onClick={handleForgotSubmit}
+                disabled={forgotLoading}
+                className="px-4 py-2.5 bg-[#04737d] hover:bg-[#035057] text-white text-sm font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+              >
+                {forgotLoading ? 'Изпращане...' : 'Изпрати'}
+              </button>
+            </div>
+          )}
+          {forgotError && (
+            <p className="text-sm text-red-600">{forgotError}</p>
+          )}
+        </div>
+      )}
 
       {/* Submit Button */}
       <button

@@ -188,9 +188,6 @@ export async function validateToken(token) {
   }
   
   try {
-    console.log('🔍 VALIDATE TOKEN - Calling:', `${API_URL}/wp-json/zdravei/v1/validate`);
-    
-    // Използваме custom header X-Auth-Token вместо Authorization за да избегнем JWT плъгина
     const response = await fetch(`${API_URL}/wp-json/zdravei/v1/validate`, {
       method: 'POST',
       headers: {
@@ -199,14 +196,9 @@ export async function validateToken(token) {
       },
     });
 
-    console.log('🔍 VALIDATE TOKEN - Response status:', response.status);
-    console.log('🔍 VALIDATE TOKEN - Response ok:', response.ok);
-
     const data = await response.json();
-    console.log('🔍 VALIDATE TOKEN - Response data:', data);
 
     if (!response.ok) {
-      console.error('❌ VALIDATE TOKEN - Error response:', data);
       throw new Error(data.message || 'Token validation failed');
     }
 
@@ -214,7 +206,6 @@ export async function validateToken(token) {
     const normalizedUser = { ...data };
     Object.keys(data).forEach(key => {
       if (key.startsWith('acf_')) {
-        // Add version without prefix for easier access
         const fieldWithoutPrefix = key.replace('acf_', '');
         if (!normalizedUser[fieldWithoutPrefix]) {
           normalizedUser[fieldWithoutPrefix] = data[key];
@@ -222,15 +213,8 @@ export async function validateToken(token) {
       }
     });
 
-    console.log('🔍 VALIDATE TOKEN - Normalized user:', normalizedUser);
-
     return normalizedUser;
   } catch (error) {
-    console.error('❌ Token validation error:', error);
-    console.error('❌ Error details:', {
-      message: error.message,
-      stack: error.stack
-    });
     throw error;
   }
 }
@@ -380,6 +364,50 @@ export async function createApplication(applicationData, token) {
  * @param {string} token - JWT token
  * @param {Object} user - User data
  */
+/**
+ * Request a password reset link for the given email
+ * @param {string} email
+ * @returns {Promise<Object>}
+ */
+export async function requestPasswordReset(email) {
+  const response = await fetch(`${API_URL}/wp-json/zdravei/v1/forgot-password`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || 'Грешка при изпращане на линк');
+  }
+
+  return data;
+}
+
+/**
+ * Reset the user's password using the key from the reset email
+ * @param {string} key
+ * @param {string} login
+ * @param {string} newPassword
+ * @returns {Promise<Object>}
+ */
+export async function resetPassword(key, login, newPassword) {
+  const response = await fetch(`${API_URL}/wp-json/zdravei/v1/reset-password`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ key, login, new_password: newPassword }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || 'Грешка при смяна на парола');
+  }
+
+  return data;
+}
+
 export function saveAuthData(token, user) {
   if (typeof window === 'undefined') return;
   

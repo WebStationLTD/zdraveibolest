@@ -6,7 +6,7 @@ import Link from "next/link";
  */
 export default function OurMission() {
   return (
-    <section className="relative pr-5 bg-white overflow-hidden">
+    <section className="relative px-5 lg:px-0 lg:pr-5 bg-white overflow-hidden">
       <div className="grid grid-cols-1 lg:grid-cols-2">
         {/* Left: Image - Full Height with Rounded Right Corners */}
         <div className="relative h-[400px] lg:h-auto order-2 lg:order-1">
@@ -19,7 +19,7 @@ export default function OurMission() {
         </div>
 
         {/* Right: Content */}
-        <div className="relative z-10 py-16 md:py-20 lg:py-24 lg:pr-[calc((100vw-80vw)/2-20px)] lg:pl-8 order-1 lg:order-2">
+        <div className="relative z-10 py-12 md:py-20 lg:py-24 lg:pr-[calc((100vw-80vw)/2-20px)] lg:pl-8 order-1 lg:order-2">
           {/* Small Title */}
           <p className="text-xs md:text-sm font-normal tracking-[0.2em] text-[#04737d] mb-4 uppercase">
             НАШАТА МИСИЯ

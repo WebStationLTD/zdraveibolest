@@ -69,7 +69,7 @@ export default function CTASection() {
   };
 
   return (
-    <section className="relative pt-16 md:pt-20 lg:pt-24 pb-0">
+    <section className="relative pt-16 md:pt-20 lg:pt-24 pb-16 md:pb-20 lg:pb-24">
       {/* CTA Box with Background and Effects - 80% Container */}
       <div className="px-5">
         <div className="mx-auto w-[95%] md:w-[80%]">
@@ -188,15 +188,6 @@ export default function CTASection() {
         </div>
       </div>
 
-      {/* Footer Illustration - Full Width */}
-      <div className="relative -mt-1">
-        <img
-          src="/Footer Illustration.svg"
-          alt="Медицински специалисти"
-          className="w-full h-auto"
-          loading="lazy"
-        />
-      </div>
     </section>
   );
 }
