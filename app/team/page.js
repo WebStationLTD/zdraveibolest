@@ -2,6 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { getMembers } from "../../services/members";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "Хората зад информацията - Здраве и Болест",
   description:
@@ -10,10 +12,6 @@ export const metadata = {
 
 export default async function Team() {
   const members = await getMembers();
-
-  if (!members || members.length === 0) {
-    throw new Error("Team members not found");
-  }
 
   return (
     <>
