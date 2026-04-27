@@ -146,11 +146,7 @@ export default function HealthyVolunteerForm() {
   };
 
   const onSubmit = async (data) => {
-    // Валидация само на стъпка 3
-    if (currentStep !== 3) {
-      console.log("⚠️ Submit prevented - not on step 3");
-      return;
-    }
+    if (currentStep !== 3) return;
 
     // Маркираме, че е опитано изпращане
     setSubmitAttempted(true);
@@ -168,8 +164,6 @@ export default function HealthyVolunteerForm() {
     setError("");
 
     try {
-      console.log("📤 HEALTHY VOLUNTEER FORM - Изпращане на данни:", data);
-
       // Подготвяме payload за backend
       const payload = {
         acf_first_name: data.first_name,
@@ -181,17 +175,16 @@ export default function HealthyVolunteerForm() {
         acf_height: data.height,
         acf_weight: data.weight,
         acf_nicotine_use: data.nicotine_use,
-        acf_allergies: data.allergies,
-        acf_asthma: data.asthma,
+        acf_alergies: data.allergies,
+        acf_astma: data.asthma,
         acf_other_medical_conditions: data.other_conditions,
         acf_current_medications: data.medications,
         acf_current_medications_text: data.medications === "Да" ? data.medications_text : "",
         acf_trial_type: data.trial_type,
-        acf_marketing_channel: data.marketing_channels.join(", "),
+        acf_marketing_channel: data.marketing_channels,
         acf_marketing_field_other: data.marketing_channels.includes("Друго") ? data.other_channel_text : "",
       };
 
-      console.log("📤 Payload:", payload);
 
       const response = await fetch(
         "https://zdraveibolest.admin-panels.com/wp-json/zdravei/v1/create-healthy-application",
@@ -210,7 +203,6 @@ export default function HealthyVolunteerForm() {
         throw new Error(result.message || "Грешка при изпращане на кандидатурата");
       }
 
-      console.log("✅ Success:", result);
       setSuccess(true);
     } catch (err) {
       console.error("Form submission error:", err);
