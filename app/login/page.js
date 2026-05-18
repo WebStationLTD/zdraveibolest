@@ -5,8 +5,8 @@ import Link from "next/link";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Влезте във вашия профил - Здраве и Болест",
-  description: "Достъп до вашите запазени статии, здравна информация и персонални препоръки.",
+  title: "Вход в профила – Здраве и Болест",
+  description: "Влезте във вашия профил за достъп до персонализирана здравна информация и клинични проучвания.",
 };
 
 export default function LoginPage() {

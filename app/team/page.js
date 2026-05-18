@@ -5,9 +5,9 @@ import { getMembers } from "../../services/members";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Хората зад информацията - Здраве и Болест",
+  title: "Нашият екип – медицински експерти – Здраве и Болест",
   description:
-    "Лекари, специалисти и координатори, които създават и проверяват съдържанието на портала.",
+    "Запознайте се с екипа от специалисти, които създават достоверна здравна информация за вас.",
 };
 
 export default async function Team() {
