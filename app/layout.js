@@ -29,25 +29,25 @@ export async function generateMetadata() {
   return {
     metadataBase: new URL(`${protocol}://${host}`),
     title: {
-      template: "%s | NextLevel Services",
-      default: "NextLevel Services | Професионални бизнес услуги",
+      template: "%s",
+      default: "Здраве и Болест – информация за заболявания на разбираем език",
     },
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      "Научете повече за заболяванията, клиничните проучвания и иновативни лечения. Медицинска информация, на която може да се доверите.",
     openGraph: {
-      title: "NextLevel Services | Професионални бизнес услуги",
+      title: "Здраве и Болест – информация за заболявания на разбираем език",
       description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      images: "/lawyer.webp",
+        "Научете повече за заболяванията, клиничните проучвания и иновативни лечения. Медицинска информация, на която може да се доверите.",
+      images: "/hero-woman-bg.png",
       type: "website",
       locale: "bg_BG",
-      siteName: "NextLevel Services",
+      siteName: "Здраве и Болест",
     },
     twitter: {
       card: "summary_large_image",
-      title: "NextLevel Services",
-      description: "Lorem ipsum dolor sit amet",
-      images: ["/lawyer.webp"],
+      title: "Здраве и Болест",
+      description: "Медицинска информация на разбираем език",
+      images: ["/hero-woman-bg.png"],
     },
     robots: {
       index: true,

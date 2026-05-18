@@ -21,9 +21,36 @@ export async function generateMetadata({ params }) {
   const ogImage =
     meta?.og_image && meta.og_image.length > 0 ? meta.og_image[0].url : "";
 
+  // Clean up title - remove old site name suffix
+  const cleanTitle = meta?.title 
+    ? meta.title.replace(' | NextLevel Services', '').replace(' - NextLevel Services', '').trim()
+    : post[0].title.rendered;
+  
+  // Fallback to content excerpt if Yoast description is empty
+  const cleanDescription = meta?.description || 
+    post[0].content?.rendered
+      ?.replace(/<[^>]+>/g, '') // Remove HTML tags
+      ?.substring(0, 155) // Max 155 characters
+      ?.trim() + '...' || 
+    "Научете повече за това заболяване и лечението му.";
+
   return {
-    title: meta?.title || post[0].title.rendered,
-    description: meta?.description || "",
+    title: cleanTitle,
+    description: cleanDescription,
+    openGraph: {
+      title: cleanTitle,
+      description: cleanDescription,
+      siteName: "Здраве и Болест",
+      images: ogImage ? [{ url: ogImage, width: 1200, height: 630 }] : [],
+      locale: "bg_BG",
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: cleanTitle,
+      description: cleanDescription,
+      images: ogImage ? [ogImage] : [],
+    },
   };
 }
 
