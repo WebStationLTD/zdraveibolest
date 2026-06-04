@@ -44,7 +44,7 @@ export async function generateMetadata({ params }) {
         locale: "bg_BG",
       },
       alternates: {
-        canonical: meta.canonical || undefined,
+        canonical: `/terapevtichni-oblasti/${slug}`,
       },
     };
   } catch (error) {

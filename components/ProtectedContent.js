@@ -36,18 +36,8 @@ export default function ProtectedContent({
     }
   }, [showLoginModal, showRegisterModal]);
 
-  if (loading) {
-    return (
-      <div className="animate-pulse space-y-4">
-        <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-        <div className="h-4 bg-gray-200 rounded w-full"></div>
-        <div className="h-4 bg-gray-200 rounded w-5/6"></div>
-      </div>
-    );
-  }
-
-  // Ако е logged in ИЛИ има публичен таг - показваме пълното съдържание
-  if (isAuthenticated || isPublicPost) {
+  // Пълен достъп: публичен таг или потвърдена автентикация
+  if (isPublicPost || (isAuthenticated && !loading)) {
     return (
       <div
         className="prose prose-lg max-w-none text-justify"
@@ -56,7 +46,7 @@ export default function ProtectedContent({
     );
   }
 
-  // За нерегистрирани - показваме preview с blur overlay
+  // SSR, ботове и период на auth check: preview с реално HTML (не skeleton)
   return (
     <div className="relative">
       {/* Preview Content - Limited Height */}
