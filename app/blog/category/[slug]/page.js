@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getCategoryBySlug, getPostsByCategory } from "../../../../services/categories";
+import { getPostCardExcerpt } from "../../../../lib/excerpt";
 import Script from "next/script";
 
 // Force dynamic rendering to avoid build timeout
@@ -173,11 +174,7 @@ export default async function CategoryPage({ params, searchParams }) {
                             {post.title.rendered}
                           </h3>
                           <p className="mt-5 line-clamp-3 text-sm/6 text-gray-600">
-                            {post.excerpt?.rendered
-                              ? post.excerpt.rendered.replace(/<[^>]+>/g, "").substring(0, 150) + "..."
-                              : post.content?.rendered
-                                ? post.content.rendered.replace(/<[^>]+>/g, "").substring(0, 150) + "..."
-                                : "Прочетете цялата статия за повече информация."}
+                            {getPostCardExcerpt(post)}
                           </p>
                         </div>
                       </div>

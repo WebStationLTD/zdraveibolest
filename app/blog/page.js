@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { getPostCardExcerpt } from "../../lib/excerpt";
 
 // Force dynamic rendering to avoid build timeout
 export const dynamic = "force-dynamic";
@@ -98,11 +99,7 @@ export default async function Blog({ searchParams }) {
                           {post.title.rendered}
                         </h3>
                         <p className="mt-5 line-clamp-3 text-sm/6 text-gray-600">
-                          {post.content.rendered
-                            ? post.content.rendered
-                                .replace(/<[^>]+>/g, "")
-                                .substring(0, 150) + "..."
-                            : "No description available"}
+                          {getPostCardExcerpt(post)}
                         </p>
                       </div>
                     </div>
