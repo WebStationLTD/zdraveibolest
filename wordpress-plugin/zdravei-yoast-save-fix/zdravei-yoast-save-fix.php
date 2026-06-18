@@ -1,37 +1,13 @@
 <?php
 /**
- * Plugin Name: Zdravei Yoast Editor Fix
+ * Plugin Name: Zdravei Yoast Save Fix
  * Description: Ensures Yoast SEO meta descriptions persist when saving from the block editor.
- * Version: 1.1.0
+ * Version: 1.2.0
  * Author: Cursor
  */
 
 if (!defined('ABSPATH')) {
     exit;
-}
-
-add_action('init', 'zdravei_register_yoast_rest_meta_fields');
-function zdravei_register_yoast_rest_meta_fields() {
-    $post_types = array('post', 'page', 'services', 'members');
-    $keys = array('_yoast_wpseo_focuskw', '_yoast_wpseo_title', '_yoast_wpseo_metadesc');
-
-    foreach ($post_types as $post_type) {
-        if (!post_type_exists($post_type)) {
-            continue;
-        }
-
-        foreach ($keys as $key) {
-            register_post_meta($post_type, $key, array(
-                'type'              => 'string',
-                'single'            => true,
-                'show_in_rest'      => true,
-                'sanitize_callback' => 'sanitize_text_field',
-                'auth_callback'     => function () {
-                    return current_user_can('edit_posts');
-                },
-            ));
-        }
-    }
 }
 
 add_action('enqueue_block_editor_assets', 'zdravei_yoast_block_editor_save_fix', 20);
