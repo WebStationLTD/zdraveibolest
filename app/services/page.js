@@ -4,6 +4,8 @@ import { getServices } from "../../services/services";
 import { Suspense } from "react";
 import dynamic from "next/dynamic";
 import Script from "next/script";
+import { getSiteUrl } from "../../lib/site";
+import { getOrganizationSchema } from "../../lib/schema";
 
 // Динамично зареждане на компонента със списъка с услуги
 const ServicesList = dynamic(() => import("../../components/ServicesList"), {
@@ -47,6 +49,9 @@ export default async function Services() {
       );
     }
 
+    const siteUrl = getSiteUrl();
+    const organization = getOrganizationSchema();
+
     // Подготвяме структурирани данни за Schema.org
     const servicesSchemaData = {
       "@context": "https://schema.org",
@@ -57,15 +62,11 @@ export default async function Services() {
         item: {
           "@type": "Service",
           name: service.title.rendered,
-          url: `https://example.bg/services/${service.slug}`,
+          url: `${siteUrl}/terapevtichni-oblasti/${service.slug}`,
           description:
             service.content.rendered.replace(/<[^>]+>/g, "").substring(0, 150) +
             "...",
-          provider: {
-            "@type": "Organization",
-            name: "NextLevel Services",
-            url: "https://example.bg",
-          },
+          provider: organization,
         },
       })),
     };

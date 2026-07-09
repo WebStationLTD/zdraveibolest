@@ -47,12 +47,26 @@ function entry(siteUrl, path, options = {}) {
 export default async function sitemap() {
   const siteUrl = getSiteUrl();
 
-  const [posts, areas, members, categories] = await Promise.all([
-    getSitemapBlogPosts(),
-    getSitemapTherapeuticAreas(),
-    getSitemapTeamMembers(),
-    getSitemapBlogCategories(),
-  ]);
+  let posts = [];
+  let areas = [];
+  let members = [];
+  let categories = [];
+
+  try {
+    [posts, areas, members, categories] = await Promise.all([
+      getSitemapBlogPosts(),
+      getSitemapTherapeuticAreas(),
+      getSitemapTeamMembers(),
+      getSitemapBlogCategories(),
+    ]);
+  } catch {
+    // Return static routes only if WordPress is unreachable
+  }
+
+  if (!Array.isArray(posts)) posts = [];
+  if (!Array.isArray(areas)) areas = [];
+  if (!Array.isArray(members)) members = [];
+  if (!Array.isArray(categories)) categories = [];
 
   const staticEntries = STATIC_ROUTES.map((route) =>
     entry(siteUrl, route.path, {

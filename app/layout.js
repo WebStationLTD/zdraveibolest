@@ -11,6 +11,7 @@ import NextTopLoader from "nextjs-toploader";
 import { AuthProvider } from "../contexts/AuthContext";
 import "../styles/globals.css";
 import { Lora } from "next/font/google";
+import { getGlobalStructuredData } from "../lib/schema";
 
 const lora = Lora({
   subsets: ["latin", "cyrillic"],
@@ -104,26 +105,7 @@ export default function RootLayout({ children }) {
           type="application/ld+json"
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "LegalService",
-              name: "Lorem ipsum dolor sit amet",
-              description:
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-              url: "https://example.bg",
-              contactPoint: {
-                "@type": "ContactPoint",
-                telephone: "+359XXXXXXXXX",
-                contactType: "customer service",
-              },
-              address: {
-                "@type": "PostalAddress",
-                streetAddress: "Example Street 123",
-                addressLocality: "София",
-                postalCode: "1000",
-                addressCountry: "BG",
-              },
-            }),
+            __html: JSON.stringify(getGlobalStructuredData()),
           }}
         />
       </body>

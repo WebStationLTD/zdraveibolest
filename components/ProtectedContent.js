@@ -48,7 +48,7 @@ export default function ProtectedContent({
 
   // SSR, ботове и период на auth check: preview с реално HTML (не skeleton)
   return (
-    <div className="relative">
+    <div className="relative paywall">
       {/* Preview Content - Limited Height */}
       <div
         className="relative overflow-hidden"

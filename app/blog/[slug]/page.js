@@ -3,6 +3,11 @@ import { getServices } from "../../../services/services";
 import BlogPostContent from "../../../components/BlogPostContent";
 import StickyRegistrationBox from "../../../components/StickyRegistrationBox";
 import HealthyVolunteerForm from "../../../components/HealthyVolunteerForm";
+import Script from "next/script";
+import {
+  buildBlogArticleSchema,
+  getBlogCanonicalPath,
+} from "../../../lib/schema";
 
 // Force dynamic rendering to avoid build timeout
 export const dynamic = 'force-dynamic';
@@ -37,6 +42,9 @@ export async function generateMetadata({ params }) {
   return {
     title: cleanTitle,
     description: cleanDescription,
+    alternates: {
+      canonical: getBlogCanonicalPath(slug, meta?.canonical),
+    },
     openGraph: {
       title: cleanTitle,
       description: cleanDescription,
@@ -73,8 +81,21 @@ export default async function PostPage({ params }) {
     // Check if post has the 'zdravi-dobrovoltsi' tag (ID=27)
     const hasHealthyVolunteerTag = Array.isArray(post[0].tags) && post[0].tags.includes(27);
 
+    const articleSchema = buildBlogArticleSchema({
+      post: post[0],
+      slug,
+      isPublicPost: hasHealthyVolunteerTag,
+    });
+
     return (
       <>
+        <Script
+          id="article-schema"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(articleSchema),
+          }}
+        />
         <div className="bg-white">
           <div className="mx-auto max-w-10/10 py-0 sm:px-6 sm:py-0 lg:px-0">
             <div className="relative isolate overflow-hidden bg-[#04737d] px-6 py-16 md:py-20 text-center shadow-2xl sm:px-12 rounded-b-2xl md:rounded-b-3xl">

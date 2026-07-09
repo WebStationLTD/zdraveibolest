@@ -2,6 +2,8 @@ import { getServiceBySlug } from "../../../services/services";
 import { Suspense } from "react";
 import dynamicImport from "next/dynamic";
 import Script from "next/script";
+import { getSiteUrl } from "../../../lib/site";
+import { getOrganizationSchema } from "../../../lib/schema";
 
 // Force dynamic rendering to avoid build timeout
 export const dynamic = 'force-dynamic';
@@ -53,7 +55,7 @@ export async function generateMetadata({ params }) {
       type: "article",
     },
     alternates: {
-      canonical: meta.canonical,
+      canonical: `/terapevtichni-oblasti/${slug}`,
     },
   };
 }
@@ -71,6 +73,9 @@ export default async function ServicePage({ params }) {
     const ogImage =
       meta.og_image && meta.og_image.length > 0 ? meta.og_image[0].url : "";
 
+    const siteUrl = getSiteUrl();
+    const organization = getOrganizationSchema();
+
     // Подготвяме структурирани данни за Schema.org
     const serviceSchemaData = {
       "@context": "https://schema.org",
@@ -79,14 +84,9 @@ export default async function ServicePage({ params }) {
       description:
         service[0].content.rendered.replace(/<[^>]+>/g, "").substring(0, 200) +
         "...",
-      url: meta.canonical || `https://example.bg/services/${slug}`,
-      provider: {
-        "@type": "Organization",
-        name: "NextLevel Services",
-        url: "https://example.bg",
-        logo: "https://example.bg/logo.png",
-      },
-      image: ogImage || "https://example.bg/placeholder.webp",
+      url: `${siteUrl}/terapevtichni-oblasti/${slug}`,
+      provider: organization,
+      image: ogImage || `${siteUrl}/hero-woman-bg.png`,
       offers: {
         "@type": "Offer",
         price: "Свържете се с нас за цена",
