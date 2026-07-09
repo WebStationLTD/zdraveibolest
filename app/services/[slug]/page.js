@@ -1,7 +1,7 @@
 import { getServiceBySlug } from "../../../services/services";
 import { Suspense } from "react";
 import dynamicImport from "next/dynamic";
-import Script from "next/script";
+import JsonLd from "../../../components/JsonLd";
 import { getSiteUrl } from "../../../lib/site";
 import { getOrganizationSchema } from "../../../lib/schema";
 
@@ -96,13 +96,7 @@ export default async function ServicePage({ params }) {
 
     return (
       <>
-        <Script
-          id="service-schema"
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(serviceSchemaData),
-          }}
-        />
+        <JsonLd id="service-schema" data={serviceSchemaData} />
 
         <div className="bg-white">
           <div className="mx-auto max-w-10/10 py-0 sm:px-6 sm:py-0 lg:px-0">

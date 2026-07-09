@@ -3,7 +3,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getCategoryBySlug, getPostsByCategory } from "../../../../services/categories";
 import { getPostCardExcerpt } from "../../../../lib/excerpt";
-import Script from "next/script";
+import JsonLd from "../../../../components/JsonLd";
 
 // Force dynamic rendering to avoid build timeout
 export const dynamic = 'force-dynamic';
@@ -81,13 +81,7 @@ export default async function CategoryPage({ params, searchParams }) {
   return (
     <>
       {/* Schema.org structured data */}
-      <Script
-        id="category-schema"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(schemaData),
-        }}
-      />
+      <JsonLd id="category-schema" data={schemaData} />
 
       {/* Hero Section */}
       <div className="bg-white">

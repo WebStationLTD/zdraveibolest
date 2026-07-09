@@ -3,7 +3,7 @@ import Link from "next/link";
 import { getServices } from "../../services/services";
 import { Suspense } from "react";
 import dynamic from "next/dynamic";
-import Script from "next/script";
+import JsonLd from "../../components/JsonLd";
 import { getSiteUrl } from "../../lib/site";
 import { getOrganizationSchema } from "../../lib/schema";
 
@@ -73,13 +73,7 @@ export default async function Services() {
 
     return (
       <>
-        <Script
-          id="services-schema"
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(servicesSchemaData),
-          }}
-        />
+        <JsonLd id="services-schema" data={servicesSchemaData} />
         <div className="bg-white">
           <div className="mx-auto max-w-10/10 py-0 sm:px-6 sm:py-0 lg:px-0">
             <div className="relative isolate overflow-hidden bg-gray-900 px-6 py-12 text-center shadow-2xl sm:px-12">

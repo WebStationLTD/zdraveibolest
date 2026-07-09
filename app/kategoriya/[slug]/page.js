@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getCategoryBySlug, getPostsByCategory, getCategories } from "../../../services/categories";
-import Script from "next/script";
+import JsonLd from "../../../components/JsonLd";
 
 // Force dynamic rendering to avoid build timeout
 export const dynamic = 'force-dynamic';
@@ -73,13 +73,7 @@ export default async function CategoryPage({ params }) {
 
   return (
     <>
-      <Script
-        id="category-schema"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(schemaData),
-        }}
-      />
+      <JsonLd id="category-schema" data={schemaData} />
 
       <div className="bg-white">
         {/* Hero Section */}

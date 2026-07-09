@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Script from "next/script";
+import JsonLd from "../../../components/JsonLd";
 import ClinicalTrialsPageClient from "../../../components/ClinicalTrialsPageClient";
 import { getTagsByCategory, getFilteredPosts } from "../../../services/tags";
 
@@ -55,13 +55,7 @@ export default async function FindClinicalTrialsPage() {
 
   return (
     <>
-      <Script
-        id="clinical-trials-schema"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(structuredData),
-        }}
-      />
+      <JsonLd id="clinical-trials-schema" data={structuredData} />
 
       <div className="bg-white min-h-screen">
       {/* Hero Section */}

@@ -2,7 +2,7 @@ import { headers } from "next/headers";
 import NavigationWrapper from "../components/nav-wrapper";
 import CookieConsentBanner from "../components/cookieConsentBanner";
 import Footer from "../components/footer";
-import Script from "next/script";
+import JsonLd from "../components/JsonLd";
 import ImagePreloader from "../components/ImagePreloader";
 import { CriticalCSS } from "./critical-css";
 import BackToTop from "../components/BackToTop";
@@ -100,14 +100,7 @@ export default function RootLayout({ children }) {
         <CookieConsentBanner />
         <Footer />
         </AuthProvider>
-        <Script
-          id="structured-data"
-          type="application/ld+json"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(getGlobalStructuredData()),
-          }}
-        />
+        <JsonLd id="structured-data" data={getGlobalStructuredData()} />
       </body>
     </html>
   );

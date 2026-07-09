@@ -1,7 +1,9 @@
 import { getServiceBySlug, getServices } from "../../../services/services";
 import ProtectedContent from "../../../components/ProtectedContent";
 import StickyRegistrationBox from "../../../components/StickyRegistrationBox";
-import Script from "next/script";
+import JsonLd from "../../../components/JsonLd";
+import { getOrganizationSchema } from "../../../lib/schema";
+import { getSiteUrl } from "../../../lib/site";
 
 // Добавяне на ISR ревалидиране на всеки час
 export const revalidate = 3600;
@@ -78,6 +80,7 @@ export default async function TherapeuticAreaPage({ params }) {
       meta.og_image && meta.og_image.length > 0 ? meta.og_image[0].url : "";
 
     // Подготвяме структурирани данни за Schema.org
+    const siteUrl = getSiteUrl();
     const areaSchemaData = {
       "@context": "https://schema.org",
       "@type": "MedicalSpecialty",
@@ -85,24 +88,14 @@ export default async function TherapeuticAreaPage({ params }) {
       description:
         service[0].content.rendered.replace(/<[^>]+>/g, "").substring(0, 200) +
         "...",
-      url: meta.canonical || `https://zdraveibolest.bg/terapevtichni-oblasti/${slug}`,
-      provider: {
-        "@type": "Organization",
-        name: "zdraveibolest.bg",
-        url: "https://zdraveibolest.bg",
-      },
-      image: ogImage || "https://zdraveibolest.bg/hero-woman-bg.png",
+      url: `${siteUrl}/terapevtichni-oblasti/${slug}`,
+      provider: getOrganizationSchema(),
+      image: ogImage || `${siteUrl}/hero-woman-bg.png`,
     };
 
     return (
       <>
-        <Script
-          id="therapeutic-area-schema"
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(areaSchemaData),
-          }}
-        />
+        <JsonLd id="therapeutic-area-schema" data={areaSchemaData} />
 
         <div className="bg-white">
           <div className="mx-auto max-w-10/10 py-0 sm:px-6 sm:py-0 lg:px-0">

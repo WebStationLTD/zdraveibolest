@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getServices } from "../../services/services";
 import { Suspense } from "react";
-import Script from "next/script";
+import JsonLd from "../../components/JsonLd";
 
 // Добавяне на ISR ревалидиране на всеки час
 export const revalidate = 3600;
@@ -75,13 +75,7 @@ export default async function TherapeuticAreas() {
 
     return (
       <>
-        <Script
-          id="therapeutic-areas-schema"
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(areasSchemaData),
-          }}
-        />
+        <JsonLd id="therapeutic-areas-schema" data={areasSchemaData} />
         <div className="bg-white">
           <div className="mx-auto max-w-10/10 py-0 sm:px-6 sm:py-0 lg:px-0">
             <div className="relative isolate overflow-hidden bg-[#04737d] px-6 py-12 text-center shadow-2xl sm:px-12 rounded-b-2xl md:rounded-b-3xl">

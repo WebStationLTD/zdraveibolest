@@ -3,7 +3,7 @@ import { getServices } from "../../../services/services";
 import BlogPostContent from "../../../components/BlogPostContent";
 import StickyRegistrationBox from "../../../components/StickyRegistrationBox";
 import HealthyVolunteerForm from "../../../components/HealthyVolunteerForm";
-import Script from "next/script";
+import JsonLd from "../../../components/JsonLd";
 import {
   buildBlogArticleSchema,
   getBlogCanonicalPath,
@@ -89,13 +89,7 @@ export default async function PostPage({ params }) {
 
     return (
       <>
-        <Script
-          id="article-schema"
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(articleSchema),
-          }}
-        />
+        <JsonLd id="article-schema" data={articleSchema} />
         <div className="bg-white">
           <div className="mx-auto max-w-10/10 py-0 sm:px-6 sm:py-0 lg:px-0">
             <div className="relative isolate overflow-hidden bg-[#04737d] px-6 py-16 md:py-20 text-center shadow-2xl sm:px-12 rounded-b-2xl md:rounded-b-3xl">
