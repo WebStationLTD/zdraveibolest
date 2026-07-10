@@ -54,3 +54,8 @@ next-env.d.ts
 # OS
 Thumbs.db
 
+# WordPress backend artifacts (belong on admin-panels.com, not in Next.js repo)
+wordpress-plugin/
+wp-functions-temp.php
+wp-settings.json
+
