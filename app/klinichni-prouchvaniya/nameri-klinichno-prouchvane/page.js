@@ -2,18 +2,26 @@ import Image from "next/image";
 import JsonLd from "../../../components/JsonLd";
 import ClinicalTrialsPageClient from "../../../components/ClinicalTrialsPageClient";
 import { getTagsByCategory, getFilteredPosts } from "../../../services/tags";
+import { withPageUrls } from "../../../lib/seo";
 
-export const metadata = {
-  title: "Намерете клинично проучване за вашето заболяване – Здраве и Болест",
-  description: "Търсете активни клинични изпитвания по терапевтични области. Възможност за достъп до иновативни лечения.",
-  keywords: "клинични проучвания, клинични изпитвания, заболявания, здраве, терапевтични области, България",
-  openGraph: {
+export const metadata = withPageUrls(
+  "/klinichni-prouchvaniya/nameri-klinichno-prouchvane",
+  {
     title: "Намерете клинично проучване за вашето заболяване – Здраве и Болест",
-    description: "Търсете активни клинични изпитвания по терапевтични области. Възможност за достъп до иновативни лечения.",
-    type: "website",
-    locale: "bg_BG",
-  },
-};
+    description:
+      "Търсете активни клинични изпитвания по терапевтични области. Възможност за достъп до иновативни лечения.",
+    keywords:
+      "клинични проучвания, клинични изпитвания, заболявания, здраве, терапевтични области, България",
+    openGraph: {
+      title:
+        "Намерете клинично проучване за вашето заболяване – Здраве и Болест",
+      description:
+        "Търсете активни клинични изпитвания по терапевтични области. Възможност за достъп до иновативни лечения.",
+      type: "website",
+      locale: "bg_BG",
+    },
+  }
+);
 
 export const dynamic = 'force-dynamic';
 

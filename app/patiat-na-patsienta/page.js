@@ -1,4 +1,5 @@
 import StepsCarousel from "../../components/StepsCarousel";
+import { pageUrls } from "../../lib/seo";
 import {
   SparklesIcon,
   ShieldCheckIcon,
@@ -10,6 +11,7 @@ export const metadata = {
   title: "Как протича участието в клинично изпитване – Здраве и Болест",
   description:
     "Всички стъпки от първия контакт до финалното посещение. Безопасност, грижа и прозрачност.",
+  ...pageUrls("/patiat-na-patsienta"),
 };
 
 const benefits = [

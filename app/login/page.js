@@ -1,5 +1,6 @@
 import LoginForm from "../../components/LoginForm";
 import Link from "next/link";
+import { NOINDEX_ROBOTS } from "../../lib/seo";
 
 // Force dynamic rendering
 export const dynamic = "force-dynamic";
@@ -7,6 +8,7 @@ export const dynamic = "force-dynamic";
 export const metadata = {
   title: "Вход в профила – Здраве и Болест",
   description: "Влезте във вашия профил за достъп до персонализирана здравна информация и клинични проучвания.",
+  robots: NOINDEX_ROBOTS,
 };
 
 export default function LoginPage() {

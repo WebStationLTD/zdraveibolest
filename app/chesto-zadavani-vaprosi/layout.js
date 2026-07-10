@@ -1,4 +1,6 @@
-export const metadata = {
+import { withPageUrls } from "../../lib/seo";
+
+export const metadata = withPageUrls("/chesto-zadavani-vaprosi", {
   title: "Често задавани въпроси за клиничните изпитвания – Здраве и Болест",
   description:
     "Отговори на най-важните въпроси за участието в клинични проучвания, безопасност и възнаграждение.",
@@ -17,7 +19,7 @@ export const metadata = {
     locale: "bg_BG",
     type: "website",
   },
-};
+});
 
 export default function FAQLayout({ children }) {
   return <>{children}</>;

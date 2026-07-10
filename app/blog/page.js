@@ -1,22 +1,39 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getPostCardExcerpt } from "../../lib/excerpt";
+import {
+  getBlogAliasCanonicalPath,
+  parsePageParam,
+} from "../../lib/category-routing";
 
-// Force dynamic rendering to avoid build timeout
 export const dynamic = "force-dynamic";
 
-export const metadata = {
-  title: "Здравни статии на разбираем език – Здраве и Болест",
-  description:
-    "Статии за заболявания, симптоми, лечение и профилактика. Актуална здравна информация, написана от специалисти.",
-};
+export async function generateMetadata({ searchParams }) {
+  const currentPage = parsePageParam((await searchParams)?.page);
+  const canonical = getBlogAliasCanonicalPath(currentPage);
+
+  return {
+    title: "Здравни статии на разбираем език – Здраве и Болест",
+    description:
+      "Статии за заболявания, симптоми, лечение и профилактика. Актуална здравна информация, написана от специалисти.",
+    alternates: {
+      canonical,
+    },
+    openGraph: {
+      title: "Здравни статии на разбираем език – Здраве и Болест",
+      description:
+        "Статии за заболявания, симптоми, лечение и профилактика. Актуална здравна информация, написана от специалисти.",
+      url: canonical,
+      locale: "bg_BG",
+      type: "website",
+    },
+  };
+}
 
 export default async function Blog({ searchParams }) {
-  const page = (await searchParams).page;
-  const currentPage = parseInt(page) || 1;
+  const currentPage = parsePageParam((await searchParams)?.page);
   const perPage = 9;
 
-  // Fetch posts from WordPress API with caching enabled
   const response = await fetch(
     `https://zdraveibolest.admin-panels.com/wp-json/wp/v2/posts?page=${currentPage}&per_page=${perPage}&categories=19&_fields=id,yoast_head_json,date,slug,title,content`,
     {
@@ -38,6 +55,19 @@ export default async function Blog({ searchParams }) {
 
   return (
     <>
+      {currentPage > 1 && (
+        <link
+          rel="prev"
+          href={getBlogAliasCanonicalPath(currentPage - 1)}
+        />
+      )}
+      {currentPage < totalPages && (
+        <link
+          rel="next"
+          href={getBlogAliasCanonicalPath(currentPage + 1)}
+        />
+      )}
+
       <div className="bg-white">
         <div className="mx-auto max-w-10/10 py-0 sm:px-6 sm:py-0 lg:px-0">
           <div className="relative isolate overflow-hidden bg-gray-900 px-6 py-12 text-center shadow-2xl sm:px-12">
@@ -112,13 +142,13 @@ export default async function Blog({ searchParams }) {
               Няма намерени публикации.
             </p>
           )}
-          {/* Pagination Controls */}
-          <div className="mt-10 flex justify-center">
+          <nav className="mt-10 flex justify-center" aria-label="Странициране">
             {currentPage > 1 && (
               <Link
                 href={`/blog?page=${currentPage - 1}`}
                 className="px-4 py-2 mx-2 bg-gray-200 rounded-md"
                 prefetch={true}
+                rel="prev"
               >
                 Предишна
               </Link>
@@ -131,11 +161,12 @@ export default async function Blog({ searchParams }) {
                 href={`/blog?page=${currentPage + 1}`}
                 className="px-4 py-2 mx-2 bg-gray-200 rounded-md"
                 prefetch={true}
+                rel="next"
               >
                 Следваща
               </Link>
             )}
-          </div>
+          </nav>
         </div>
       </div>
     </>

@@ -10,7 +10,7 @@ export default function Footer() {
   const standardNavigation = [
     { name: "Начало", href: "/" },
     { name: "Терапевтични области", href: "/#therapeutic-areas" },
-    { name: "Здравна информация", href: "/blog/category/статии" },
+    { name: "Здравна информация", href: "/kategoriya/статии" },
     { name: "Здрави доброволци", href: "/klinichni-prouchvaniya/zdravi-dobrovoltsi" },
     { name: "За нас", href: "/nashata-misiya" },
     { name: "Контакти", href: "/contact" },

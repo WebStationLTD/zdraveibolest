@@ -1,3 +1,4 @@
+import { pageUrls } from "../../lib/seo";
 
 // Force dynamic rendering to avoid build timeout
 export const dynamic = 'force-dynamic';
@@ -7,6 +8,7 @@ export async function generateMetadata() {
     title: "Политика за поверителност – Здраве и Болест",
     description:
       "Как събираме, съхраняваме и защитаваме вашите лични данни в съответствие със GDPR.",
+    ...pageUrls("/privacy-policy"),
   };
 }
 

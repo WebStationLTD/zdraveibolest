@@ -1,4 +1,6 @@
-export const metadata = {
+import { withPageUrls } from "../../../lib/seo";
+
+export const metadata = withPageUrls("/klinichni-prouchvaniya/zdravi-dobrovoltsi", {
   title: "Станете здрав доброволец в клинично изпитване – Здраве и Болест",
   description:
     "Участвайте в клинично изпитване, получете медицински преглед и възнаграждение. Помогнете на науката.",
@@ -17,7 +19,7 @@ export const metadata = {
     locale: "bg_BG",
     type: "website",
   },
-};
+});
 
 export default function HealthyVolunteersLayout({ children }) {
   return <>{children}</>;

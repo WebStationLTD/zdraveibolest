@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getMemberInfo } from "../../../services/members";
 import Image from "next/image";
+import { NOINDEX_ROBOTS } from "../../../lib/seo";
 
 export const dynamic = "force-dynamic";
 
@@ -9,11 +10,12 @@ export async function generateMetadata({ params }) {
   const member = await getMemberInfo(slug);
 
   if (!member) {
-    return { title: "Член на екипа" };
+    return { title: "Член на екипа", robots: NOINDEX_ROBOTS };
   }
 
   return {
     title: member.name || "Член на екипа",
+    robots: NOINDEX_ROBOTS,
     //description: member.description,
   };
 }

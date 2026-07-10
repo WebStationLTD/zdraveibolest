@@ -7,6 +7,7 @@ import { getContactInfo } from "../../services/contacts";
 import ContactForm from "../../components/contactForm";
 import ContactMap from "../../components/ContactMap";
 import Link from "next/link";
+import { pageUrls } from "../../lib/seo";
 
 // Force dynamic rendering to avoid build timeout
 export const dynamic = 'force-dynamic';
@@ -16,6 +17,7 @@ export async function generateMetadata() {
     title: "Свържете се с нас – Здраве и Болест",
     description:
       "Имате въпроси за здравето или клиничните проучвания? Свържете се с нашия екип за консултация.",
+    ...pageUrls("/contact"),
   };
 }
 

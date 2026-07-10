@@ -1,3 +1,4 @@
+import { pageUrls } from "../lib/seo";
 import HeroSection from "../components/hero";
 import Stats from "../components/stats";
 import TherapeuticAreas from "../components/therapeutic-areas";
@@ -17,9 +18,13 @@ export const metadata = {
   title: "Здраве и Болест – информация за заболявания на разбираем език",
   description:
     "Научете повече за заболяванията, клиничните проучвания и иновативни лечения. Медицинска информация, на която може да се доверите.",
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     title: "Здраве и Болест – информация за заболявания на разбираем език",
     description: "Научете повече за заболяванията, клиничните проучвания и иновативни лечения. Медицинска информация, на която може да се доверите.",
+    url: "/",
     images: [
       {
         url: "/hero-woman-bg.png",

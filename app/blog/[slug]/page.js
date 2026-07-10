@@ -39,15 +39,18 @@ export async function generateMetadata({ params }) {
       ?.trim() + '...' || 
     "Научете повече за това заболяване и лечението му.";
 
+  const canonical = getBlogCanonicalPath(slug, meta?.canonical);
+
   return {
     title: cleanTitle,
     description: cleanDescription,
     alternates: {
-      canonical: getBlogCanonicalPath(slug, meta?.canonical),
+      canonical,
     },
     openGraph: {
       title: cleanTitle,
       description: cleanDescription,
+      url: canonical,
       siteName: "Здраве и Болест",
       images: ogImage ? [{ url: ogImage, width: 1200, height: 630 }] : [],
       locale: "bg_BG",

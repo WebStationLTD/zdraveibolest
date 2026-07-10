@@ -1,15 +1,14 @@
 import { getSiteUrl } from "../lib/site";
+import { decodeCategorySlug } from "../lib/category-routing";
 import {
   getSitemapBlogPosts,
-  getSitemapTherapeuticAreas,
-  getSitemapTeamMembers,
   getSitemapBlogCategories,
 } from "../lib/sitemap-data";
 
+/** Indexable static pages (excludes auth, /team noindex, legacy redirects). */
 const STATIC_ROUTES = [
   { path: "", changeFrequency: "weekly", priority: 1 },
   { path: "/blog", changeFrequency: "daily", priority: 0.9 },
-  { path: "/terapevtichni-oblasti", changeFrequency: "weekly", priority: 0.9 },
   { path: "/klinichni-prouchvaniya", changeFrequency: "monthly", priority: 0.8 },
   {
     path: "/klinichni-prouchvaniya/nameri-klinichno-prouchvane",
@@ -24,7 +23,6 @@ const STATIC_ROUTES = [
   { path: "/chesto-zadavani-vaprosi", changeFrequency: "monthly", priority: 0.7 },
   { path: "/nashata-misiya", changeFrequency: "monthly", priority: 0.6 },
   { path: "/patiat-na-patsienta", changeFrequency: "monthly", priority: 0.6 },
-  { path: "/team", changeFrequency: "monthly", priority: 0.6 },
   { path: "/contact", changeFrequency: "yearly", priority: 0.5 },
   { path: "/privacy-policy", changeFrequency: "yearly", priority: 0.3 },
 ];
@@ -48,15 +46,11 @@ export default async function sitemap() {
   const siteUrl = getSiteUrl();
 
   let posts = [];
-  let areas = [];
-  let members = [];
   let categories = [];
 
   try {
-    [posts, areas, members, categories] = await Promise.all([
+    [posts, categories] = await Promise.all([
       getSitemapBlogPosts(),
-      getSitemapTherapeuticAreas(),
-      getSitemapTeamMembers(),
       getSitemapBlogCategories(),
     ]);
   } catch {
@@ -64,8 +58,6 @@ export default async function sitemap() {
   }
 
   if (!Array.isArray(posts)) posts = [];
-  if (!Array.isArray(areas)) areas = [];
-  if (!Array.isArray(members)) members = [];
   if (!Array.isArray(categories)) categories = [];
 
   const staticEntries = STATIC_ROUTES.map((route) =>
@@ -83,37 +75,17 @@ export default async function sitemap() {
     })
   );
 
-  const areaEntries = areas.map((area) =>
-    entry(siteUrl, `/terapevtichni-oblasti/${area.slug}`, {
-      lastModified: toLastModified(area.modified),
-      changeFrequency: "monthly",
-      priority: 0.8,
-    })
-  );
-
-  const memberEntries = members
-    .filter((member) => member.slug)
-    .map((member) =>
-      entry(siteUrl, `/team/${member.slug}`, {
-        lastModified: toLastModified(member.modified),
-        changeFrequency: "yearly",
-        priority: 0.5,
-      })
-    );
-
   const categoryEntries = categories.map((cat) =>
-    entry(siteUrl, `/blog/category/${cat.slug}`, {
+    entry(siteUrl, `/kategoriya/${decodeCategorySlug(cat.slug)}`, {
       lastModified: toLastModified(cat.modified),
       changeFrequency: "weekly",
-      priority: 0.6,
+      priority: 0.7,
     })
   );
 
   return [
     ...staticEntries,
     ...postEntries,
-    ...areaEntries,
-    ...memberEntries,
     ...categoryEntries,
   ];
 }

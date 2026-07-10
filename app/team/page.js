@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getMembers } from "../../services/members";
+import { NOINDEX_ROBOTS } from "../../lib/seo";
 
 export const dynamic = "force-dynamic";
 
@@ -8,6 +9,7 @@ export const metadata = {
   title: "Нашият екип – медицински експерти – Здраве и Болест",
   description:
     "Запознайте се с екипа от специалисти, които създават достоверна здравна информация за вас.",
+  robots: NOINDEX_ROBOTS,
 };
 
 export default async function Team() {

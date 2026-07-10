@@ -1,5 +1,6 @@
 import Link from "next/link";
 import StickyQuickRegisterWrapper from "../../components/StickyQuickRegisterWrapper";
+import { withPageUrls } from "../../lib/seo";
 
 /**
  * Our Mission Page
@@ -7,7 +8,7 @@ import StickyQuickRegisterWrapper from "../../components/StickyQuickRegisterWrap
  */
 
 // Page metadata
-export const metadata = {
+export const metadata = withPageUrls("/nashata-misiya", {
   title: "Нашата мисия – достъпна медицинска информация – Здраве и Болест",
   description:
     "Да направим медицината разбираема за всеки и да предоставим достъп до проверена здравна информация.",
@@ -26,7 +27,7 @@ export const metadata = {
     locale: "bg_BG",
     type: "website",
   },
-};
+});
 
 export default function OurMissionPage() {
   return (

@@ -1,6 +1,7 @@
 import RegisterForm from "../../components/RegisterForm";
 import { getServices } from "../../services/services";
 import Link from "next/link";
+import { NOINDEX_ROBOTS } from "../../lib/seo";
 
 // Force dynamic rendering to avoid build timeout
 export const dynamic = "force-dynamic";
@@ -9,6 +10,7 @@ export const metadata = {
   title: "Регистрация за достъп до здравна информация – Здраве и Болест",
   description:
     "Създайте профил и получете пълен достъп до статии, експертни съвети и актуални новини за здравето.",
+  robots: NOINDEX_ROBOTS,
 };
 
 export default async function RegisterPage() {

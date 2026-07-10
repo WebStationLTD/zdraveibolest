@@ -55,8 +55,8 @@ export default function Navigation({ therapeuticAreas = [] }) {
   ];
 
   const healthInfoMenu = [
-    { name: "Статии", href: "/blog/category/статии" },
-    { name: "Подкасти", href: "/blog/category/подкасти" },
+    { name: "Статии", href: "/kategoriya/статии" },
+    { name: "Подкасти", href: "/kategoriya/подкасти" },
   ];
 
   return (

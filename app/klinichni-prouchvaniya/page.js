@@ -1,3 +1,4 @@
+import { pageUrls } from "../../lib/seo";
 import Link from "next/link";
 import Image from "next/image";
 import ClinicalStepsCarousel from "../../components/ClinicalStepsCarousel";
@@ -16,6 +17,7 @@ export const metadata = {
   title: "Какво представляват клиничните проучвания – Здраве и Болест",
   description:
     "Научете как работят клиничните изпитвания, как можете да участвате и какви са ползите за вашето здраве.",
+  ...pageUrls("/klinichni-prouchvaniya"),
 };
 
 export default function ClinicalTrialsPage() {
