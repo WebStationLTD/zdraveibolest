@@ -9,6 +9,8 @@ import OurMission from "../components/our-mission";
 import CTASection from "../components/cta-section";
 import StickyQuickRegisterWrapper from "../components/StickyQuickRegisterWrapper";
 import { WebVitals } from "./web-vitals";
+import JsonLd from "../components/JsonLd";
+import { getHomeWebPageSchema } from "../lib/schema";
 
 // Force dynamic rendering to avoid build timeout
 export const dynamic = "force-dynamic";
@@ -47,6 +49,7 @@ export const metadata = {
 export default function Home() {
   return (
     <>
+      <JsonLd id="home-webpage-schema" data={getHomeWebPageSchema()} />
       <WebVitals />
       <StickyQuickRegisterWrapper />
       <HeroSection />

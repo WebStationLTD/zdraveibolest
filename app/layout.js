@@ -88,6 +88,7 @@ export default function RootLayout({ children }) {
         />
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <JsonLd id="structured-data" data={getGlobalStructuredData()} />
       </head>
       <body className={lora.className}>
         <AuthProvider>
@@ -100,7 +101,6 @@ export default function RootLayout({ children }) {
         <CookieConsentBanner />
         <Footer />
         </AuthProvider>
-        <JsonLd id="structured-data" data={getGlobalStructuredData()} />
       </body>
     </html>
   );

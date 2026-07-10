@@ -1,4 +1,7 @@
 import { withPageUrls } from "../../lib/seo";
+import JsonLd from "../../components/JsonLd";
+import { getAllFaqItems } from "../../lib/faq-data";
+import { buildFaqPageSchema } from "../../lib/schema";
 
 export const metadata = withPageUrls("/chesto-zadavani-vaprosi", {
   title: "Често задавани въпроси за клиничните изпитвания – Здраве и Болест",
@@ -22,5 +25,13 @@ export const metadata = withPageUrls("/chesto-zadavani-vaprosi", {
 });
 
 export default function FAQLayout({ children }) {
-  return <>{children}</>;
+  return (
+    <>
+      <JsonLd
+        id="faq-structured-data"
+        data={buildFaqPageSchema(getAllFaqItems())}
+      />
+      {children}
+    </>
+  );
 }

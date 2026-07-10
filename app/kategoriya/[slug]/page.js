@@ -25,16 +25,20 @@ export async function generateMetadata({ params, searchParams }) {
 
   const currentPage = parsePageParam((await searchParams)?.page);
   const isBlogHub = isBlogHubCategory(slug, category.id);
+  const pageSuffix = currentPage > 1 ? ` - страница ${currentPage}` : "";
 
   const title = isBlogHub
-    ? `${category.name} - Здравна информация | zdraveibolest.bg`
-    : `${category.name} - Терапевтична област | zdraveibolest.bg`;
+    ? `${category.name} - Здравна информация${pageSuffix} | zdraveibolest.bg`
+    : `${category.name} - Терапевтична област${pageSuffix} | zdraveibolest.bg`;
 
-  const description = isBlogHub
+  const baseDescription = isBlogHub
     ? category.description ||
       `Разгледайте всички ${category.name.toLowerCase()} в нашата здравна информация.`
     : category.description ||
       `Статии в категория ${category.name}. Научете повече за клиничните проучвания в тази терапевтична област.`;
+
+  const description =
+    currentPage > 1 ? `${baseDescription} Страница ${currentPage}.` : baseDescription;
 
   const pathSlug = getCategoryPathSlug(slug, category);
   const canonical = getKategoriyaCanonicalPath(pathSlug, currentPage);
