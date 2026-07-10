@@ -58,9 +58,9 @@ export default async function ContactPage() {
                 />
               </svg>
             </div>
-            <h2 className="text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl">
+            <h1 className="text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl">
               Свържете се с нас
-            </h2>
+            </h1>
             {/* <p className="mt-6 text-lg/8 text-gray-600">
               Proin volutpat consequat porttitor cras nullam gravida at. Orci
               molestie a eu arcu. Sed ut tincidunt integer elementum id sem.
