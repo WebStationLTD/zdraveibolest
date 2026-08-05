@@ -70,8 +70,11 @@ lines.push(
     "/sitemap.xml). Структурирани данни: Organization + WebSite + MedicalWebPage (JSON-LD)."
 );
 lines.push("");
+const paywallOn = process.env.NEXT_PUBLIC_ENABLE_PAYWALL === "true";
 lines.push(
-  "**Достъп до съдържание:** Повечето статии изискват безплатна регистрация (paywall). Статии с таг „Здрави доброволци“ (ID 27) са публично достъпни без login. Auth страниците (/login, /register) са noindex."
+  paywallOn
+    ? "**Достъп до съдържание:** Повечето статии изискват безплатна регистрация (paywall). Статии с таг „Здрави доброволци“ (ID 27) са публично достъпни без login. Auth страниците (/login, /register) са noindex."
+    : "**Достъп до съдържание:** Статиите са публично достъпни без регистрация. Регистрацията е за клинични проучвания, профил и участие като доброволец. Auth страниците (/login, /register) са noindex."
 );
 lines.push("");
 lines.push(

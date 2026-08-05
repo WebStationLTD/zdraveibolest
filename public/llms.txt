@@ -8,7 +8,7 @@
 
 **Архитектура:** Headless WordPress (CMS) + Next.js frontend. Пълен URL индекс: [sitemap.xml](https://zdraveibolest.bg/sitemap.xml). Структурирани данни: Organization + WebSite + MedicalWebPage (JSON-LD).
 
-**Достъп до съдържание:** Повечето статии изискват безплатна регистрация (paywall). Статии с таг „Здрави доброволци“ (ID 27) са публично достъпни без login. Auth страниците (/login, /register) са noindex.
+**Достъп до съдържание:** Статиите са публично достъпни без регистрация. Регистрацията е за клинични проучвания, профил и участие като доброволец. Auth страниците (/login, /register) са noindex.
 
 **URL конвенции:** Каноничният hub за здравни статии е `/kategoriya/статии`. `/blog` е alias. Legacy `/blog/category/*` и `/services/*` → 301 към `/kategoriya/*`. `/team` е noindex.
 

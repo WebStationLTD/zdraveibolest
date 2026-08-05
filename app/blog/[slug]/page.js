@@ -8,6 +8,7 @@ import {
   buildBlogArticleSchema,
   getBlogCanonicalPath,
 } from "../../../lib/schema";
+import { isPaywallEnabled } from "../../../lib/paywall";
 
 // Force dynamic rendering to avoid build timeout
 export const dynamic = 'force-dynamic';
@@ -68,9 +69,10 @@ export async function generateMetadata({ params }) {
 export default async function PostPage({ params }) {
   try {
     const { slug } = await params;
+    const paywallEnabled = isPaywallEnabled();
     const [post, therapeuticAreas] = await Promise.all([
       getPostBySlug(slug),
-      getServices()
+      paywallEnabled ? getServices() : Promise.resolve([]),
     ]);
 
     if (!post || post.length === 0) {
@@ -81,7 +83,7 @@ export default async function PostPage({ params }) {
     const ogImage =
       meta?.og_image && meta.og_image.length > 0 ? meta.og_image[0].url : "";
 
-    // Check if post has the 'zdravi-dobrovoltsi' tag (ID=27)
+    // Tag ID 27: layout (form + hide capsule); also public when paywall is on
     const hasHealthyVolunteerTag = Array.isArray(post[0].tags) && post[0].tags.includes(27);
 
     const articleSchema = buildBlogArticleSchema({
@@ -145,8 +147,7 @@ export default async function PostPage({ params }) {
                     className="w-full h-auto mb-10 rounded-2xl shadow-lg"
                   />
                 )}
-                {/* Protected Content - Client Component */}
-                <BlogPostContent 
+                <BlogPostContent
                   content={post[0].content.rendered}
                   therapeuticAreas={therapeuticAreas}
                   tags={post[0].tags || []}
