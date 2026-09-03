@@ -257,7 +257,7 @@ const STORAGE_KEY = "clinical_trial_form_data";
 
 export default function ClinicalTrialMultistepForm({
   studyId,
-  requireAuth = true,
+  requireAuth = false,
 }) {
   const {
     user,
@@ -303,6 +303,7 @@ export default function ClinicalTrialMultistepForm({
       smoking_status: "",
       additional_info: "",
       privacy_consent: false,
+      hp_field: "",
     },
   });
 
@@ -351,8 +352,9 @@ export default function ClinicalTrialMultistepForm({
       if (savedData) {
         try {
           const parsedData = JSON.parse(savedData);
-          // ВАЖНО: НЕ зареждай privacy_consent от sessionStorage!
           delete parsedData.privacy_consent;
+          delete parsedData.website;
+          delete parsedData.hp_field;
           // Приложи sessionStorage данните
           Object.keys(parsedData).forEach((key) => {
             setValue(key, parsedData[key]);
@@ -408,10 +410,13 @@ export default function ClinicalTrialMultistepForm({
     try {
       const parsedData = JSON.parse(savedData);
       delete parsedData.privacy_consent;
+      delete parsedData.website;
+      delete parsedData.hp_field;
       Object.keys(parsedData).forEach((key) => {
         setValue(key, parsedData[key]);
       });
       setValue("privacy_consent", false);
+      setValue("hp_field", "");
     } catch (e) {
       console.error("Error parsing saved form data:", e);
     }
@@ -420,14 +425,12 @@ export default function ClinicalTrialMultistepForm({
   // Save form data to sessionStorage on every change
   useEffect(() => {
     if (Object.keys(watchedFields).length > 0) {
-      // ВАЖНО: НЕ записвай privacy_consent в sessionStorage
-      const { privacy_consent, ...fieldsToSave } = watchedFields;
+      const { privacy_consent, website, hp_field, ...fieldsToSave } = watchedFields;
       sessionStorage.setItem(STORAGE_KEY, JSON.stringify(fieldsToSave));
     }
   }, [watchedFields]);
 
-  // Show loading state while checking auth (only when auth is required)
-  if (authLoading && requireAuth) {
+  if (authLoading) {
     return (
       <div className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-8 md:p-12 shadow-lg border border-gray-100">
         <div className="text-center">
@@ -512,11 +515,27 @@ export default function ClinicalTrialMultistepForm({
     : "w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent transition-all bg-white";
 
   const handleNext = async () => {
-    const isValid = await trigger();
-    if (isValid) {
-      setCurrentStep((prev) => Math.min(prev + 1, 2));
-      setError("");
+    if (currentStep === 1) {
+      try {
+        step1Schema.parse(getValues());
+      } catch (err) {
+        if (err.errors) {
+          err.errors.forEach((validationError) => {
+            const fieldName = validationError.path[0];
+            setFieldError(fieldName, {
+              type: "manual",
+              message: validationError.message,
+            });
+          });
+        }
+        return;
+      }
+    } else {
+      const isValid = await trigger();
+      if (!isValid) return;
     }
+    setCurrentStep((prev) => Math.min(prev + 1, 2));
+    setError("");
   };
 
   const handlePrev = () => {
@@ -552,59 +571,57 @@ export default function ClinicalTrialMultistepForm({
     try {
       console.log("📤 MULTISTEP FORM - Изпращане на данни:", data);
 
-      // Guests can fill the form, but applications require an authenticated account
-      if (!isAuthenticated) {
-        setError(
-          "За да изпратите кандидатурата, моля регистрирайте се или влезте в профила си. Данните ви са запазени на тази страница."
-        );
-        setSubmitting(false);
-        return;
+      if (isAuthenticated) {
+        const profilePayload = {
+          ...(data.first_name ? { first_name: data.first_name } : {}),
+          ...(data.last_name ? { last_name: data.last_name } : {}),
+          acf_phone_number: data.phone || "",
+          acf_birth_year: data.birth_year || "",
+          acf_gender: data.gender || "",
+          acf_city: data.city || "",
+          acf_therapeutic_area: data.therapeutic_area || "",
+          acf_current_diseases: data.current_conditions || "",
+          acf_current_medications: data.current_medications || "",
+          acf_smoking_status: data.smoking_status || "",
+          acf_additional_health_info: data.additional_info || "",
+        };
+
+        console.log("📤 UPDATE PROFILE - Payload:", profilePayload);
+
+        const profileResult = await updateProfile(profilePayload);
+
+        console.log("📥 UPDATE PROFILE - Result:", profileResult);
+
+        if (!profileResult.success) {
+          throw new Error(
+            profileResult.error || "Грешка при обновяване на профила"
+          );
+        }
       }
 
-      // Step 1: Update user profile with correct ACF field names
-      // Изпращаме first_name/last_name само ако са непразни,
-      // за да не изтрием съществуващата стойност в WordPress
-      const profilePayload = {
-        ...(data.first_name ? { first_name: data.first_name } : {}),
-        ...(data.last_name ? { last_name: data.last_name } : {}),
-        acf_phone_number: data.phone || "",
-        acf_birth_year: data.birth_year || "",
-        acf_gender: data.gender || "",
-        acf_city: data.city || "",
-        acf_therapeutic_area: data.therapeutic_area || "",
-        acf_current_diseases: data.current_conditions || "",
-        acf_current_medications: data.current_medications || "",
-        acf_smoking_status: data.smoking_status || "",
-        acf_additional_health_info: data.additional_info || "",
-      };
-
-      console.log("📤 UPDATE PROFILE - Payload:", profilePayload);
-
-      const profileResult = await updateProfile(profilePayload);
-
-      console.log("📥 UPDATE PROFILE - Result:", profileResult);
-
-      if (!profileResult.success) {
-        throw new Error(
-          profileResult.error || "Грешка при обновяване на профила"
-        );
-      }
-
-      // Step 2: Create application entry (CPT)
       const applicationData = {
-        applicant_id: user.id || user.user_id,
         target_study_id: studyId || 0,
         first_name: data.first_name,
         last_name: data.last_name,
-        phone: data.phone || user.phone || user.acf_phone_number || "",
-        birth_year: data.birth_year || user.birth_year || user.acf_birth_year || "",
-        gender: data.gender || user.gender || user.acf_gender || "",
-        city: data.city || user.city || user.acf_city || "",
-        current_diseases: data.current_conditions || user.current_conditions || user.acf_current_diseases || "",
-        current_medications: data.current_medications || user.current_medications || user.acf_current_medications || "",
-        smoking_status: data.smoking_status || user.smoking_status || user.acf_smoking_status || "",
-        additional_health_info: data.additional_info || user.additional_info || user.acf_additional_health_info || "",
+        email: data.email || user?.email || "",
+        phone: data.phone || user?.phone || user?.acf_phone_number || "",
+        birth_year: data.birth_year || user?.birth_year || user?.acf_birth_year || "",
+        gender: data.gender || user?.gender || user?.acf_gender || "",
+        city: data.city || user?.city || user?.acf_city || "",
+        therapeutic_area: data.therapeutic_area || "",
+        current_diseases: data.current_conditions || user?.current_conditions || user?.acf_current_diseases || "",
+        current_medications: data.current_medications || user?.current_medications || user?.acf_current_medications || "",
+        smoking_status: data.smoking_status || user?.smoking_status || user?.acf_smoking_status || "",
+        additional_health_info: data.additional_info || user?.additional_info || user?.acf_additional_health_info || "",
+        privacy_consent: !!data.privacy_consent,
       };
+      if (data.hp_field) {
+        applicationData.hp_field = data.hp_field;
+      }
+
+      if (isAuthenticated) {
+        applicationData.applicant_id = user.id || user.user_id;
+      }
 
       const applicationResult = await createApplication(applicationData);
 
@@ -650,6 +667,7 @@ export default function ClinicalTrialMultistepForm({
     setValue("smoking_status", user?.smoking_status || user?.acf_smoking_status || "");
     setValue("additional_info", user?.additional_info || user?.acf_additional_health_info || "");
     setValue("privacy_consent", false);
+    setValue("hp_field", "");
   };
 
   if (success) {
@@ -773,11 +791,28 @@ export default function ClinicalTrialMultistepForm({
         </div>
       )}
 
-      <form onSubmit={handleSubmit(onSubmit)} onKeyDown={(e) => {
+      <form
+        className="relative"
+        onSubmit={handleSubmit(onSubmit)}
+        onKeyDown={(e) => {
         if (e.key === 'Enter' && currentStep !== 2) {
           e.preventDefault();
         }
       }}>
+        <div
+          className="absolute -left-[9999px] h-0 w-0 overflow-hidden"
+          aria-hidden="true"
+        >
+          <label htmlFor="hp_field">Company</label>
+          <input
+            type="text"
+            id="hp_field"
+            name="hp_field"
+            tabIndex={-1}
+            autoComplete="off"
+            {...register("hp_field")}
+          />
+        </div>
         <AnimatePresence mode="wait">
           {/* Step 1: Personal Information + Demographics */}
           {currentStep === 1 && (
@@ -804,6 +839,11 @@ export default function ClinicalTrialMultistepForm({
                     readOnly={identityLocked}
                     className={identityFieldClass}
                   />
+                  {errors.first_name && (
+                    <p className="mt-1 text-sm text-red-600">
+                      {errors.first_name.message}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -820,6 +860,11 @@ export default function ClinicalTrialMultistepForm({
                     readOnly={identityLocked}
                     className={identityFieldClass}
                   />
+                  {errors.last_name && (
+                    <p className="mt-1 text-sm text-red-600">
+                      {errors.last_name.message}
+                    </p>
+                  )}
                 </div>
               </div>
 
@@ -838,6 +883,11 @@ export default function ClinicalTrialMultistepForm({
                     readOnly={identityLocked}
                     className={identityFieldClass}
                   />
+                  {errors.email && (
+                    <p className="mt-1 text-sm text-red-600">
+                      {errors.email.message}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -854,6 +904,11 @@ export default function ClinicalTrialMultistepForm({
                     readOnly={identityLocked}
                     className={identityFieldClass}
                   />
+                  {errors.phone && (
+                    <p className="mt-1 text-sm text-red-600">
+                      {errors.phone.message}
+                    </p>
+                  )}
                 </div>
               </div>
 

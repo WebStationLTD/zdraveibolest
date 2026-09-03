@@ -326,37 +326,42 @@ export function isProfileCompleted(user) {
  * @returns {Promise<Object>} - Application creation response
  */
 export async function createApplication(applicationData, token) {
-  try {
-    if (!token || typeof token !== 'string' || token.trim() === '') {
-      throw new Error('Не сте влезли в системата. Моля, влезте отново.');
-    }
-    
-    console.log('📤 CREATE APPLICATION - Sending data:', applicationData);
-    
-    // Use custom endpoint with X-Auth-Token (like all other endpoints)
-    const response = await fetch(`${API_URL}/wp-json/zdravei/v1/create-application`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Auth-Token': token,
-      },
-      body: JSON.stringify(applicationData),
-    });
-
-    const data = await response.json();
-    
-    console.log('📥 CREATE APPLICATION - Response:', data);
-
-    if (!response.ok) {
-      console.error('❌ Application creation failed:', data);
-      throw new Error(data.message || 'Грешка при създаване на кандидатурата');
-    }
-
-    return data;
-  } catch (error) {
-    console.error('❌ Application creation error:', error);
-    throw error;
+  const headers = {
+    'Content-Type': 'application/json',
+  };
+  if (token && typeof token === 'string' && token.trim() !== '') {
+    headers['X-Auth-Token'] = token;
   }
+
+  const response = await fetch(`${API_URL}/wp-json/zdravei/v1/create-application`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify(applicationData),
+  });
+
+  const text = await response.text();
+  let data = {};
+  if (text) {
+    try {
+      data = JSON.parse(text);
+    } catch {
+      throw new Error(
+        `Грешка при създаване на кандидатурата (HTTP ${response.status})`
+      );
+    }
+  }
+
+  if (!response.ok) {
+    const message =
+      (typeof data.message === 'string' && data.message) ||
+      (typeof data.error === 'string' && data.error) ||
+      (response.status === 429
+        ? 'Твърде много заявки. Моля, опитайте отново след час.'
+        : `Грешка при създаване на кандидатурата (HTTP ${response.status})`);
+    throw new Error(message);
+  }
+
+  return data;
 }
 
 /**

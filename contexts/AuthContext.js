@@ -328,15 +328,10 @@ export function AuthProvider({ children }) {
   const createApplication = async (applicationData) => {
     try {
       const token = getAuthToken();
-      if (!token) {
-        throw new Error("Not authenticated");
-      }
-
-      const response = await apiCreateApplication(applicationData, token);
+      const response = await apiCreateApplication(applicationData, token || undefined);
       return { success: true, data: response };
     } catch (error) {
-      console.error("Application creation error:", error);
-      return { success: false, error: error.message };
+      return { success: false, error: error.message || "Грешка при създаване на кандидатурата" };
     }
   };
 
