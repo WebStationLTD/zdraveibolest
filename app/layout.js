@@ -61,6 +61,13 @@ export async function generateMetadata() {
         "max-snippet": -1,
       },
     },
+    icons: {
+      icon: [
+        { url: "/favicon.ico", sizes: "48x48" },
+        { url: "/icon.png", type: "image/png", sizes: "512x512" },
+      ],
+      apple: { url: "/apple-icon.png", sizes: "512x512" },
+    },
   };
 }
 

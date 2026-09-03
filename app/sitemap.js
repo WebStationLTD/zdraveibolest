@@ -35,7 +35,9 @@ const STATIC_ROUTES = [
 function toLastModified(modified) {
   if (!modified) return undefined;
   const date = new Date(modified);
-  return Number.isNaN(date.getTime()) ? undefined : date;
+  if (Number.isNaN(date.getTime())) return undefined;
+  // Date-only W3C format — more reliably parsed by Search Console than ms ISO.
+  return date.toISOString().slice(0, 10);
 }
 
 function entry(siteUrl, path, options = {}) {
