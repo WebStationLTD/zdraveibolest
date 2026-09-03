@@ -8,7 +8,9 @@ import {
   getKategoriyaCanonicalPath,
   getCategoryPathSlug,
   isBlogHubCategory,
+  isPodcastCategory,
   parsePageParam,
+  PODCAST_FEATURED_IMAGE,
 } from "../../../lib/category-routing";
 
 export const dynamic = "force-dynamic";
@@ -42,6 +44,9 @@ export async function generateMetadata({ params, searchParams }) {
 
   const pathSlug = getCategoryPathSlug(slug, category);
   const canonical = getKategoriyaCanonicalPath(pathSlug, currentPage);
+  const podcastOgImage = isPodcastCategory(category, pathSlug)
+    ? PODCAST_FEATURED_IMAGE
+    : undefined;
 
   return {
     title,
@@ -55,6 +60,7 @@ export async function generateMetadata({ params, searchParams }) {
       url: canonical,
       locale: "bg_BG",
       type: "website",
+      ...(podcastOgImage ? { images: [podcastOgImage] } : {}),
     },
   };
 }

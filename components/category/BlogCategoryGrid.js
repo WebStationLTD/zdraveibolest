@@ -1,13 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
 import { getPostCardExcerpt } from "../../lib/excerpt";
-import { getKategoriyaCanonicalPath } from "../../lib/category-routing";
-
-function isPodcastCategory(category, slug) {
-  if (category?.id != null && Number(category.id) === 20) return true;
-  const raw = decodeURIComponent(slug || category?.slug || "").toLowerCase();
-  return raw === "подкасти" || raw.includes("podcast");
-}
+import {
+  getKategoriyaCanonicalPath,
+  isPodcastCategory,
+  PODCAST_FEATURED_IMAGE,
+} from "../../lib/category-routing";
 
 export default function BlogCategoryGrid({
   category,
@@ -84,11 +82,18 @@ export default function BlogCategoryGrid({
                         <Image
                           width={380}
                           height={250}
-                          alt={post.title.rendered || ""}
+                          alt={
+                            showPlayOverlay
+                              ? `Подкаст: ${post.title.rendered || ""}`
+                              : post.title.rendered || ""
+                          }
                           src={
-                            post._embedded?.["wp:featuredmedia"]?.[0]?.source_url ||
-                            post.yoast_head_json?.og_image?.[0]?.url ||
-                            "/placeholder.webp"
+                            showPlayOverlay
+                              ? PODCAST_FEATURED_IMAGE
+                              : post._embedded?.["wp:featuredmedia"]?.[0]
+                                  ?.source_url ||
+                                post.yoast_head_json?.og_image?.[0]?.url ||
+                                "/placeholder.webp"
                           }
                           className="aspect-video w-full rounded-2xl bg-gray-100 object-cover sm:aspect-2/1 lg:aspect-3/2"
                         />
