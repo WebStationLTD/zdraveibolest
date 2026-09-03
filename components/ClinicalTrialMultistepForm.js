@@ -255,7 +255,10 @@ const step2Schema = z.object({
 
 const STORAGE_KEY = "clinical_trial_form_data";
 
-export default function ClinicalTrialMultistepForm({ studyId }) {
+export default function ClinicalTrialMultistepForm({
+  studyId,
+  requireAuth = true,
+}) {
   const {
     user,
     isAuthenticated,
@@ -397,6 +400,23 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
     }
   }, [user, authLoading, setValue]);
 
+  // Restore draft for guests (patients page, no auth)
+  useEffect(() => {
+    if (isAuthenticated || authLoading) return;
+    const savedData = sessionStorage.getItem(STORAGE_KEY);
+    if (!savedData) return;
+    try {
+      const parsedData = JSON.parse(savedData);
+      delete parsedData.privacy_consent;
+      Object.keys(parsedData).forEach((key) => {
+        setValue(key, parsedData[key]);
+      });
+      setValue("privacy_consent", false);
+    } catch (e) {
+      console.error("Error parsing saved form data:", e);
+    }
+  }, [isAuthenticated, authLoading, setValue]);
+
   // Save form data to sessionStorage on every change
   useEffect(() => {
     if (Object.keys(watchedFields).length > 0) {
@@ -406,13 +426,8 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
     }
   }, [watchedFields]);
 
-  // Don't show form if user is not authenticated
-  if (!isAuthenticated) {
-    return null;
-  }
-
-  // Show loading state
-  if (authLoading) {
+  // Show loading state while checking auth (only when auth is required)
+  if (authLoading && requireAuth) {
     return (
       <div className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-8 md:p-12 shadow-lg border border-gray-100">
         <div className="text-center">
@@ -443,6 +458,58 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
       </div>
     );
   }
+
+  // Auth required: show login/register prompt instead of an empty section
+  if (requireAuth && !isAuthenticated) {
+    return (
+      <div className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-8 md:p-12 shadow-lg border border-gray-100">
+        <div className="text-center max-w-md mx-auto">
+          <div className="w-16 h-16 bg-[#04737d]/10 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg
+              className="w-8 h-8 text-[#04737d]"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={1.5}
+              aria-hidden="true"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
+              />
+            </svg>
+          </div>
+          <h3 className="text-2xl font-bold text-gray-900 mb-3">
+            Необходим е профил
+          </h3>
+          <p className="text-gray-600 mb-8 leading-relaxed">
+            Формата за кандидатстване е достъпна след вход или регистрация.
+            Създайте безплатен профил, за да продължите.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Link
+              href="/register"
+              className="inline-flex items-center justify-center px-6 py-3 bg-[#04737d] hover:bg-[#035057] text-white font-semibold rounded-lg transition-colors"
+            >
+              Регистрация
+            </Link>
+            <Link
+              href="/login"
+              className="inline-flex items-center justify-center px-6 py-3 border-2 border-[#04737d] text-[#04737d] hover:bg-[#04737d]/5 font-semibold rounded-lg transition-colors"
+            >
+              Вход
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const identityLocked = isAuthenticated;
+  const identityFieldClass = identityLocked
+    ? "w-full px-4 py-3 border border-gray-200 rounded-lg bg-gray-50 text-gray-600 cursor-not-allowed"
+    : "w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent transition-all bg-white";
 
   const handleNext = async () => {
     const isValid = await trigger();
@@ -484,6 +551,15 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
 
     try {
       console.log("📤 MULTISTEP FORM - Изпращане на данни:", data);
+
+      // Guests can fill the form, but applications require an authenticated account
+      if (!isAuthenticated) {
+        setError(
+          "За да изпратите кандидатурата, моля регистрирайте се или влезте в профила си. Данните ви са запазени на тази страница."
+        );
+        setSubmitting(false);
+        return;
+      }
 
       // Step 1: Update user profile with correct ACF field names
       // Изпращаме first_name/last_name само ако са непразни,
@@ -725,8 +801,8 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
                     type="text"
                     id="first_name"
                     {...register("first_name")}
-                    readOnly
-                    className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-gray-50 text-gray-600 cursor-not-allowed"
+                    readOnly={identityLocked}
+                    className={identityFieldClass}
                   />
                 </div>
 
@@ -741,8 +817,8 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
                     type="text"
                     id="last_name"
                     {...register("last_name")}
-                    readOnly
-                    className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-gray-50 text-gray-600 cursor-not-allowed"
+                    readOnly={identityLocked}
+                    className={identityFieldClass}
                   />
                 </div>
               </div>
@@ -759,8 +835,8 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
                     type="email"
                     id="email"
                     {...register("email")}
-                    readOnly
-                    className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-gray-50 text-gray-600 cursor-not-allowed"
+                    readOnly={identityLocked}
+                    className={identityFieldClass}
                   />
                 </div>
 
@@ -775,8 +851,8 @@ export default function ClinicalTrialMultistepForm({ studyId }) {
                     type="tel"
                     id="phone"
                     {...register("phone")}
-                    readOnly
-                    className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-gray-50 text-gray-600 cursor-not-allowed"
+                    readOnly={identityLocked}
+                    className={identityFieldClass}
                   />
                 </div>
               </div>
