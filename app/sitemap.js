@@ -20,6 +20,11 @@ const STATIC_ROUTES = [
     changeFrequency: "monthly",
     priority: 0.7,
   },
+  {
+    path: "/klinichni-prouchvaniya/patsienti",
+    changeFrequency: "monthly",
+    priority: 0.7,
+  },
   { path: "/chesto-zadavani-vaprosi", changeFrequency: "monthly", priority: 0.7 },
   { path: "/nashata-misiya", changeFrequency: "monthly", priority: 0.6 },
   { path: "/patiat-na-patsienta", changeFrequency: "monthly", priority: 0.6 },

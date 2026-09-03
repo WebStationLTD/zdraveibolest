@@ -74,9 +74,9 @@ export default function ContactMap({ address, phone, emails = [], lat, lng }) {
               </div>
             ))}
 
-            {/* Open in Google Maps button */}
+            {/* Open in Google Maps button — fixed place link (Clinical Trials Bulgaria) */}
             <a
-              href={`https://www.google.com/maps/search/?api=1&query=${encodedAddress}&zoom=17`}
+              href="https://www.google.com/maps/place/Clinical+Trials+Bulgaria/@42.6648052,23.2816089,17z/data=!3m1!4b1!4m6!3m5!1s0x40aa84c1b7289f1f:0x1fa5e4219a90cff!8m2!3d42.6648052!4d23.2841892!16s%2Fg%2F11h4610fnn"
               target="_blank"
               rel="noopener noreferrer"
               className="mt-2 flex items-center justify-center gap-2 w-full py-2.5 px-4 bg-[#04737d] hover:bg-[#035057] text-white text-sm font-medium rounded-xl transition-colors duration-200"

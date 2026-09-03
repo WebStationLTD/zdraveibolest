@@ -129,6 +129,9 @@ lines.push(
   `- [Здрави доброволци](${SITE}/klinichni-prouchvaniya/zdravi-dobrovoltsi): Участие на здрави доброволци в изпитвания.`
 );
 lines.push(
+  `- [Пациенти](${SITE}/klinichni-prouchvaniya/patsienti): Клинични проучвания за пациенти – кандидатура и стъпки за участие.`
+);
+lines.push(
   `- [Пътят на пациента](${SITE}/patiat-na-patsienta): Стъпки от първи контакт до финално посещение.`
 );
 lines.push(

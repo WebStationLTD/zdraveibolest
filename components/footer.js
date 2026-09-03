@@ -11,6 +11,7 @@ export default function Footer() {
     { name: "Начало", href: "/" },
     { name: "Терапевтични области", href: "/#therapeutic-areas" },
     { name: "Здравна информация", href: "/kategoriya/статии" },
+    { name: "Пациенти", href: "/klinichni-prouchvaniya/patsienti" },
     { name: "Здрави доброволци", href: "/klinichni-prouchvaniya/zdravi-dobrovoltsi" },
     { name: "За нас", href: "/nashata-misiya" },
     { name: "Контакти", href: "/contact" },
@@ -20,6 +21,7 @@ export default function Footer() {
     { name: "Начало", href: "/" },
     { name: "Участие", href: "/patiat-na-patsienta" },
     { name: "Намери клинично проучване", href: "/klinichni-prouchvaniya/nameri-klinichno-prouchvane" },
+    { name: "Пациенти", href: "/klinichni-prouchvaniya/patsienti" },
     { name: "Регистрация", href: "/klinichni-prouchvaniya#registration" },
     { name: "Контакти", href: "/contact" },
   ];

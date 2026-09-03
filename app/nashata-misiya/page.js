@@ -148,7 +148,7 @@ export default function OurMissionPage() {
               </div>
             </div>
 
-            {/* Ревматология */}
+            {/* Онкология */}
             <div className="flex items-start gap-4 p-5 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow">
               <div className="flex-shrink-0 mt-1">
                 <div className="w-6 h-6 rounded bg-[#04737d]/10 border-2 border-[#04737d] flex items-center justify-center">
@@ -158,8 +158,8 @@ export default function OurMissionPage() {
                 </div>
               </div>
               <div>
-                <h3 className="font-semibold text-[#04737d] text-lg mb-1">Ревматология</h3>
-                <p className="text-sm md:text-base text-gray-700">ревматоиден артрит, болест на Бехтерев, остеопороза, лупус</p>
+                <h3 className="font-semibold text-[#04737d] text-lg mb-1">Онкология</h3>
+                <p className="text-sm md:text-base text-gray-700">рак на гърдата, белия дроб, дебело черво и други</p>
               </div>
             </div>
 
@@ -245,7 +245,7 @@ export default function OurMissionPage() {
             <div className="w-16 h-1 bg-[#04737d] rounded-full mx-auto"></div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Column 1: Information about diseases */}
             <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-t-4 border-[#04737d]">
               <div className="flex justify-center mb-6">
@@ -294,6 +294,31 @@ export default function OurMissionPage() {
               </h3>
               <p className="text-base text-gray-700 leading-relaxed text-center">
                 Регистрирайте се за пълен достъп до експертни коментари, специализирани рубрики и новини.
+              </p>
+            </div>
+
+            {/* Column 4: Clinical trial discovery */}
+            <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-t-4 border-[#fd9300]">
+              <div className="flex justify-center mb-6">
+                <div className="w-20 h-20 bg-gradient-to-br from-[#fd9300] to-[#e48400] rounded-2xl flex items-center justify-center transform rotate-3 hover:rotate-0 transition-transform duration-300">
+                  <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </div>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4 text-center">
+                Открийте клинично изпитване подходящо за Вас
+              </h3>
+              <p className="text-base text-gray-700 leading-relaxed text-center mb-4">
+                Клиничното изпитване може да бъде една от възможностите за лечение.
+              </p>
+              <p className="text-center">
+                <Link
+                  href="/klinichni-prouchvaniya"
+                  className="text-[#04737d] font-medium hover:text-[#035057] underline transition-colors"
+                >
+                  Научете повече
+                </Link>
               </p>
             </div>
           </div>
@@ -367,6 +392,17 @@ export default function OurMissionPage() {
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">Вдъхновяващи истории</h3>
               <p className="text-gray-700 leading-relaxed">защото здравето не е само диагноза, а и надежда.</p>
+            </div>
+
+            {/* Card 6: Clinical trials */}
+            <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-200 hover:-translate-y-1">
+              <div className="w-12 h-12 bg-[#04737d]/10 rounded-lg flex items-center justify-center mb-4">
+                <svg className="w-6 h-6 text-[#04737d]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-3">Клинични изпитвания</h3>
+              <p className="text-gray-700 leading-relaxed">Възможност да участвате в проучване за иновативна терапия</p>
             </div>
           </div>
         </div>

@@ -3,9 +3,10 @@ import HeroSection from "../components/hero";
 import Stats from "../components/stats";
 import TherapeuticAreas from "../components/therapeutic-areas";
 import VideoSection from "../components/video-section";
+import ClinicalTrialsIntro from "../components/clinical-trials-intro";
 import LatestBlogPosts from "../components/latest-blog-posts";
 // import AboutUs from "../components/about-us"; // Removed as per request
-import OurMission from "../components/our-mission";
+// import OurMission from "../components/our-mission"; // Moved off homepage — live at /nashata-misiya
 import CTASection from "../components/cta-section";
 import StickyQuickRegisterWrapper from "../components/StickyQuickRegisterWrapper";
 import { WebVitals } from "./web-vitals";
@@ -57,8 +58,8 @@ export default function Home() {
       <TherapeuticAreas />
       <VideoSection />
       {/* <AboutUs /> */} {/* Removed as per request */}
+      <ClinicalTrialsIntro />
       <LatestBlogPosts />
-      <OurMission />
       <CTASection />
     </>
   );

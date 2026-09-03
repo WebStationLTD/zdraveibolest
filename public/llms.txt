@@ -40,6 +40,7 @@
 - [Какво представляват клиничните проучвания](https://zdraveibolest.bg/klinichni-prouchvaniya): Обяснение на фази, ползи, екип, форма за регистрация.
 - [Намери клинично проучване](https://zdraveibolest.bg/klinichni-prouchvaniya/nameri-klinichno-prouchvane): Търсене по терапевтична област и филтри.
 - [Здрави доброволци](https://zdraveibolest.bg/klinichni-prouchvaniya/zdravi-dobrovoltsi): Участие на здрави доброволци в изпитвания.
+- [Пациенти](https://zdraveibolest.bg/klinichni-prouchvaniya/patsienti): Клинични проучвания за пациенти – кандидатура и стъпки за участие.
 - [Пътят на пациента](https://zdraveibolest.bg/patiat-na-patsienta): Стъпки от първи контакт до финално посещение.
 - [Често задавани въпроси](https://zdraveibolest.bg/chesto-zadavani-vaprosi): FAQ за безопасност, права и възнаграждение.
 

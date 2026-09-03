@@ -3,6 +3,12 @@ import Image from "next/image";
 import { getPostCardExcerpt } from "../../lib/excerpt";
 import { getKategoriyaCanonicalPath } from "../../lib/category-routing";
 
+function isPodcastCategory(category, slug) {
+  if (category?.id != null && Number(category.id) === 20) return true;
+  const raw = decodeURIComponent(slug || category?.slug || "").toLowerCase();
+  return raw === "подкасти" || raw.includes("podcast");
+}
+
 export default function BlogCategoryGrid({
   category,
   posts,
@@ -10,6 +16,8 @@ export default function BlogCategoryGrid({
   currentPage,
   totalPages,
 }) {
+  const showPlayOverlay = isPodcastCategory(category, slug);
+
   return (
     <>
       {currentPage > 1 && (
@@ -72,7 +80,7 @@ export default function BlogCategoryGrid({
                 {posts.map((post) => (
                   <Link href={`/blog/${post.slug}`} key={post.id} prefetch={true}>
                     <article className="flex flex-col items-start justify-between">
-                      <div className="relative w-full">
+                      <div className="relative w-full group/thumb">
                         <Image
                           width={380}
                           height={250}
@@ -85,6 +93,21 @@ export default function BlogCategoryGrid({
                           className="aspect-video w-full rounded-2xl bg-gray-100 object-cover sm:aspect-2/1 lg:aspect-3/2"
                         />
                         <div className="absolute inset-0 rounded-2xl ring-1 ring-gray-900/10 ring-inset" />
+                        {showPlayOverlay && (
+                          <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-black/25 group-hover/thumb:bg-black/35 transition-colors">
+                            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white/95 shadow-lg group-hover/thumb:scale-105 transition-transform">
+                              <svg
+                                className="ml-1 h-7 w-7 text-[#04737d]"
+                                viewBox="0 0 24 24"
+                                fill="currentColor"
+                                aria-hidden="true"
+                              >
+                                <path d="M8 5v14l11-7L8 5z" />
+                              </svg>
+                            </span>
+                            <span className="sr-only">Пусни подкаст</span>
+                          </div>
+                        )}
                       </div>
                       <div className="max-w-xl">
                         <div className="mt-8 flex items-center gap-x-4 text-xs">

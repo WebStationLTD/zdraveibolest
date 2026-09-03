@@ -20,6 +20,7 @@ import {
   ArrowRightOnRectangleIcon,
   BeakerIcon,
   HeartIcon,
+  UserGroupIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useAuth } from "../contexts/AuthContext";
@@ -39,13 +40,14 @@ export default function Navigation({ therapeuticAreas = [] }) {
   
   const isClinicalTrialsSection = pathname?.startsWith('/klinichni-prouchvaniya');
   const isHealthyVolunteersPage = pathname === '/klinichni-prouchvaniya/zdravi-dobrovoltsi';
+  const isPatientsPage = pathname === '/klinichni-prouchvaniya/patsienti';
 
   const navigation = {
     pages: [
       { name: "Начало", href: "/" },
       // { name: "Здравна информация", href: "/blog" }, // Moved to dropdown menu
       // { name: "Клинични проучвания", href: "/klinichni-prouchvaniya" },
-      { name: "За нас", href: "/nashata-misiya" },
+      // За нас / Контакти → footer
     ],
   };
 
@@ -201,18 +203,19 @@ export default function Navigation({ therapeuticAreas = [] }) {
                     </Link>
                   </div>
 
-                  {/* Контакти - Clinical section */}
-                  <div className="flow-root">
-                    <Link
-                      href="/contact"
-                      className="-m-2 block p-2 font-normal text-gray-700 hover:text-[#04737d] transition-colors"
-                      onClick={() => setOpen(false)}
-                    >
-                      Контакти
-                    </Link>
-                  </div>
-
-              {/* Здрави доброволци - BUTTON - NOT on its own page */}
+              {/* Пациенти + Здрави доброволци - BUTTONS */}
+              {!isPatientsPage && (
+                <div className="flow-root">
+                  <Link
+                    href="/klinichni-prouchvaniya/patsienti"
+                    className="flex items-center justify-center gap-2 -m-2 p-2 px-4 font-medium text-white bg-[#04737d] hover:bg-[#035057] rounded-lg transition-colors"
+                    onClick={() => setOpen(false)}
+                  >
+                    <UserGroupIcon className="h-4 w-4 flex-shrink-0" />
+                    Пациенти
+                  </Link>
+                </div>
+              )}
               {!isHealthyVolunteersPage && (
                 <div className="flow-root">
                   <Link
@@ -274,20 +277,19 @@ export default function Navigation({ therapeuticAreas = [] }) {
                 </div>
               ))}
 
-              {/* Контакти - Standard menu */}
-              {!isClinicalTrialsSection && (
+              {/* Пациенти + Здрави доброволци - outside clinical */}
+              {!isClinicalTrialsSection && !isPatientsPage && (
                 <div className="flow-root">
                   <Link
-                    href="/contact"
-                    className="-m-2 block p-2 font-normal text-gray-700 hover:text-[#04737d] transition-colors"
+                    href="/klinichni-prouchvaniya/patsienti"
+                    className="flex items-center justify-center gap-2 -m-2 p-2 px-4 font-medium text-white bg-[#04737d] hover:bg-[#035057] rounded-lg transition-colors"
                     onClick={() => setOpen(false)}
                   >
-                    Контакти
+                    <UserGroupIcon className="h-4 w-4 flex-shrink-0" />
+                    Пациенти
                   </Link>
                 </div>
               )}
-
-              {/* Здрави доброволци - Show ONLY outside Clinical Trials and NOT on its own page */}
               {!isClinicalTrialsSection && !isHealthyVolunteersPage && (
                 <div className="flow-root">
                   <Link
@@ -592,13 +594,14 @@ export default function Navigation({ therapeuticAreas = [] }) {
                   </Link>
                 ))}
 
-                {/* Контакти - Standard menu */}
-                {!isClinicalTrialsSection && (
+                {/* Пациенти - outside clinical */}
+                {!isClinicalTrialsSection && !isPatientsPage && (
                   <Link
-                    href="/contact"
-                    className="text-sm font-normal text-gray-700 hover:text-[#04737d] transition-colors whitespace-nowrap"
+                    href="/klinichni-prouchvaniya/patsienti"
+                    className="flex items-center justify-center gap-1.5 px-3 py-1.5 text-sm font-medium text-white bg-[#04737d] hover:bg-[#035057] rounded-lg transition-colors whitespace-nowrap"
                   >
-                    Контакти
+                    <UserGroupIcon className="h-4 w-4 flex-shrink-0" />
+                    Пациенти
                   </Link>
                 )}
 
@@ -614,16 +617,6 @@ export default function Navigation({ therapeuticAreas = [] }) {
                   </Link>
                 )}
 
-                {/* Контакти - Clinical section */}
-                {isClinicalTrialsSection && (
-                  <Link
-                    href="/contact"
-                    className="text-sm font-normal text-gray-700 hover:text-[#04737d] transition-colors whitespace-nowrap"
-                  >
-                    Контакти
-                  </Link>
-                )}
-
                 {/* Search Button - Desktop */}
                 <div className="ml-3 pl-3 border-l border-gray-300">
                   <SearchButton />
@@ -633,7 +626,16 @@ export default function Navigation({ therapeuticAreas = [] }) {
 
             {/* Auth Buttons - Desktop */}
             <div className="hidden xl:flex items-center justify-end gap-2">
-              {/* Здрави доброволци BUTTON - Show ONLY in Clinical Trials section, NOT on its own page */}
+              {/* Пациенти + Доброволци in clinical section */}
+              {isClinicalTrialsSection && !isPatientsPage && (
+                <Link
+                  href="/klinichni-prouchvaniya/patsienti"
+                  className="flex items-center justify-center gap-1.5 px-3 py-1.5 text-sm font-medium text-white bg-[#04737d] hover:bg-[#035057] rounded-lg transition-colors whitespace-nowrap"
+                >
+                  <UserGroupIcon className="h-4 w-4 flex-shrink-0" />
+                  Пациенти
+                </Link>
+              )}
               {isClinicalTrialsSection && !isHealthyVolunteersPage && (
                 <Link
                   href="/klinichni-prouchvaniya/zdravi-dobrovoltsi"

@@ -6,6 +6,9 @@ import Swal from "sweetalert2";
 const URL_FORM =
   "https://zdraveibolest.admin-panels.com/wp-json/contact-form-7/v1/contact-forms/6/feedback";
 
+const fieldClass =
+  "w-full px-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#04737d] focus:border-transparent transition-all";
+
 export default function ContactForm() {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -29,13 +32,11 @@ export default function ContactForm() {
     formData.append("tel-603", phoneNumber);
     formData.append("your-message", message);
 
-    const reqOptions = {
-      method: "POST",
-      body: formData,
-    };
-
     try {
-      const req = await fetch(URL_FORM, reqOptions);
+      const req = await fetch(URL_FORM, {
+        method: "POST",
+        body: formData,
+      });
       const response = await req.json();
 
       if (response.status === "validation_failed") {
@@ -72,130 +73,134 @@ export default function ContactForm() {
   }
 
   return (
-    <div className="relative">
+    <div className="relative px-6 pt-16 pb-20 sm:pb-24 lg:px-8 lg:py-20">
       {loading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-opacity-50 z-10 pointer-events-none">
-          <div className="w-12 h-12 border-4 border-gray-400 border-t-[#129160] rounded-full animate-spin"></div>
+        <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
+          <div className="w-12 h-12 border-4 border-gray-200 border-t-[#04737d] rounded-full animate-spin" />
         </div>
       )}
+
       <form
         onSubmit={handleSubmit}
-        className={`px-6 pt-20 pb-24 sm:pb-24 lg:px-8 lg:py-24 ${
+        className={`mx-auto max-w-xl lg:mr-0 lg:max-w-lg ${
           loading ? "opacity-50 pointer-events-none" : ""
         }`}
       >
-        <div className="mx-auto max-w-xl lg:mr-0 lg:max-w-lg">
-          <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
-            <div className="sm:col-span-2">
+        <div className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-8 md:p-10 shadow-lg border border-gray-100">
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+              Изпратете запитване
+            </h2>
+            <div className="w-12 h-1 bg-[#04737d] rounded-full" />
+          </div>
+
+          <div className="space-y-5">
+            <div>
               <label
                 htmlFor="name"
-                className="block text-sm/6 font-semibold text-gray-900"
+                className="block text-sm font-medium text-gray-700 mb-1.5"
               >
                 Име*
               </label>
-              <div className="mt-2.5">
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  autoComplete="name"
-                  className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
-                />
-              </div>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                autoComplete="name"
+                placeholder="Вашето име"
+                className={fieldClass}
+              />
               {errors["your-name"] && (
-                <p className="text-red-600 text-sm mt-1">
-                  {errors["your-name"]}
-                </p>
+                <p className="text-red-600 text-sm mt-1">{errors["your-name"]}</p>
               )}
             </div>
-            <div className="sm:col-span-2">
+
+            <div>
               <label
                 htmlFor="email"
-                className="block text-sm/6 font-semibold text-gray-900"
+                className="block text-sm font-medium text-gray-700 mb-1.5"
               >
                 Имейл*
               </label>
-              <div className="mt-2.5">
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
-                />
-              </div>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                placeholder="name@example.com"
+                className={fieldClass}
+              />
               {errors["your-email"] && (
                 <p className="text-red-600 text-sm mt-1">
                   {errors["your-email"]}
                 </p>
               )}
             </div>
-            <div className="sm:col-span-2">
+
+            <div>
               <label
                 htmlFor="phone-number"
-                className="block text-sm/6 font-semibold text-gray-900"
+                className="block text-sm font-medium text-gray-700 mb-1.5"
               >
                 Телефон*
               </label>
-              <div className="mt-2.5">
-                <input
-                  id="phone-number"
-                  name="phone-number"
-                  type="tel"
-                  autoComplete="tel"
-                  className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
-                />
-              </div>
+              <input
+                id="phone-number"
+                name="phone-number"
+                type="tel"
+                autoComplete="tel"
+                placeholder="+359 ..."
+                className={fieldClass}
+              />
               {errors["tel-603"] && (
-                <p className="text-red-600 text-sm mt-1">
-                  {errors["tel-603"]}
-                </p>
+                <p className="text-red-600 text-sm mt-1">{errors["tel-603"]}</p>
               )}
             </div>
-            <div className="sm:col-span-2">
+
+            <div>
               <label
                 htmlFor="subject"
-                className="block text-sm/6 font-semibold text-gray-900"
+                className="block text-sm font-medium text-gray-700 mb-1.5"
               >
                 Тема*
               </label>
-              <div className="mt-2.5">
-                <input
-                  id="subject"
-                  name="subject"
-                  type="text"
-                  className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
-                />
-              </div>
+              <input
+                id="subject"
+                name="subject"
+                type="text"
+                placeholder="Тема на запитването"
+                className={fieldClass}
+              />
               {errors["your-subject"] && (
                 <p className="text-red-600 text-sm mt-1">
                   {errors["your-subject"]}
                 </p>
               )}
             </div>
-            <div className="sm:col-span-2">
+
+            <div>
               <label
                 htmlFor="message"
-                className="block text-sm/6 font-semibold text-gray-900"
+                className="block text-sm font-medium text-gray-700 mb-1.5"
               >
                 Съобщение
               </label>
-              <div className="mt-2.5">
-                <textarea
-                  id="message"
-                  name="message"
-                  rows={4}
-                  className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
-                  defaultValue={""}
-                />
-              </div>
+              <textarea
+                id="message"
+                name="message"
+                rows={5}
+                placeholder="Напишете съобщението си тук..."
+                className={`${fieldClass} resize-none`}
+                defaultValue={""}
+              />
             </div>
           </div>
+
           <div className="mt-8 flex justify-end">
             <button
               type="submit"
-              className="rounded-md bg-[#129160] px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-xs hover:bg-gray-300 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               disabled={loading}
+              className="px-8 py-3 bg-[#04737d] hover:bg-[#035057] text-white font-medium rounded-lg transition-colors shadow-sm disabled:opacity-50"
             >
               Изпрати запитване
             </button>
