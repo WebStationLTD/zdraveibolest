@@ -1,5 +1,16 @@
 import Link from "next/link";
-import { CATEGORY_ICONS } from "../../lib/category-routing";
+
+function getPostFeaturedImage(post) {
+  const media = post?._embedded?.["wp:featuredmedia"]?.[0];
+  return (
+    media?.source_url ||
+    media?.media_details?.sizes?.large?.source_url ||
+    media?.media_details?.sizes?.medium_large?.source_url ||
+    media?.media_details?.sizes?.full?.source_url ||
+    post?.yoast_head_json?.og_image?.[0]?.url ||
+    null
+  );
+}
 
 export default function TherapeuticCategoryLayout({ category, posts, slug }) {
   return (
@@ -73,11 +84,7 @@ export default function TherapeuticCategoryLayout({ category, posts, slug }) {
           <div className="space-y-0">
             {posts.map((post, index) => {
               const imageOnLeft = index % 2 === 0;
-              const areaIcon = CATEGORY_ICONS[slug] || "/pulmonology-icon.svg";
-              const featuredImage =
-                post._embedded?.["wp:featuredmedia"]?.[0]?.source_url ||
-                areaIcon ||
-                "/hero-woman-bg.png";
+              const featuredImage = getPostFeaturedImage(post);
 
               const rawText =
                 post.content?.rendered || post.excerpt?.rendered || "";
@@ -103,20 +110,14 @@ export default function TherapeuticCategoryLayout({ category, posts, slug }) {
                   >
                     <Link href={`/blog/${post.slug}`} className="block group h-full">
                       <div className="relative w-full h-full min-h-[300px] lg:min-h-full">
-                        {post._embedded?.["wp:featuredmedia"]?.[0]?.source_url ? (
+                        {featuredImage ? (
                           <img
                             src={featuredImage}
                             alt={post.title.rendered}
                             className="absolute inset-0 w-full h-full object-cover"
                           />
                         ) : (
-                          <div className="absolute inset-0 bg-gradient-to-br from-[#04737d] to-[#035057] flex items-center justify-center">
-                            <img
-                              src={areaIcon}
-                              alt={category.name}
-                              className="w-32 h-32 md:w-40 md:h-40 object-contain opacity-30"
-                            />
-                          </div>
+                          <div className="absolute inset-0 bg-gradient-to-br from-[#04737d] to-[#035057]" />
                         )}
                         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
                       </div>
