@@ -1,58 +1,53 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useAuth } from "../contexts/AuthContext";
 
 /**
- * Sticky Registration Call-to-Action Box
- * Appears on the right side of blog posts
- * Dynamically changes link based on authentication status
+ * Sticky clinical-trial CTA in the blog post sidebar.
+ * Link depends on whether the visitor is logged in.
  */
 export default function StickyRegistrationBox() {
-  const { isAuthenticated, loading } = useAuth();
+  const { isAuthenticated } = useAuth();
 
-  // Determine the registration link based on auth status
-  const registrationLink = isAuthenticated 
+  const registrationLink = isAuthenticated
     ? "/klinichni-prouchvaniya#registration"
     : "/register";
 
   return (
     <div className="sticky top-24 w-full">
-      <div className="bg-white rounded-3xl shadow-2xl p-8 border border-gray-200 relative">
-        {/* Content */}
-        <div className="text-center">
-          {/* Title */}
-          <h3 className="text-2xl font-bold text-[#04737d] mb-4 leading-tight">
-            Виж лечение за твоето заболяване
+      <div className="relative overflow-hidden rounded-[1.75rem] bg-[#4d8494] px-6 py-10 text-center text-white shadow-xl">
+        <div
+          className="pointer-events-none absolute -left-20 -top-24 h-52 w-52 rounded-full border-[22px] border-white/10"
+          aria-hidden="true"
+        />
+        <div
+          className="pointer-events-none absolute -bottom-28 -right-16 h-64 w-64 rounded-full border-[26px] border-white/10"
+          aria-hidden="true"
+        />
+
+        <div className="relative">
+          <h3 className="text-[1.65rem] font-bold leading-tight mb-5">
+            Интересуваш се от участие в клинично изпитване?
           </h3>
 
-          {/* Subtitle */}
-          <p className="text-base text-[#04737d]/80 mb-6 leading-relaxed px-2">
-            Регистрирайте се през кратка контактна форма, а ние ще се свържем с Вас.
+          <p className="text-[15px] leading-relaxed text-white/95 mb-7">
+            Заяви интерес чрез кратката контактна форма. Ще се свържем с теб,
+            за да обсъдим възможностите за участие.
           </p>
 
-          {/* Capsule Button */}
           <Link
             href={registrationLink}
-            className="relative block w-56 h-28 mx-auto transition-all duration-300 transform hover:scale-105 hover:drop-shadow-2xl cursor-pointer"
+            className="inline-flex items-center justify-center rounded-lg bg-[#f0a020] hover:bg-[#e09010] px-8 py-3 text-base font-semibold text-white shadow-md transition-colors"
           >
-            <Image
-              src="/capsule-zib-new.png"
-              alt="Capsule"
-              fill
-              className="object-contain"
-              priority
-            />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span
-                className="text-white font-semibold drop-shadow"
-                style={{ fontSize: "10px", letterSpacing: "0.15em" }}
-              >
-                РЕГИСТРАЦИЯ
-              </span>
-            </div>
+            Заяви интерес
           </Link>
+
+          <p className="mt-8 text-xs leading-relaxed text-white/80">
+            Запитването не те задължава да участваш и не гарантира включване.
+            Възможността за участие се преценява от изследователския екип
+            според изискванията на конкретното изпитване.
+          </p>
         </div>
       </div>
     </div>
