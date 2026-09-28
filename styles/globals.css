@@ -7,6 +7,20 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Body copy on every page: even left and right edges. Centered lines stay centered. */
+main p {
+  text-align: justify;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+
+main .text-center,
+main .text-center p,
+main p.text-center {
+  text-align: center;
+  hyphens: manual;
+}
+
 /* Custom theme variables */
 :root {
   --color-teal-primary: #04737d;

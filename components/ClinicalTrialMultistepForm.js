@@ -1163,7 +1163,7 @@ export default function ClinicalTrialMultistepForm({
         </AnimatePresence>
 
         {/* Navigation Buttons */}
-        <div className="flex justify-between mt-8 pt-6 border-t border-gray-200">
+        <div className="mt-8 flex flex-col gap-4 border-t border-gray-200 pt-6 sm:flex-row sm:items-center sm:justify-between">
           <button
             type="button"
             onClick={handlePrev}
@@ -1176,6 +1176,12 @@ export default function ClinicalTrialMultistepForm({
           >
             Назад
           </button>
+
+          <p className="text-center text-xs font-bold leading-relaxed text-gray-600 sm:flex-1 sm:px-4">
+            Регистрацията не ви обвързва с участие в клинично проучване. Вашите
+            лични данни се обработват и съхраняват при спазване на изискванията
+            на Общия регламент за защита на данните (GDPR).
+          </p>
 
           {currentStep < 2 ? (
             <button

@@ -3,10 +3,24 @@
 /**
  * Display active filters as removable chips
  */
-export default function ActiveFilters({ tags, selectedTagIds, onRemoveTag, onClearAll }) {
-  if (selectedTagIds.length === 0) {
+export default function ActiveFilters({
+  tags,
+  selectedTagIds,
+  onRemoveTag,
+  onClearAll,
+  audience = null,
+  onClearAudience,
+}) {
+  if (selectedTagIds.length === 0 && !audience) {
     return null;
   }
+
+  const audienceLabel =
+    audience === "patients"
+      ? "Пациенти"
+      : audience === "volunteers"
+        ? "Здрави доброволци"
+        : null;
 
   const selectedTagObjects = tags.filter(tag => selectedTagIds.includes(tag.id));
 
@@ -17,6 +31,33 @@ export default function ActiveFilters({ tags, selectedTagIds, onRemoveTag, onCle
           Активни филтри:
         </span>
         
+        {audienceLabel && (
+          <button
+            type="button"
+            onClick={onClearAudience}
+            className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium text-white transition-colors group ${
+              audience === "volunteers"
+                ? "bg-[#fd9300] hover:bg-[#e48400]"
+                : "bg-[#04737d] hover:bg-[#035057]"
+            }`}
+          >
+            <span>{audienceLabel}</span>
+            <svg
+              className="w-4 h-4 group-hover:rotate-90 transition-transform"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        )}
+
         {selectedTagObjects.map(tag => (
           <button
             key={tag.id}

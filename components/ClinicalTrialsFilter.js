@@ -6,7 +6,16 @@ import { useState } from "react";
  * Sidebar filter component for clinical trials
  * Allows filtering by multiple tags
  */
-export default function ClinicalTrialsFilter({ tags, selectedTags, onTagsChange, totalResults }) {
+const HEALTHY_VOLUNTEER_TAG_ID = 27;
+
+export default function ClinicalTrialsFilter({
+  tags,
+  selectedTags,
+  onTagsChange,
+  totalResults,
+  audience,
+  onAudienceChange,
+}) {
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleTagToggle = (tagId) => {
@@ -20,10 +29,13 @@ export default function ClinicalTrialsFilter({ tags, selectedTags, onTagsChange,
   const handleClearAll = () => {
     onTagsChange([]);
     setSearchTerm("");
+    onAudienceChange(null);
   };
 
-  const filteredTags = tags.filter(tag => 
-    tag.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredTags = tags.filter(
+    (tag) =>
+      tag.id !== HEALTHY_VOLUNTEER_TAG_ID &&
+      tag.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -33,14 +45,46 @@ export default function ClinicalTrialsFilter({ tags, selectedTags, onTagsChange,
         <h3 className="text-lg font-bold text-gray-900 uppercase tracking-wide">
           ФИЛТРИ
         </h3>
-        {selectedTags.length > 0 && (
+        {(selectedTags.length > 0 || audience) && (
           <button
             onClick={handleClearAll}
             className="text-sm text-[#04737d] hover:text-[#035057] font-medium mt-2 transition-colors"
           >
-            Изчисти всички ({selectedTags.length})
+            Изчисти всички
+            {selectedTags.length > 0 ? ` (${selectedTags.length})` : ""}
           </button>
         )}
+      </div>
+
+      <div className="mb-6 space-y-2">
+        <button
+          type="button"
+          onClick={() =>
+            onAudienceChange(audience === "patients" ? null : "patients")
+          }
+          aria-pressed={audience === "patients"}
+          className={`w-full rounded-lg px-4 py-3 text-sm font-semibold text-white transition-colors ${
+            audience === "patients"
+              ? "bg-[#04737d] ring-2 ring-[#04737d] ring-offset-2"
+              : "bg-[#04737d]/80 hover:bg-[#04737d]"
+          }`}
+        >
+          Пациенти
+        </button>
+        <button
+          type="button"
+          onClick={() =>
+            onAudienceChange(audience === "volunteers" ? null : "volunteers")
+          }
+          aria-pressed={audience === "volunteers"}
+          className={`w-full rounded-lg px-4 py-3 text-sm font-semibold text-white transition-colors ${
+            audience === "volunteers"
+              ? "bg-[#fd9300] ring-2 ring-[#fd9300] ring-offset-2"
+              : "bg-[#fd9300]/80 hover:bg-[#fd9300]"
+          }`}
+        >
+          Здрави доброволци
+        </button>
       </div>
 
       {/* Tag Search */}
@@ -67,46 +111,28 @@ export default function ClinicalTrialsFilter({ tags, selectedTags, onTagsChange,
         role="group"
         aria-label="Филтриране по етикети"
       >
-        {filteredTags.map(tag => {
-          const isHealthyVolunteer = tag.id === 27;
-          
-          return (
+        {filteredTags.map(tag => (
             <label
               key={tag.id}
-              className={`flex items-center gap-3 cursor-pointer group py-2 px-3 rounded-lg transition-all ${
-                isHealthyVolunteer
-                  ? 'bg-gradient-to-r from-[#2d8cff]/10 to-[#60B4FF]/10 border-2 border-[#2d8cff] hover:from-[#2d8cff]/20 hover:to-[#60B4FF]/20'
-                  : 'hover:bg-white'
-              }`}
+              className="flex items-center gap-3 cursor-pointer group py-2 px-3 rounded-lg transition-all hover:bg-white"
             >
               <input
                 type="checkbox"
                 checked={selectedTags.includes(tag.id)}
                 onChange={() => handleTagToggle(tag.id)}
-                className={`flex-shrink-0 w-4 h-4 border-gray-300 rounded cursor-pointer ${
-                  isHealthyVolunteer ? 'text-[#2d8cff] accent-[#2d8cff] focus:ring-[#2d8cff]' : 'text-[#04737d] focus:ring-[#04737d]'
-                }`}
+                className="flex-shrink-0 w-4 h-4 border-gray-300 rounded cursor-pointer text-[#04737d] focus:ring-[#04737d]"
                 aria-label={`Филтрирай по ${tag.name}`}
               />
-              <span className={`text-sm flex-1 leading-tight transition-colors whitespace-nowrap ${
-                isHealthyVolunteer
-                  ? 'font-bold text-[#2d8cff]'
-                  : 'text-gray-700 group-hover:text-[#04737d]'
-              }`}>
+              <span className="text-sm flex-1 leading-tight transition-colors whitespace-nowrap text-gray-700 group-hover:text-[#04737d]">
                 {tag.name}
               </span>
               {tag.count > 0 && (
-                <span className={`flex-shrink-0 text-xs px-2 py-0.5 rounded-full ${
-                  isHealthyVolunteer
-                    ? 'text-white bg-[#2d8cff] font-medium'
-                    : 'text-gray-400 bg-gray-200'
-                }`}>
+                <span className="flex-shrink-0 text-xs px-2 py-0.5 rounded-full text-gray-400 bg-gray-200">
                   {tag.count}
                 </span>
               )}
             </label>
-          );
-        })}
+        ))}
       </div>
 
       {filteredTags.length === 0 && searchTerm && (

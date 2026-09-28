@@ -22,6 +22,7 @@ export default function ClinicalTrialsPageClient({ initialTags, initialPosts, ca
   
   const [tags] = useState(sortedTags);
   const [selectedTags, setSelectedTags] = useState([]);
+  const [audience, setAudience] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
   const [posts, setPosts] = useState(initialPosts);
@@ -56,8 +57,15 @@ export default function ClinicalTrialsPageClient({ initialTags, initialPosts, ca
 
       let queryParams = `categories=${categoryId}&per_page=100&_embed&orderby=date&order=desc`;
 
-      if (selectedTags.length > 0) {
-        queryParams += `&tags=${selectedTags.join(',')}`;
+      const tagIds =
+        audience === "volunteers" ? [...selectedTags, 27] : selectedTags;
+
+      if (tagIds.length > 0) {
+        queryParams += `&tags=${tagIds.join(",")}`;
+      }
+
+      if (audience === "patients") {
+        queryParams += "&tags_exclude=27";
       }
 
       if (debouncedSearchQuery.trim()) {
@@ -73,16 +81,16 @@ export default function ClinicalTrialsPageClient({ initialTags, initialPosts, ca
     } finally {
       setLoading(false);
     }
-  }, [selectedTags, debouncedSearchQuery, categorySlug]);
+  }, [selectedTags, debouncedSearchQuery, categorySlug, audience]);
 
   useEffect(() => {
-    if (selectedTags.length > 0 || debouncedSearchQuery.trim()) {
+    if (selectedTags.length > 0 || debouncedSearchQuery.trim() || audience) {
       loadPosts();
     } else {
       setPosts(initialPosts);
       setLoading(false);
     }
-  }, [selectedTags, debouncedSearchQuery, initialPosts, loadPosts]);
+  }, [selectedTags, debouncedSearchQuery, initialPosts, loadPosts, audience]);
 
   const handleRemoveTag = (tagId) => {
     setSelectedTags(selectedTags.filter(id => id !== tagId));
@@ -91,6 +99,7 @@ export default function ClinicalTrialsPageClient({ initialTags, initialPosts, ca
   const handleClearAllFilters = () => {
     setSelectedTags([]);
     setSearchQuery("");
+    setAudience(null);
   };
 
   const breadcrumbItems = [
@@ -122,6 +131,8 @@ export default function ClinicalTrialsPageClient({ initialTags, initialPosts, ca
               selectedTags={selectedTags}
               onTagsChange={setSelectedTags}
               totalResults={posts.length}
+              audience={audience}
+              onAudienceChange={setAudience}
             />
           </aside>
 
@@ -132,6 +143,8 @@ export default function ClinicalTrialsPageClient({ initialTags, initialPosts, ca
               selectedTags={selectedTags}
               onTagsChange={setSelectedTags}
               totalResults={posts.length}
+              audience={audience}
+              onAudienceChange={setAudience}
             />
           </MobileFiltersButton>
 
@@ -143,13 +156,13 @@ export default function ClinicalTrialsPageClient({ initialTags, initialPosts, ca
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-3">
                   <h2 className="text-xl md:text-2xl font-bold text-gray-900">
                     {posts.length} {posts.length === 1 ? 'резултат' : 'резултата'}
-                    {(selectedTags.length > 0 || searchQuery.trim()) && (
+                    {(selectedTags.length > 0 || searchQuery.trim() || audience) && (
                       <span className="text-base font-normal text-gray-500 ml-2">
                         от общо {totalPosts}
                       </span>
                     )}
                   </h2>
-                  {(selectedTags.length > 0 || searchQuery.trim()) && (
+                  {(selectedTags.length > 0 || searchQuery.trim() || audience) && (
                     <div className="flex items-center gap-2 text-sm text-gray-600 bg-gray-50 px-4 py-2 rounded-lg">
                       {selectedTags.length > 0 && (
                         <span className="font-medium text-[#04737d]">
@@ -174,6 +187,8 @@ export default function ClinicalTrialsPageClient({ initialTags, initialPosts, ca
                 selectedTagIds={selectedTags}
                 onRemoveTag={handleRemoveTag}
                 onClearAll={handleClearAllFilters}
+                audience={audience}
+                onClearAudience={() => setAudience(null)}
               />
             </div>
 
