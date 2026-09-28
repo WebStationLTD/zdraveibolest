@@ -5,7 +5,7 @@ const AREAS = [
   {
     name: "Пулмология",
     icon: "/therapeutic-icons/pulmonology.webp",
-    href: "/kategoriya/пулмология",
+    href: "/kategoriya/pulmologiya",
     summary: "Дихателно здраве и белодробни заболявания",
     details:
       "Информация и възможности за участие при астма, ХОББ и други белодробни заболявания — от ранна оценка до проследяване.",
@@ -13,7 +13,7 @@ const AREAS = [
   {
     name: "Ревматология",
     icon: "/therapeutic-icons/rheumatology.webp",
-    href: "/kategoriya/ревматология",
+    href: "/kategoriya/revmatologiya",
     summary: "Автоимунни и ставни заболявания",
     details:
       "Покриваме автоимунни и ставно-мускулни състояния, с фокус върху нови терапии и ясни критерии за участие.",
@@ -21,7 +21,7 @@ const AREAS = [
   {
     name: "Кардиология",
     icon: "/therapeutic-icons/cardiology.webp",
-    href: "/kategoriya/кардиология",
+    href: "/kategoriya/kardiologiya",
     summary: "Сърдечно-съдово здраве и нови терапии",
     details:
       "Подкрепяме проучвания при сърдечно-съдови индикации — от ранна до късна фаза, с достъп до опитни изследователи.",
@@ -29,7 +29,7 @@ const AREAS = [
   {
     name: "Неврология",
     icon: "/therapeutic-icons/neurology.webp",
-    href: "/kategoriya/неврология",
+    href: "/kategoriya/nevrologiya",
     summary: "Заболявания на мозъка и нервната система",
     details:
       "Информация за неврологични и невродегенеративни състояния и как клиничните програми могат да бъдат подходящи за вас.",
@@ -37,7 +37,7 @@ const AREAS = [
   {
     name: "Нефрология",
     icon: "/therapeutic-icons/nephrology.webp",
-    href: "/kategoriya/нефрология",
+    href: "/kategoriya/nefrologiya",
     summary: "Бъбречно здраве и заболявания",
     details:
       "Разглеждаме бъбречни заболявания и свързаните с тях изследвания, включително възможности за нови терапии.",
@@ -45,7 +45,7 @@ const AREAS = [
   {
     name: "Гастроентерология",
     icon: "/therapeutic-icons/gastroenterology.webp",
-    href: "/kategoriya/гастроентерология",
+    href: "/kategoriya/gastroenterologiya",
     summary: "Храносмилателна система",
     details:
       "Покриваме заболявания на храносмилателната система и възможностите за участие в свързани клинични програми.",
@@ -53,7 +53,7 @@ const AREAS = [
   {
     name: "Ендокринология",
     icon: "/therapeutic-icons/endocrinology.webp",
-    href: "/kategoriya/ендокринология",
+    href: "/kategoriya/endokrinologiya",
     summary: "Хормонални и метаболитни нарушения",
     details:
       "Информация за диабет, щитовидна жлеза и метаболитни нарушения, както и за съответните клинични проучвания.",
@@ -61,7 +61,7 @@ const AREAS = [
   {
     name: "Онкология",
     icon: "/therapeutic-icons/oncology.webp",
-    href: "/kategoriya/онкология",
+    href: "/kategoriya/onkologiya",
     summary: "Подходи в изследването на рака",
     details:
       "Представяме иновативни подходи в онкологичните изследвания и как пациентите могат да се информират за участие.",
@@ -69,7 +69,7 @@ const AREAS = [
   {
     name: "Алергология",
     icon: "/therapeutic-icons/allergology.webp",
-    href: "/kategoriya/алергология",
+    href: "/kategoriya/alergologiya",
     summary: "Алергични и имунни заболявания",
     details:
       "Покриваме алергични и имунно-медиирани състояния — от ежедневни симптоми до по-сложни реакции.",
@@ -77,7 +77,7 @@ const AREAS = [
   {
     name: "Дерматология",
     icon: "/therapeutic-icons/dermatology.webp",
-    href: "/kategoriya/дерматология",
+    href: "/kategoriya/dermatologiya",
     summary: "Кожно здраве",
     details:
       "Информация за кожни заболявания и клинични програми, насочени към нови дерматологични терапии.",
@@ -85,7 +85,7 @@ const AREAS = [
   {
     name: "Хематология",
     icon: "/therapeutic-icons/hematology.webp",
-    href: "/kategoriya/хематология",
+    href: "/kategoriya/hematologiya",
     summary: "Кръвни заболявания",
     details:
       "Разглеждаме кръвни заболявания и изследвания в хематологията, с акцент върху разбираема информация за пациенти.",
@@ -93,7 +93,7 @@ const AREAS = [
   {
     name: "Акушер-гинекология",
     icon: "/therapeutic-icons/obstetrics-gynecology.webp",
-    href: "/kategoriya/акушер-гинекология",
+    href: "/kategoriya/akusher-ginekologiya",
     summary: "Женско здраве във всички етапи",
     details:
       "Информация за женското здраве във всички етапи от живота и свързаните клинични възможности.",

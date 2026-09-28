@@ -10,7 +10,7 @@
 
 **Достъп до съдържание:** Статиите са публично достъпни без регистрация. Регистрацията е за клинични проучвания, профил и участие като доброволец. Auth страниците (/login, /register) са noindex.
 
-**URL конвенции:** Каноничният hub за здравни статии е `/kategoriya/статии`. `/blog` е alias. Legacy `/blog/category/*` и `/services/*` → 301 към `/kategoriya/*`. `/team` е noindex.
+**URL конвенции:** Каноничният hub за здравни статии е `/kategoriya/statii`. `/blog` е alias. Старите кирилски адреси, `/blog/category/*` и `/services/*` → 301 към латинските `/kategoriya/*` или `/blog/*`. `/team` е noindex.
 
 ## Основни страници
 - [Начало](https://zdraveibolest.bg/): Главна страница – терапевтични области, последни статии, мисия, CTA за регистрация.
@@ -18,23 +18,23 @@
 - [Контакти](https://zdraveibolest.bg/contact): Форма, телефон, имейл и карта.
 
 ## Здравна информация
-- [Статии (hub)](https://zdraveibolest.bg/kategoriya/статии): Каталог от 33+ здравни статии на разбираем език.
-- [Подкасти](https://zdraveibolest.bg/kategoriya/подкасти): Аудио съдържание (hub).
-- [Blog alias](https://zdraveibolest.bg/blog): Пренасочва канонично към /kategoriya/статии.
+- [Статии (hub)](https://zdraveibolest.bg/kategoriya/statii): Каталог от 64+ здравни статии на разбираем език.
+- [Подкасти](https://zdraveibolest.bg/kategoriya/podkasti): Аудио съдържание (hub).
+- [Blog alias](https://zdraveibolest.bg/blog): Пренасочва канонично към /kategoriya/statii.
 
 ## Терапевтични области
-- [Пулмология](https://zdraveibolest.bg/kategoriya/пулмология): Статии и информация за пулмология (5 публикации).
-- [Ревматология](https://zdraveibolest.bg/kategoriya/ревматология): Статии и информация за ревматология (3 публикации).
-- [Кардиология](https://zdraveibolest.bg/kategoriya/кардиология): Статии и информация за кардиология (7 публикации).
-- [Неврология](https://zdraveibolest.bg/kategoriya/неврология): Статии и информация за неврология (5 публикации).
-- [Нефрология](https://zdraveibolest.bg/kategoriya/нефрология): Статии и информация за нефрология (2 публикации).
-- [Гастроентерология](https://zdraveibolest.bg/kategoriya/гастроентерология): Статии и информация за гастроентерология (5 публикации).
-- [Ендокринология](https://zdraveibolest.bg/kategoriya/ендокринология): Статии и информация за ендокринология (5 публикации).
-- [Онкология](https://zdraveibolest.bg/kategoriya/онкология): Статии и информация за онкология (1 публикация).
-- [Алергология](https://zdraveibolest.bg/kategoriya/алергология): Статии и информация за алергология (4 публикации).
-- [Дерматология](https://zdraveibolest.bg/kategoriya/дерматология): Статии и информация за дерматология (4 публикации).
-- [Хематология](https://zdraveibolest.bg/kategoriya/хематология): Статии и информация за хематология (0 публикации).
-- [Акушер-гинекология](https://zdraveibolest.bg/kategoriya/акушер-гинекология): Статии и информация за акушер-гинекология (6 публикации).
+- [Пулмология](https://zdraveibolest.bg/kategoriya/pulmologiya): Статии и информация за пулмология (8 публикации).
+- [Ревматология](https://zdraveibolest.bg/kategoriya/revmatologiya): Статии и информация за ревматология (4 публикации).
+- [Кардиология](https://zdraveibolest.bg/kategoriya/kardiologiya): Статии и информация за кардиология (8 публикации).
+- [Неврология](https://zdraveibolest.bg/kategoriya/nevrologiya): Статии и информация за неврология (5 публикации).
+- [Нефрология](https://zdraveibolest.bg/kategoriya/nefrologiya): Статии и информация за нефрология (2 публикации).
+- [Гастроентерология](https://zdraveibolest.bg/kategoriya/gastroenterologiya): Статии и информация за гастроентерология (6 публикации).
+- [Ендокринология](https://zdraveibolest.bg/kategoriya/endokrinologiya): Статии и информация за ендокринология (6 публикации).
+- [Онкология](https://zdraveibolest.bg/kategoriya/onkologiya): Статии и информация за онкология (6 публикации).
+- [Алергология](https://zdraveibolest.bg/kategoriya/alergologiya): Статии и информация за алергология (5 публикации).
+- [Дерматология](https://zdraveibolest.bg/kategoriya/dermatologiya): Статии и информация за дерматология (10 публикации).
+- [Хематология](https://zdraveibolest.bg/kategoriya/hematologiya): Статии и информация за хематология (2 публикации).
+- [Акушер-гинекология](https://zdraveibolest.bg/kategoriya/akusher-ginekologiya): Статии и информация за акушер-гинекология (7 публикации).
 
 ## Клинични проучвания
 - [Какво представляват клиничните проучвания](https://zdraveibolest.bg/klinichni-prouchvaniya): Обяснение на фази, ползи, екип, форма за регистрация.
@@ -44,99 +44,132 @@
 - [Пътят на пациента](https://zdraveibolest.bg/patiat-na-patsienta): Стъпки от първи контакт до финално посещение.
 - [Често задавани въпроси](https://zdraveibolest.bg/chesto-zadavani-vaprosi): FAQ за безопасност, права и възнаграждение.
 
-## Публикации (65 статии)
+## Публикации (96 статии)
 Всички публикации са на `/blog/{slug}` с JSON-LD тип MedicalWebPage.
 
 ### Акушер-гинекология
-- [Бактериална вагиноза](https://zdraveibolest.bg/blog/бактериална-вагиноза)
-- [Маточни миоми (фиброиди)](https://zdraveibolest.bg/blog/маточни-миоми-фиброиди)
-- [Прееклампсия](https://zdraveibolest.bg/blog/прееклампсия)
-- [Синдром на поликистозните яйчници (СПКЯ)](https://zdraveibolest.bg/blog/синдром-на-поликистозните-яйчници-сп)
-- [Тазова ендометриоза](https://zdraveibolest.bg/blog/тазова-ендометриоза)
-- [Човешки папиломен вирус (HPV)](https://zdraveibolest.bg/blog/човешки-папиломен-вирус-hpv)
+- [Бактериална вагиноза](https://zdraveibolest.bg/blog/bakterialna-vaginoza)
+- [Маточни миоми (фиброиди)](https://zdraveibolest.bg/blog/matochni-miomi-fibroidi)
+- [Прееклампсия](https://zdraveibolest.bg/blog/preeklampsiya)
+- [Синдром на поликистозните яйчници (СПКЯ)](https://zdraveibolest.bg/blog/sindrom-na-polikistoznite-yajchniczi-sp)
+- [Синдром на поликистозните яйчници (СПКЯ): Кои ранни признаци не бива да пренебрегвате?](https://zdraveibolest.bg/blog/spkya-koi-ranni-priznaczi-ne-biva-da-pren)
+- [Тазова ендометриоза](https://zdraveibolest.bg/blog/tazova-endometrioza)
+- [Човешки папиломен вирус (HPV)](https://zdraveibolest.bg/blog/choveshki-papilomen-virus-hpv)
 
 ### Алергология
-- [Алергичен ринит (сенна хрема) – когато въздухът става предизвикателство](https://zdraveibolest.bg/blog/алергичен-ринит-сенна-хрема-когато)
-- [Ангиоедем (оток на Квинке) – когато подуването не е просто алергия](https://zdraveibolest.bg/blog/ангиоедем-оток-на-квинке-когато-под)
-- [Копривна треска (Уртикария) – когато кожата реагира неочаквано](https://zdraveibolest.bg/blog/копривна-треска-уртикария-когато-к)
-- [Хронична уртикария: Причини, симптоми, лечение](https://zdraveibolest.bg/blog/хронична-уртикария-причини-симптоми)
+- [Алергичен ринит (сенна хрема) – когато въздухът става предизвикателство](https://zdraveibolest.bg/blog/alergichen-rinit-senna-hrema-kogato)
+- [Ангиоедем (оток на Квинке) – когато подуването не е просто алергия](https://zdraveibolest.bg/blog/angioedem-otok-na-kvinke-kogato-pod)
+- [Копривна треска (Уртикария) – когато кожата реагира неочаквано](https://zdraveibolest.bg/blog/koprivna-treska-urtikariya-kogato-k)
+- [Хронична идиопатична уртикария: 8 отключващи фактора](https://zdraveibolest.bg/blog/hronichna-idiopatichna-urtikariya-8-prich)
+- [Хронична уртикария: Причини, симптоми, лечение](https://zdraveibolest.bg/blog/hronichna-urtikariya-prichini-simptomi)
 
 ### Гастроентерология
-- [Болест на Крон](https://zdraveibolest.bg/blog/болест-на-крон)
-- [Какво представлява Целиакия?](https://zdraveibolest.bg/blog/какво-представлява-целиакия)
-- [Синдром на раздразненото черво](https://zdraveibolest.bg/blog/синдром-на-раздразненото-черво)
-- [Синдром на раздразненото черво и болест на Крон-прилики и разлики](https://zdraveibolest.bg/blog/синдром-на-раздразненото-черво-и-боле)
-- [Улцерозен колит](https://zdraveibolest.bg/blog/улцерозен-колит)
+- [Болест на Крон](https://zdraveibolest.bg/blog/bolest-na-kron)
+- [Гастроезофагеална рефлуксна болест (рефлукс): Симптоми, диагностика, лечение](https://zdraveibolest.bg/blog/gastroezofagealna-refluksna-bolest)
+- [Какво представлява Целиакия?](https://zdraveibolest.bg/blog/kakvo-predstavlyava-czeliakiya)
+- [Синдром на раздразненото черво](https://zdraveibolest.bg/blog/sindrom-na-razdraznenoto-chervo)
+- [Синдром на раздразненото черво и болест на Крон-прилики и разлики](https://zdraveibolest.bg/blog/sindrom-na-razdraznenoto-chervo-i-bole)
+- [Улцерозен колит](https://zdraveibolest.bg/blog/ulczerozen-kolit)
 
 ### Дерматология
-- [Атопичен дерматит](https://zdraveibolest.bg/blog/атопичен-дерматит)
-- [Генитален херпес](https://zdraveibolest.bg/blog/генитален-херпес)
-- [Псориазис](https://zdraveibolest.bg/blog/псориазис)
+- [Атопичен дерматит](https://zdraveibolest.bg/blog/atopichen-dermatit)
+- [Витилиго: Симптоми, диагностика, лечение](https://zdraveibolest.bg/blog/vitiligo-simptomi-diagnostika-lechen)
+- [Генитален херпес](https://zdraveibolest.bg/blog/genitalen-herpes)
+- [Имам ли генитален херпес: Как да го познаем?](https://zdraveibolest.bg/blog/imam-li-genitalen-herpes-kak-da-go-pozn)
+- [Какво провокира обострянето на гениталния херпес?](https://zdraveibolest.bg/blog/kakvo-provokira-obostryaneto-na-genit)
+- [Контрол на рецидивите при генитален херпес – как да се справите?](https://zdraveibolest.bg/blog/kontrol-na-reczidivite-pri-genitalen-h)
+- [Псориазис](https://zdraveibolest.bg/blog/psoriazis)
+- [Сексуален живот с генитален херпес: Възможно ли е да бъде пълноценен?](https://zdraveibolest.bg/blog/seksualen-zhivot-s-genitalen-herpes-va)
+- [HSV-1 срещу HSV-2: Всичко, което трябва да знаете за двата типа херпес](https://zdraveibolest.bg/blog/hsv-1-sresthu-hsv-2-vsichko-koeto-tryabva-da-znaete)
 
 ### Ендокринология
-- [Затлъстяване – хронично състояние, което може да бъде променено](https://zdraveibolest.bg/blog/затлъстяване-хронично-състояние-ко)
-- [Захарен диабет тип 2](https://zdraveibolest.bg/blog/захарен-диабет-тип-2)
-- [Метаболитен синдром](https://zdraveibolest.bg/blog/метаболитен-синдром)
-- [Повишена функция на щитовидната жлеза (Хипертиреоидизъм)](https://zdraveibolest.bg/blog/повишена-функция-на-щитовидната-жлез)
-- [Поднормена функция на щитовидната жлеза (Хипотиреоидизъм)](https://zdraveibolest.bg/blog/поднормена-функция-на-щитовидната-жл)
+- [Затлъстяване – хронично състояние, което може да бъде променено](https://zdraveibolest.bg/blog/zatlastyavane-hronichno-sastoyanie-ko)
+- [Захарен диабет тип 2](https://zdraveibolest.bg/blog/zaharen-diabet-tip-2)
+- [Метаболитен синдром](https://zdraveibolest.bg/blog/metaboliten-sindrom)
+- [Повишена функция на щитовидната жлеза (Хипертиреоидизъм)](https://zdraveibolest.bg/blog/povishena-funkcziya-na-sthitovidnata-zhlez)
+- [Поднормена функция на щитовидната жлеза (Хипотиреоидизъм)](https://zdraveibolest.bg/blog/podnormena-funkcziya-na-sthitovidnata-zhl)
+- [Хиперлипидемия – какво представлява?](https://zdraveibolest.bg/blog/hiperlipidemiya-kakvo-predstavlyava)
 
 ### Кардиология
-- [Висок холестерол – защо е важно да следим нивата му](https://zdraveibolest.bg/blog/висок-холестерол-защо-е-важно-да-следи)
-- [Дислипидемия – когато липидният профил е лош](https://zdraveibolest.bg/blog/дислипидемия-когато-липидният-проф)
-- [Нарушения на сърдечния ритъм (Аритмии) – когато сърцето забравя такта си](https://zdraveibolest.bg/blog/нарушения-на-сърдечния-ритъм-аритмии)
-- [Предсърдно мъждене – как да го познаете?](https://zdraveibolest.bg/blog/предсърдно-мъждене-как-да-го-познае)
-- [Предсърдно мъждене – когато сърдечният ритъм стане неравномерен](https://zdraveibolest.bg/blog/предсърдно-мъждене-когато-сърдечни)
-- [Сърдечна недостатъчност](https://zdraveibolest.bg/blog/сърдечна-недостатъчност)
-- [Хипертония](https://zdraveibolest.bg/blog/хипертония)
+- [Висок холестерол – защо е важно да следим нивата му](https://zdraveibolest.bg/blog/visok-holesterol-zastho-e-vazhno-da-sledi)
+- [Дислипидемия – когато липидният профил е лош](https://zdraveibolest.bg/blog/dislipidemiya-kogato-lipidniyat-prof)
+- [Исхемична болест на сърцето: Симптоми, диагностика, лечение](https://zdraveibolest.bg/blog/ishemichna-bolest-na-sarczeto-simptomi)
+- [Нарушения на сърдечния ритъм (Аритмии) – когато сърцето забравя такта си](https://zdraveibolest.bg/blog/narusheniya-na-sardechniya-ritam-aritmii)
+- [Предсърдно мъждене – как да го познаете?](https://zdraveibolest.bg/blog/predsardno-mazhdene-kak-da-go-poznae)
+- [Предсърдно мъждене – когато сърдечният ритъм стане неравномерен](https://zdraveibolest.bg/blog/predsardno-mazhdene-kogato-sardechni)
+- [Сърдечна недостатъчност](https://zdraveibolest.bg/blog/sardechna-nedostatachnost)
+- [Хипертония](https://zdraveibolest.bg/blog/hipertoniya)
 
 ### Клинични проучвания
-- [Клинично изпитване на нов лекарствен продукт за лечение на генитален херпес](https://zdraveibolest.bg/blog/клинично-изпитване-на-нов-лекарствен-2)
-- [Клинично изпитване на нов лекарствен продукт за лечение на генитален херпес](https://zdraveibolest.bg/blog/клинично-изпитване-на-нов-лекарствен)
+- [Клинично изпитване на нов лекарствен продукт за лечение на генитален херпес](https://zdraveibolest.bg/blog/klinichno-izpitvane-na-nov-lekarstven-2)
+- [Клинично изпитване на нов лекарствен продукт за лечение на генитален херпес](https://zdraveibolest.bg/blog/klinichno-izpitvane-na-nov-lekarstven)
 
 ### Неврология
-- [Алцхаймер и деменция](https://zdraveibolest.bg/blog/алцхаймер-и-деменция)
-- [Болест на Паркинсон](https://zdraveibolest.bg/blog/болест-на-паркинсон)
-- [Мигрена – когато тишината става спасение](https://zdraveibolest.bg/blog/мигрена-когато-тишината-става-спасе)
-- [Множествена склероза](https://zdraveibolest.bg/blog/множествена-склероза)
-- [Множествена склероза – има ли подходящ хранителен режим?](https://zdraveibolest.bg/blog/множествена-склероза-има-ли)
+- [Алцхаймер и деменция](https://zdraveibolest.bg/blog/alczhajmer-i-demencziya)
+- [Болест на Паркинсон](https://zdraveibolest.bg/blog/bolest-na-parkinson)
+- [Мигрена – когато тишината става спасение](https://zdraveibolest.bg/blog/migrena-kogato-tishinata-stava-spase)
+- [Множествена склероза](https://zdraveibolest.bg/blog/mnozhestvena-skleroza)
+- [Множествена склероза – има ли подходящ хранителен режим?](https://zdraveibolest.bg/blog/mnozhestvena-skleroza-ima-li)
 
 ### Нефрология
-- [Диабетна нефропатия – когато захарта уврежда бъбреците](https://zdraveibolest.bg/blog/диабетна-нефропатия-когато-захарта)
-- [Хронично бъбречно заболяване](https://zdraveibolest.bg/blog/хронично-бъбречно-заболяване)
+- [Диабетна нефропатия – когато захарта уврежда бъбреците](https://zdraveibolest.bg/blog/diabetna-nefropatiya-kogato-zaharta)
+- [Хронично бъбречно заболяване](https://zdraveibolest.bg/blog/hronichno-babrechno-zabolyavane)
 
 ### Онкология
-- [Рак на белия дроб – какво представлява?](https://zdraveibolest.bg/blog/рак-на-белия-дроб-какво-представляв)
+- [Лимфом – тихата „кръвна болест“](https://zdraveibolest.bg/blog/limfom-tihata-kravna-bolest)
+- [Меланома: Симптоми, видове, лечение](https://zdraveibolest.bg/blog/melanoma-simptomi-vidove-lechenie)
+- [Рак на белия дроб – какво представлява?](https://zdraveibolest.bg/blog/rak-na-beliya-drob-kakvo-predstavlyav)
+- [Рак на гърдата: Симптоми, видове, лечение](https://zdraveibolest.bg/blog/rak-na-gardata-simptomi-vidove-lecheni)
+- [Рак на пикочния мехур: Симптоми, причини и съвременни методи за лечение](https://zdraveibolest.bg/blog/rak-na-pikochniya-mehur-simptomi-prichin)
+- [Рак на простата: Симптоми, диагностика, лечение](https://zdraveibolest.bg/blog/rak-na-prostata-simptomi-diagnostika)
+
+### Подкасти
+- [Белодробните заболявания – симптоми, диагностика и лечение](https://zdraveibolest.bg/blog/belodrobnite-zabolyavaniya-simptomi)
+- [Генитален херпес и лечение на херпес симеплекс тип 2 инфекция](https://zdraveibolest.bg/blog/genitalen-herpes-i-lechenie-na-herpes-s)
 
 ### Пулмология
-- [Астма – когато дишането става предизвикателство](https://zdraveibolest.bg/blog/астма-когато-дишането-става-предизв)
-- [Бронхиектазии – когато кашлицата не спира](https://zdraveibolest.bg/blog/бронхиектазии-когато-кашлицата-не-с)
-- [Пневмония](https://zdraveibolest.bg/blog/пневмония)
-- [Пневмоторакс – когато въздухът излиза извън белия дроб](https://zdraveibolest.bg/blog/пневмоторакс-когато-въздухът-излиз)
-- [Хронична обструктивна белодробна болест (ХОББ)](https://zdraveibolest.bg/blog/хронична-обструктивна-белодробна-бо)
+- [5 ранни симптоми на ХОББ, които не бива да пренебрегвате](https://zdraveibolest.bg/blog/5-ranni-priznaka-na-hobb-koito-ne-biva-d)
+- [Астма – когато дишането става предизвикателство](https://zdraveibolest.bg/blog/astma-kogato-dishaneto-stava-predizv)
+- [Белодробната артериална хипертония: Симптоми, диагностика, лечение](https://zdraveibolest.bg/blog/belodrobnata-arterialna-hipertoniya)
+- [Бронхиална астма: Причини, симптоми, диагностика и съвременно лечение](https://zdraveibolest.bg/blog/bronhialna-astma-prichini-simptomi-di)
+- [Бронхиектазии – когато кашлицата не спира](https://zdraveibolest.bg/blog/bronhiektazii-kogato-kashliczata-ne-s)
+- [Пневмония: Симптоми, диагноза, лечение](https://zdraveibolest.bg/blog/pnevmoniya)
+- [Пневмоторакс – когато въздухът излиза извън белия дроб](https://zdraveibolest.bg/blog/pnevmotoraks-kogato-vazduhat-izliz)
+- [Хронична обструктивна белодробна болест (ХОББ)](https://zdraveibolest.bg/blog/hronichna-obstruktivna-belodrobna-bo)
 
 ### Ревматология
-- [Остеоартрит](https://zdraveibolest.bg/blog/остеоартрит)
-- [Псориатичен артрит](https://zdraveibolest.bg/blog/псориатичен-артрит)
-- [Ревматоиден артрит](https://zdraveibolest.bg/blog/ревматоиден-артрит)
+- [Болест на Сьогрен: Симптоми, диагностика, лечение](https://zdraveibolest.bg/blog/bolest-na-sogren-simptomi-diagnosti)
+- [Остеоартрит](https://zdraveibolest.bg/blog/osteoartrit)
+- [Псориатичен артрит](https://zdraveibolest.bg/blog/psoriatichen-artrit)
+- [Ревматоиден артрит](https://zdraveibolest.bg/blog/revmatoiden-artrit)
 
 ### Статии
-- [5 ранни признака на ХОББ, които не бива да пренебрегвате](https://zdraveibolest.bg/blog/5-ранни-признака-на-хобб-които-не-бива-д)
-- [8 лесни и здравословни междинни храни, които не повишават рязко кръвната захар](https://zdraveibolest.bg/blog/8-лесни-и-здравословни-междинни-храни-к)
-- [Астма – по кои ранни признаци да я познаете?](https://zdraveibolest.bg/blog/астма-по-кои-ранни-признаци-да-я-позн)
-- [Белодробна фиброза](https://zdraveibolest.bg/blog/белодробна-фиброза)
-- [Видове бронхиектазии – причини, симптоми, лечение](https://zdraveibolest.bg/blog/видове-бронхиектазии-причини-симпт)
-- [Витамини и добавки, които подпомагат здравето на белите дробове: подробно ръководство](https://zdraveibolest.bg/blog/витамини-и-добавки-които-подпомагат-з)
-- [Възможна ли е ремисия при ревматоиден артрит?](https://zdraveibolest.bg/blog/възможна-ли-е-ремисия-при-ревматоиден)
-- [Генитален херпес – същност](https://zdraveibolest.bg/blog/генитален-херпес-същност)
-- [Как да овладеем астмата по време на празниците: подробно ръководство](https://zdraveibolest.bg/blog/как-да-овладеем-астмата-по-време-на-пра)
-- [Наследствен ангиоедем – същност, диагноза, лечение](https://zdraveibolest.bg/blog/наследствен-ангиоедем-същност-диаг)
-- [Настинки и грип при множествена склероза (МС): разширено ръководство за превенция и грижа](https://zdraveibolest.bg/blog/настинки-и-грип-при-множествена-склер)
-- [Проблеми с дишането, които не бива да игнорирате](https://zdraveibolest.bg/blog/проблеми-с-дишането-които-не-бива-да-иг)
-- [Първичен билиарен холангит – какво представлява?](https://zdraveibolest.bg/blog/първичен-билиарен-холангит-какво-пр)
-- [Спастичност на крайниците – когато губим контрола над мускулите](https://zdraveibolest.bg/blog/спастичност-на-крайниците-когато-гу)
-- [Техники за намаляване на стреса при контрол на мигрена: практическо ръководство](https://zdraveibolest.bg/blog/техники-за-намаляване-на-стреса-при-ко)
-- [Улцерозен колит-често срещани грешки](https://zdraveibolest.bg/blog/улцерозен-колит-често-срещани-грешки)
-- [Хипертонична криза – какво трябва да знаете?](https://zdraveibolest.bg/blog/хипертонична-криза-какво-трябва-да)
+- [8 лесни и здравословни междинни храни, които не повишават рязко кръвната захар](https://zdraveibolest.bg/blog/8-lesni-i-zdravoslovni-mezhdinni-hrani-k)
+- [Астма – по кои ранни признаци да я познаете?](https://zdraveibolest.bg/blog/astma-po-koi-ranni-priznaczi-da-ya-pozn)
+- [Баланс на електролитите – важен при предсърдно мъждене](https://zdraveibolest.bg/blog/balans-na-elektrolitite-vazhen-pri-p)
+- [Белодробна фиброза](https://zdraveibolest.bg/blog/belodrobna-fibroza)
+- [Васкулити: Причини, симптоми и лечение](https://zdraveibolest.bg/blog/vaskuliti-prichini-simptomi-i-lechenie)
+- [Видове бронхиектазии – причини, симптоми, лечение](https://zdraveibolest.bg/blog/vidove-bronhiektazii-prichini-simpt)
+- [Витамини и добавки, които подпомагат здравето на белите дробове: подробно ръководство](https://zdraveibolest.bg/blog/vitamini-i-dobavki-koito-podpomagat-z)
+- [Възможна ли е ремисия при ревматоиден артрит?](https://zdraveibolest.bg/blog/vazmozhna-li-e-remisiya-pri-revmatoiden)
+- [Генитален херпес – същност](https://zdraveibolest.bg/blog/genitalen-herpes-sasthnost)
+- [Диабет тип 1: Симптоми, диагностика, лечение](https://zdraveibolest.bg/blog/diabet-tip-1-simptomi-diagnostika-lech)
+- [Как да овладеем астмата по време на празниците: подробно ръководство](https://zdraveibolest.bg/blog/kak-da-ovladeem-astmata-po-vreme-na-pra)
+- [Как да предпазя партньора си, ако имам генитален херпес?](https://zdraveibolest.bg/blog/kak-da-predpazya-partnora-si-ako-imam-g)
+- [Как се предава генитален херпес и има ли лечение?](https://zdraveibolest.bg/blog/kak-se-predava-genitalen-herpes-i-ima-l)
+- [Менопауза: Симптоми, диагностика, лечение](https://zdraveibolest.bg/blog/menopauza-simptomi-diagnostika-leche)
+- [Наследствен ангиоедем – същност, диагноза, лечение](https://zdraveibolest.bg/blog/nasledstven-angioedem-sasthnost-diag)
+- [Настинки и грип при множествена склероза (МС): разширено ръководство за превенция и грижа](https://zdraveibolest.bg/blog/nastinki-i-grip-pri-mnozhestvena-skler)
+- [Поликистозна бъбречна болест: Симптоми, диагностика, лечение](https://zdraveibolest.bg/blog/polikistozna-babrechna-bolest-simpto)
+- [Проблеми с дишането, които не бива да игнорирате](https://zdraveibolest.bg/blog/problemi-s-dishaneto-koito-ne-biva-da-ig)
+- [Първичен билиарен холангит – какво представлява?](https://zdraveibolest.bg/blog/parvichen-biliaren-holangit-kakvo-pr)
+- [Спастичност на крайниците – когато губим контрола над мускулите](https://zdraveibolest.bg/blog/spastichnost-na-krajniczite-kogato-gu)
+- [Таласемия: Симптоми, причини, лечение](https://zdraveibolest.bg/blog/talasemiya-simptomi-prichini-lechenie)
+- [Техники за намаляване на стреса при контрол на мигрена: практическо ръководство](https://zdraveibolest.bg/blog/tehniki-za-namalyavane-na-stresa-pri-ko)
+- [Улцерозен колит-често срещани грешки](https://zdraveibolest.bg/blog/ulczerozen-kolit-chesto-sresthani-greshki)
+- [Уринарна инконтиненция (неволно изпускане на урина)](https://zdraveibolest.bg/blog/urinarna-inkontinencziya-nevolno-izpu)
+- [Хемофилия-най често срещаната наследствена коагулопатия](https://zdraveibolest.bg/blog/hemofiliya-naj-chesto-sresthanata-nasled)
+- [Хипертонична криза – какво трябва да знаете?](https://zdraveibolest.bg/blog/hipertonichna-kriza-kakvo-tryabva-da)
 
 ## Optional
 - [Политика за поверителност](https://zdraveibolest.bg/privacy-policy): GDPR и обработка на лични данни.

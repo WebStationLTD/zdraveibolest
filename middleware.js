@@ -6,6 +6,10 @@ import {
   parsePageParam,
   stripRedundantPaginationSearch,
 } from "./lib/category-routing";
+import {
+  legacyCategorySlug,
+  legacyPostSlug,
+} from "./lib/legacy-slug-redirects";
 
 export function middleware(request) {
   const { pathname, search } = request.nextUrl;
@@ -46,7 +50,8 @@ export function middleware(request) {
 
   const legacyBlogCategoryMatch = pathname.match(/^\/blog\/category\/(.+?)\/?$/);
   if (legacyBlogCategoryMatch) {
-    const categorySlug = decodeURIComponent(legacyBlogCategoryMatch[1]);
+    const rawSlug = decodeURIComponent(legacyBlogCategoryMatch[1]);
+    const categorySlug = legacyCategorySlug(rawSlug) || rawSlug;
     const cleanSearch = stripRedundantPaginationSearch(search);
     return NextResponse.redirect(
       new URL(`/kategoriya/${categorySlug}${cleanSearch}`, request.url),
@@ -54,7 +59,19 @@ export function middleware(request) {
     );
   }
 
-  // /blog?page=N → canonical /kategoriya/статии (page=1 without query)
+  const blogPostMatch = pathname.match(/^\/blog\/([^/]+)\/?$/);
+  if (blogPostMatch) {
+    const nextSlug = legacyPostSlug(decodeURIComponent(blogPostMatch[1]));
+    if (nextSlug) {
+      const cleanSearch = stripRedundantPaginationSearch(search);
+      return NextResponse.redirect(
+        new URL(`/blog/${nextSlug}${cleanSearch}`, request.url),
+        301
+      );
+    }
+  }
+
+  // /blog?page=N → canonical /kategoriya/statii (page=1 without query)
   if (pathname === "/blog" && search) {
     const params = new URLSearchParams(search);
     if (params.has("page")) {
@@ -67,10 +84,12 @@ export function middleware(request) {
   // /kategoriya/{slug}?page=1 → /kategoriya/{slug}
   const kategoriyaMatch = pathname.match(/^\/kategoriya\/([^/]+)\/?$/);
   if (kategoriyaMatch) {
+    const rawSlug = decodeURIComponent(kategoriyaMatch[1]);
+    const nextSlug = legacyCategorySlug(rawSlug) || rawSlug;
     const cleanSearch = stripRedundantPaginationSearch(search);
-    if (cleanSearch !== search) {
+    if (nextSlug !== rawSlug || cleanSearch !== search) {
       return NextResponse.redirect(
-        new URL(`${pathname}${cleanSearch}`, request.url),
+        new URL(`/kategoriya/${nextSlug}${cleanSearch}`, request.url),
         301
       );
     }
@@ -87,6 +106,7 @@ export const config = {
     "/terapevtichni-oblasti/:slug*",
     "/blog/category/:slug*",
     "/blog",
+    "/blog/:slug*",
     "/kategoriya/:slug*",
   ],
 };

@@ -32,19 +32,19 @@ const posts = await fetch(
   `${WP}/posts?status=publish&per_page=100&_fields=slug,title,categories`
 ).then((r) => r.json());
 
-const therapeutic = [
-  ["пулмология", "Пулмология"],
-  ["ревматология", "Ревматология"],
-  ["кардиология", "Кардиология"],
-  ["неврология", "Неврология"],
-  ["нефрология", "Нефрология"],
-  ["гастроентерология", "Гастроентерология"],
-  ["ендокринология", "Ендокринология"],
-  ["онкология", "Онкология"],
-  ["алергология", "Алергология"],
-  ["дерматология", "Дерматология"],
-  ["хематология", "Хематология"],
-  ["акушер-гинекология", "Акушер-гинекология"],
+const therapeuticIds = [
+  [6, "Пулмология"],
+  [7, "Ревматология"],
+  [8, "Кардиология"],
+  [9, "Неврология"],
+  [10, "Нефрология"],
+  [11, "Гастроентерология"],
+  [12, "Ендокринология"],
+  [13, "Онкология"],
+  [14, "Алергология"],
+  [15, "Дерматология"],
+  [17, "Хематология"],
+  [18, "Акушер-гинекология"],
 ];
 
 const catMap = Object.fromEntries(cats.map((c) => [c.id, c]));
@@ -78,7 +78,7 @@ lines.push(
 );
 lines.push("");
 lines.push(
-  "**URL конвенции:** Каноничният hub за здравни статии е `/kategoriya/статии`. `/blog` е alias. Legacy `/blog/category/*` и `/services/*` → 301 към `/kategoriya/*`. `/team` е noindex."
+  "**URL конвенции:** Каноничният hub за здравни статии е `/kategoriya/statii`. `/blog` е alias. Старите кирилски адреси, `/blog/category/*` и `/services/*` → 301 към латинските `/kategoriya/*` или `/blog/*`. `/team` е noindex."
 );
 lines.push("");
 
@@ -96,19 +96,20 @@ lines.push("");
 
 lines.push("## Здравна информация");
 lines.push(
-  `- [Статии (hub)](${SITE}/kategoriya/статии): Каталог от ${catMap[19]?.count || 33}+ здравни статии на разбираем език.`
+  `- [Статии (hub)](${SITE}/kategoriya/${decodeSlug(catMap[19]?.slug || "statii")}): Каталог от ${catMap[19]?.count || 33}+ здравни статии на разбираем език.`
 );
 lines.push(
-  `- [Подкасти](${SITE}/kategoriya/подкасти): Аудио съдържание (hub).`
+  `- [Подкасти](${SITE}/kategoriya/${decodeSlug(catMap[20]?.slug || "podkasti")}): Аудио съдържание (hub).`
 );
 lines.push(
-  `- [Blog alias](${SITE}/blog): Пренасочва канонично към /kategoriya/статии.`
+  `- [Blog alias](${SITE}/blog): Пренасочва канонично към /kategoriya/${decodeSlug(catMap[19]?.slug || "statii")}.`
 );
 lines.push("");
 
 lines.push("## Терапевтични области");
-for (const [slug, name] of therapeutic) {
-  const c = cats.find((x) => decodeSlug(x.slug) === slug);
+for (const [id, name] of therapeuticIds) {
+  const c = catMap[id];
+  const slug = decodeSlug(c?.slug || "");
   const count = c?.count || 0;
   const pubLabel =
     count === 1 ? "публикация" : count > 1 ? "публикации" : "публикации";

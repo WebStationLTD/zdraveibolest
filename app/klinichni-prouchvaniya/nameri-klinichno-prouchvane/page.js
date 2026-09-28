@@ -26,7 +26,7 @@ export const metadata = withPageUrls(
 export const dynamic = 'force-dynamic';
 
 export default async function FindClinicalTrialsPage() {
-  const CATEGORY_SLUG = "клинични-проучвания";
+  const CATEGORY_SLUG = "klinichni-prouchvaniya";
 
   let initialTags = [];
   let initialPosts = [];
