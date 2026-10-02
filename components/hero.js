@@ -27,7 +27,7 @@ export default function Hero() {
 
                 {/* Description */}
                 <p className="text-base md:text-base lg:text-[1.05rem] text-white/95 mb-8 md:mb-9 leading-relaxed">
-                  Нашата мисия е да направим медицината човешка и достъпна.
+                  Нашата мисия е да направим медицината по-достъпна и по-разбираема.
                 </p>
 
                 {/* CTA Buttons */}
