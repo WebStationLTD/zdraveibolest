@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getMembers } from "../../services/members";
 import { NOINDEX_ROBOTS } from "../../lib/seo";
+import WpBlockStyles from "../../components/WpBlockStyles";
 
 export const dynamic = "force-dynamic";
 
@@ -17,6 +18,7 @@ export default async function Team() {
 
   return (
     <>
+      <WpBlockStyles />
       <div className="bg-white">
         <div className="mx-auto max-w-10/10 py-0 sm:py-0 lg:px-0">
           <div className="relative isolate overflow-hidden bg-gray-900 px-6 py-12 text-center shadow-2xl sm:px-12">

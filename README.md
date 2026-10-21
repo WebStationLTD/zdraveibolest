@@ -1,5 +1,14 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Фронтенд и бекенд
+
+Апликацията се управлява от този проект и за двете страни.
+
+- Фронтенд: този Next.js репо. Публичният сайт е https://zdraveibolest.bg.
+- Бекенд: WordPress на https://zdraveibolest.admin-panels.com. `functions.php`, темата и плъгините се редактират от тук през MCP сървъра `emcp-zdraveibolest-admin-panels-com` (конфигурацията е в `.cursor/mcp.json`, файлът не се комитва).
+
+Не се качват PHP промени ръчно, когато файлът е достъпен през този достъп.
+
 ## Getting Started
 
 First, run the development server:

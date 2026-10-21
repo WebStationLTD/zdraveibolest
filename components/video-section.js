@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import Image from "next/image";
 
 export default function VideoSection() {
   const [playing, setPlaying] = useState(false);
@@ -36,17 +37,25 @@ export default function VideoSection() {
           <div className="relative">
             {/* Decorative Element */}
             <div className="absolute -bottom-12 -right-12 md:-bottom-16 md:-right-16 lg:-bottom-20 lg:-right-20 w-64 h-auto md:w-80 lg:w-96 pointer-events-none z-0">
-              <img src="/Video-section-Element.svg" alt="" className="w-full h-auto opacity-80" />
+              <img
+                src="/Video-section-Element.svg"
+                alt=""
+                width={540}
+                height={225}
+                className="w-full h-auto opacity-80"
+              />
             </div>
 
             {/* Video Container */}
             <div className="relative aspect-video rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl z-10">
               {/* Thumbnail image - always visible before play */}
               {!playing && (
-                <img
+                <Image
                   src="/zdraveibolest-homepage-video-tumbnail.png"
-                  alt="Video thumbnail"
-                  className="absolute inset-0 w-full h-full object-cover"
+                  alt="Кадър от видеото за регистрация"
+                  fill
+                  sizes="(min-width: 1024px) 530px, 90vw"
+                  className="object-cover"
                 />
               )}
               

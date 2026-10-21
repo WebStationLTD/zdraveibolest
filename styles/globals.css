@@ -1,6 +1,3 @@
-/* Ensure Gutenberg styles are applied */
-@import url("https://zdraveibolest.admin-panels.com/wp-includes/css/dist/block-library/style.min.css");
-
 @import "./wordpress-generated.css";
 
 @tailwind base;

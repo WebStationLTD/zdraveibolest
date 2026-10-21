@@ -12,6 +12,7 @@ import {
 import { extractYoastFaq } from "../../../lib/yoast-faq";
 import { getSiteUrl } from "../../../lib/site";
 import { isPaywallEnabled } from "../../../lib/paywall";
+import WpBlockStyles from "../../../components/WpBlockStyles";
 
 // Force dynamic rendering to avoid build timeout
 export const dynamic = 'force-dynamic';
@@ -101,6 +102,7 @@ export default async function PostPage({ params }) {
 
     return (
       <>
+        <WpBlockStyles />
         <JsonLd id="article-schema" data={articleSchema} />
         {faqSchema ? <JsonLd id="faq-schema" data={faqSchema} /> : null}
         <div className="bg-white">
