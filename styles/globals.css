@@ -106,3 +106,79 @@ main p.text-center {
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #035057;
 }
+
+/* Yoast FAQ block, shown as an accordion in articles. */
+.prose .schema-faq {
+  margin: 1.75rem 0 0.25rem;
+}
+
+.prose .schema-faq-section {
+  margin: 0;
+  border-bottom: 1px solid #d7e4e6;
+}
+
+.prose .schema-faq-question {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0;
+  padding: 0.95rem 0;
+  color: #035057;
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: left;
+  hyphens: manual;
+  cursor: pointer;
+  list-style: none;
+}
+
+.prose .schema-faq-question::-webkit-details-marker,
+.prose .schema-faq-question::marker {
+  display: none;
+  content: "";
+}
+
+.prose .schema-faq-question::after {
+  content: "";
+  flex: 0 0 auto;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-top: 0.4rem;
+  border-right: 2px solid #04737d;
+  border-bottom: 2px solid #04737d;
+  transform: rotate(45deg);
+}
+
+.prose .schema-faq-section[open] .schema-faq-question::after {
+  margin-top: 0.55rem;
+  transform: rotate(-135deg);
+}
+
+.prose .schema-faq-question:hover {
+  color: #04737d;
+}
+
+.prose .schema-faq-question:focus-visible {
+  outline: 2px solid #04737d;
+  outline-offset: 3px;
+}
+
+.prose .schema-faq-answer,
+.prose .schema-faq-answer p,
+.prose .schema-faq-answer li {
+  text-align: left;
+  hyphens: manual;
+}
+
+.prose .schema-faq-answer {
+  padding-bottom: 0.85rem;
+}
+
+.prose .schema-faq-answer > :first-child {
+  margin-top: 0;
+}
+
+.prose .schema-faq-answer > :last-child {
+  margin-bottom: 0;
+}

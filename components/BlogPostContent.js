@@ -1,5 +1,6 @@
 import ProtectedContent from "./ProtectedContent";
 import { isPaywallEnabled } from "../lib/paywall";
+import { enhanceYoastFaqHtml } from "../lib/yoast-faq";
 
 /**
  * Blog Post Content Component
@@ -14,18 +15,20 @@ export default function BlogPostContent({
   therapeuticAreas = [],
   tags = [],
 }) {
+  const html = enhanceYoastFaqHtml(content);
+
   if (!isPaywallEnabled()) {
     return (
       <div
         className="prose prose-lg max-w-none text-justify"
-        dangerouslySetInnerHTML={{ __html: content }}
+        dangerouslySetInnerHTML={{ __html: html }}
       />
     );
   }
 
   return (
     <ProtectedContent
-      content={content}
+      content={html}
       previewHeight={200}
       therapeuticAreas={therapeuticAreas}
       postTags={tags}

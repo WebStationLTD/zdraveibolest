@@ -5,9 +5,12 @@ import StickyRegistrationBox from "../../../components/StickyRegistrationBox";
 import HealthyVolunteerForm from "../../../components/HealthyVolunteerForm";
 import JsonLd from "../../../components/JsonLd";
 import {
+  buildArticleFaqSchema,
   buildBlogArticleSchema,
   getBlogCanonicalPath,
 } from "../../../lib/schema";
+import { extractYoastFaq } from "../../../lib/yoast-faq";
+import { getSiteUrl } from "../../../lib/site";
 import { isPaywallEnabled } from "../../../lib/paywall";
 
 // Force dynamic rendering to avoid build timeout
@@ -91,10 +94,15 @@ export default async function PostPage({ params }) {
       slug,
       isPublicPost: hasHealthyVolunteerTag,
     });
+    const faqItems = extractYoastFaq(post[0].content.rendered);
+    const faqSchema = faqItems.length
+      ? buildArticleFaqSchema(faqItems, `${getSiteUrl()}/blog/${slug}`)
+      : null;
 
     return (
       <>
         <JsonLd id="article-schema" data={articleSchema} />
+        {faqSchema ? <JsonLd id="faq-schema" data={faqSchema} /> : null}
         <div className="bg-white">
           <div className="mx-auto max-w-10/10 py-0 sm:px-6 sm:py-0 lg:px-0">
             <div className="relative isolate overflow-hidden bg-[#04737d] px-6 py-16 md:py-20 text-center shadow-2xl sm:px-12 rounded-b-2xl md:rounded-b-3xl">
