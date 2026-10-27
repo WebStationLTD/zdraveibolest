@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import HealthyVolunteerForm from "../../../components/HealthyVolunteerForm";
@@ -112,6 +112,84 @@ const quickLinks = [
   { name: "Кандидатствай", href: "#apply-form" },
 ];
 
+function disableYoutubeCaptions(player) {
+  try {
+    player.unloadModule("captions");
+  } catch {
+    /* модулът още не е зареден */
+  }
+  try {
+    player.setOption("captions", "track", {});
+  } catch {
+    /* няма активна пътека */
+  }
+}
+
+function VolunteerVideo() {
+  const hostRef = useRef(null);
+
+  useEffect(() => {
+    let player;
+    let alive = true;
+
+    const mount = () => {
+      if (!alive || !hostRef.current || player || !window.YT?.Player) return;
+      player = new window.YT.Player(hostRef.current, {
+        videoId: "EyOOn3Qjz5Y",
+        width: "100%",
+        height: "100%",
+        playerVars: {
+          autoplay: 1,
+          mute: 1,
+          playsinline: 1,
+          rel: 0,
+          cc_load_policy: 0,
+        },
+        events: {
+          onReady: (event) => {
+            const frame = event.target.getIframe();
+            frame.style.position = "absolute";
+            frame.style.inset = "0";
+            frame.style.width = "100%";
+            frame.style.height = "100%";
+            frame.title = "Здрав доброволец разказва за клиничните проучвания";
+            disableYoutubeCaptions(event.target);
+            window.setTimeout(() => disableYoutubeCaptions(event.target), 800);
+          },
+          onApiChange: (event) => disableYoutubeCaptions(event.target),
+        },
+      });
+    };
+
+    if (window.YT?.Player) {
+      mount();
+    } else {
+      const previous = window.onYouTubeIframeAPIReady;
+      window.onYouTubeIframeAPIReady = () => {
+        if (typeof previous === "function") previous();
+        mount();
+      };
+      if (!document.getElementById("youtube-iframe-api")) {
+        const tag = document.createElement("script");
+        tag.id = "youtube-iframe-api";
+        tag.src = "https://www.youtube.com/iframe_api";
+        document.head.appendChild(tag);
+      }
+    }
+
+    return () => {
+      alive = false;
+      if (player?.destroy) player.destroy();
+    };
+  }, []);
+
+  return (
+    <div className="relative aspect-video w-full overflow-hidden rounded-2xl md:rounded-3xl bg-black shadow-2xl">
+      <div ref={hostRef} className="absolute inset-0 h-full w-full" />
+    </div>
+  );
+}
+
 export default function ZdraviDobrovolciPage() {
   const [quickLinksOpen, setQuickLinksOpen] = useState(false);
   const stepsRef = useRef(null);
@@ -163,8 +241,8 @@ export default function ZdraviDobrovolciPage() {
           <div className="absolute right-36 bottom-8 w-32 h-32 rounded-full border border-[#2D8CFF]/30" />
         </div>
 
-        <div className="mx-auto w-[95%] md:w-[85%] relative z-10" style={{ paddingTop: '80px', paddingBottom: 0 }}>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-center min-h-[600px]">
+        <div className="mx-auto w-[95%] md:w-[85%] relative z-10" style={{ paddingTop: '80px', paddingBottom: '64px' }}>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             {/* Text */}
             <div className="text-white pb-12">
               <p className="text-[#60B4FF] font-semibold text-sm uppercase tracking-widest mb-4">
@@ -203,31 +281,8 @@ export default function ZdraviDobrovolciPage() {
               </div>
             </div>
 
-            {/* Right image - кръгла с декорации */}
-            <div className="hidden lg:flex justify-center items-start pt-8">
-              <div className="relative">
-                {/* Dots decoration - горе вдясно */}
-                <div className="absolute -right-12 -top-12 grid grid-cols-8 gap-2.5 opacity-30 pointer-events-none">
-                  {[...Array(48)].map((_, i) => (
-                    <div key={i} className="w-1.5 h-1.5 rounded-full bg-white" />
-                  ))}
-                </div>
-                {/* Dots decoration - долу вляво */}
-                <div className="absolute -left-10 -bottom-6 grid grid-cols-6 gap-2 opacity-25 pointer-events-none">
-                  {[...Array(30)].map((_, i) => (
-                    <div key={i} className="w-1.5 h-1.5 rounded-full bg-[#60B4FF]" />
-                  ))}
-                </div>
-                {/* Main circular image */}
-                <div className="w-[420px] h-[420px] rounded-full overflow-hidden bg-gradient-to-br from-[#2D8CFF]/25 to-[#4B0082]/25 border-4 border-white shadow-2xl">
-                  <img
-                    src="/images/hero-volunteers.png"
-                    alt="Здрави доброволци"
-                    className="w-full h-full object-cover"
-                    style={{ objectPosition: '50% 20%' }}
-                  />
-                </div>
-              </div>
+            <div className="relative w-full">
+              <VolunteerVideo />
             </div>
           </div>
         </div>
