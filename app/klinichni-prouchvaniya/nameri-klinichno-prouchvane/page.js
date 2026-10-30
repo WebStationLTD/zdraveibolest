@@ -1,6 +1,6 @@
-import Image from "next/image";
 import JsonLd from "../../../components/JsonLd";
 import ClinicalTrialsPageClient from "../../../components/ClinicalTrialsPageClient";
+import YoutubePosterPlayer from "../../../components/YoutubePosterPlayer";
 import { getTagsByCategory, getFilteredPosts } from "../../../services/tags";
 import { withPageUrls } from "../../../lib/seo";
 
@@ -84,17 +84,23 @@ export default async function FindClinicalTrialsPage() {
 
         <div className="relative py-16 md:py-24 px-6 md:px-12">
           <div className="mx-auto max-w-7xl">
-            <div className="max-w-3xl">
-              <p className="text-sm font-bold text-white/90 mb-4 uppercase tracking-widest flex items-center gap-2">
-                <span className="w-8 h-0.5 bg-white/70"></span>
-                РЕСУРСИ И СТАТИИ
-              </p>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-                Здравна информация
-              </h1>
-              <p className="text-lg md:text-xl text-white/95 leading-relaxed max-w-2xl">
-                Вземайте информирани решения за вашето здраве с нашите здравно-образователни статии, ръководства и ресурси.
-              </p>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+              <div>
+                <p className="text-sm font-bold text-white/90 mb-4 uppercase tracking-widest flex items-center gap-2">
+                  <span className="w-8 h-0.5 bg-white/70"></span>
+                  РЕСУРСИ И СТАТИИ
+                </p>
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+                  Здравна информация
+                </h1>
+                <p className="text-lg md:text-xl text-white/95 leading-relaxed max-w-2xl">
+                  Вземайте информирани решения за вашето здраве с нашите здравно-образователни статии, ръководства и ресурси.
+                </p>
+              </div>
+              <YoutubePosterPlayer
+                videoId="2QWvKVFsxo0"
+                title="Генитален херпес – какво трябва да знаем. Д-р Цветанова, дерматолог"
+              />
             </div>
           </div>
         </div>
