@@ -1,60 +1,187 @@
 "use client";
 
-import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-
-const CookieConsent = dynamic(() => import("react-cookie-consent"), {
-  ssr: false,
-});
+import {
+  Dialog,
+  DialogBackdrop,
+  DialogPanel,
+  DialogTitle,
+} from "@headlessui/react";
+import { useConsent } from "../contexts/ConsentContext";
 
 const CookieConsentBanner = () => {
+  const {
+    ready,
+    hasDecision,
+    preferences,
+    acceptAll,
+    rejectOptional,
+    savePreferences,
+    settingsOpen,
+    openSettings,
+    closeSettings,
+  } = useConsent();
+  const [externalMedia, setExternalMedia] = useState(false);
+
+  useEffect(() => {
+    if (settingsOpen) {
+      setExternalMedia(preferences.externalMedia);
+    }
+  }, [settingsOpen, preferences.externalMedia]);
+
   return (
-    <CookieConsent
-      location="bottom"
-      cookieName="brdLawCookieConsent"
-      expires={365}
-      buttonText="Приемам"
-      declineButtonText="Отказвам"
-      enableDeclineButton
-      style={{
-        background: "#2B373B",
-        color: "#FFF",
-        padding: "14px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        flexWrap: "wrap",
-      }}
-      buttonWrapperClasses="flex gap-4 mt-3 md:mt-0"
-      buttonStyle={{
-        backgroundColor: "#4CAF50",
-        color: "#000000",
-        fontSize: "14px",
-        padding: "8px 16px",
-        borderRadius: "6px",
-      }}
-      declineButtonStyle={{
-        backgroundColor: "#f44336",
-        color: "#000000",
-        fontSize: "14px",
-        padding: "8px 16px",
-        borderRadius: "6px",
-      }}
-      onAccept={() => {
-        console.log("Потребителят е приел бисквитките");
-      }}
-      onDecline={() => {
-        console.log("Потребителят е отказал бисквитките");
-      }}
-    >
-      <p className="text-sm md:text-base">
-        Използваме бисквитки за подобряване на услугите.{" "}
-        <Link href="/privacy-policy" className="underline">
-          Научете повече
-        </Link>
-        .
-      </p>
-    </CookieConsent>
+    <>
+      {ready && !hasDecision && (
+        <section
+          className="fixed inset-x-0 bottom-0 z-[90] max-h-[calc(100dvh-1rem)] overflow-y-auto border-t border-white/15 bg-[#035057] text-white shadow-[0_-8px_30px_rgba(0,0,0,0.18)]"
+          aria-label="Настройки за бисквитки"
+        >
+          <div className="mx-auto grid w-full max-w-7xl gap-3 px-4 py-4 sm:grid-cols-[minmax(0,1fr)_minmax(18rem,22rem)] sm:items-center sm:gap-4 sm:px-6 sm:py-3 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-6">
+            <div className="min-w-0">
+              <h2 className="text-base font-bold">Използваме бисквитки</h2>
+              <p className="mt-1 text-sm leading-5 text-white/90">
+                Някои бисквитки са необходими за работата на сайта, а други
+                използваме само с Вашето съгласие. Можете да промените избора си
+                по всяко време.{" "}
+                <Link
+                  href="/cookie-policy"
+                  className="font-semibold underline decoration-white/60 underline-offset-4 hover:decoration-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                >
+                  Научете повече
+                </Link>
+              </p>
+            </div>
+
+            <div className="grid w-full grid-cols-2 gap-2 lg:w-auto lg:grid-cols-3">
+              <button
+                type="button"
+                onClick={rejectOptional}
+                className="min-h-11 cursor-pointer rounded-lg border border-white/70 px-3 py-2 text-sm font-semibold text-white transition-colors hover:bg-white/10 active:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              >
+                Само необходимите
+              </button>
+              <button
+                type="button"
+                onClick={openSettings}
+                className="col-span-2 min-h-11 cursor-pointer rounded-lg border border-white/70 px-3 py-2 text-sm font-semibold text-white transition-colors hover:bg-white/10 active:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white lg:col-span-1"
+              >
+                Настройки
+              </button>
+              <button
+                type="button"
+                onClick={acceptAll}
+                className="col-start-2 row-start-1 min-h-11 cursor-pointer rounded-lg bg-[#fd9300] px-3 py-2 text-sm font-bold text-[#202020] transition-colors hover:bg-[#ffab33] active:bg-[#e88400] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white lg:col-start-auto lg:row-start-auto"
+              >
+                Приемам всички
+              </button>
+            </div>
+          </div>
+        </section>
+      )}
+
+      <Dialog
+        open={settingsOpen}
+        onClose={closeSettings}
+        className="relative z-[100]"
+      >
+        <DialogBackdrop className="fixed inset-0 bg-black/55" />
+        <div className="fixed inset-0 overflow-y-auto p-4 sm:p-6">
+          <div className="flex min-h-full items-end justify-center sm:items-center">
+            <DialogPanel className="w-full max-w-2xl rounded-2xl bg-white shadow-2xl">
+              <div className="flex items-start justify-between border-b border-gray-200 px-5 py-5 sm:px-7">
+                <div className="pr-6">
+                  <DialogTitle className="text-xl font-bold text-[#035057] sm:text-2xl">
+                    Настройки за поверителност
+                  </DialogTitle>
+                  <p className="mt-2 text-sm leading-6 text-gray-600">
+                    Можете да промените избора си по всяко време от линка в
+                    долната част на сайта.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={closeSettings}
+                  className="flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-lg text-2xl leading-none text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#04737d]"
+                  aria-label="Затвори настройките"
+                >
+                  ×
+                </button>
+              </div>
+
+              <div className="space-y-3 px-5 py-5 sm:px-7">
+                <div className="rounded-xl border border-gray-200 p-4">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <h3 className="font-bold text-gray-900">Необходими</h3>
+                      <p className="mt-1 text-sm leading-6 text-gray-600">
+                        Запазват избора Ви и поддържат входа, формите и основните
+                        функции на сайта.
+                      </p>
+                    </div>
+                    <span className="shrink-0 text-sm font-semibold text-[#04737d]">
+                      Винаги активни
+                    </span>
+                  </div>
+                </div>
+
+                <div className="rounded-xl border border-gray-200 p-4">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <h3
+                        id="external-media-heading"
+                        className="font-bold text-gray-900"
+                      >
+                        Външна медия
+                      </h3>
+                      <p className="mt-1 text-sm leading-6 text-gray-600">
+                        Разрешава видеа от YouTube и карти от Google Maps. При
+                        зареждането им тези доставчици могат да получат технически
+                        данни за устройството и връзката Ви.
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      role="switch"
+                      aria-checked={externalMedia}
+                      aria-labelledby="external-media-heading"
+                      onClick={() => setExternalMedia((current) => !current)}
+                      className={`relative mt-1 h-7 w-12 shrink-0 cursor-pointer rounded-full transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#04737d] ${
+                        externalMedia ? "bg-[#04737d]" : "bg-gray-300"
+                      }`}
+                    >
+                      <span
+                        className={`pointer-events-none absolute top-1 h-5 w-5 rounded-full bg-white shadow transition-transform ${
+                          externalMedia ? "left-1 translate-x-5" : "left-1"
+                        }`}
+                      />
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+
+              <div className="flex flex-col-reverse gap-2 border-t border-gray-200 px-5 py-5 sm:flex-row sm:justify-end sm:px-7">
+                <button
+                  type="button"
+                  onClick={rejectOptional}
+                  className="min-h-11 cursor-pointer rounded-lg border border-[#04737d] px-5 py-2.5 text-sm font-bold text-[#04737d] transition-colors hover:bg-[#f1f8f7] active:bg-[#e2f0ee] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#04737d]"
+                >
+                  Отказвам незадължителните
+                </button>
+                <button
+                  type="button"
+                  onClick={() => savePreferences({ externalMedia })}
+                  className="min-h-11 cursor-pointer rounded-lg bg-[#04737d] px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-[#035057] active:bg-[#023f45] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#04737d]"
+                >
+                  Запази избора
+                </button>
+              </div>
+            </DialogPanel>
+          </div>
+        </div>
+      </Dialog>
+    </>
   );
 };
 

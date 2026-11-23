@@ -179,3 +179,69 @@ main p.text-center {
 .prose .schema-faq-answer > :last-child {
   margin-bottom: 0;
 }
+
+.zb-consent-embed {
+  display: flex;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  min-height: 15rem;
+  align-items: center;
+  justify-content: center;
+  margin: 1.5rem 0;
+  padding: 2rem;
+  border: 1px solid #c9dddd;
+  border-radius: 1rem;
+  background: #e8f1f1;
+  color: #173f43;
+  text-align: center;
+}
+
+.zb-consent-embed figcaption {
+  display: flex;
+  max-width: 30rem;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.zb-consent-embed strong,
+.zb-consent-embed span {
+  margin: 0;
+  color: inherit;
+}
+
+.zb-consent-embed button {
+  min-height: 2.75rem;
+  margin-top: 0.35rem;
+  padding: 0.65rem 1.25rem;
+  border-radius: 0.5rem;
+  background: #fd9300;
+  color: #202020;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.zb-consent-embed button:hover {
+  background: #ffab33;
+}
+
+.zb-consent-embed button:focus-visible {
+  outline: 2px solid #04737d;
+  outline-offset: 3px;
+}
+
+.prose iframe,
+.wordpress-content iframe {
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 16 / 9;
+  height: auto;
+  border: 0;
+}
+
+@media (max-width: 640px) {
+  .zb-consent-embed {
+    min-height: 13rem;
+    padding: 1.25rem;
+  }
+}

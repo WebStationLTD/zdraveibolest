@@ -1,10 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MapPinIcon, PhoneIcon, EnvelopeIcon } from "@heroicons/react/24/outline";
+import { useConsent } from "../contexts/ConsentContext";
+import ExternalMediaPlaceholder from "./ExternalMediaPlaceholder";
 
 export default function ContactMap({ address, phone, emails = [], lat, lng }) {
   const [mapLoaded, setMapLoaded] = useState(false);
+  const { preferences } = useConsent();
+
+  useEffect(() => {
+    if (!preferences.externalMedia) setMapLoaded(false);
+  }, [preferences.externalMedia]);
 
   const encodedAddress = encodeURIComponent(address || "София, България");
   // When coordinates are provided, use them for a precise static pin; otherwise fall back to address search
@@ -13,19 +20,28 @@ export default function ContactMap({ address, phone, emails = [], lat, lng }) {
 
   return (
     <section className="relative w-full h-[600px] overflow-hidden">
-      {/* Map iframe */}
-      <iframe
-        src={mapSrc}
-        className="absolute inset-0 w-full h-full border-0"
-        loading="lazy"
-        allowFullScreen
-        referrerPolicy="no-referrer-when-downgrade"
-        onLoad={() => setMapLoaded(true)}
-        title="Карта с местоположение"
-      />
+      {preferences.externalMedia ? (
+        <iframe
+          src={mapSrc}
+          className="absolute inset-0 w-full h-full border-0"
+          width="1600"
+          height="600"
+          loading="lazy"
+          allowFullScreen
+          referrerPolicy="no-referrer-when-downgrade"
+          onLoad={() => setMapLoaded(true)}
+          title="Карта с местоположение"
+        />
+      ) : (
+        <ExternalMediaPlaceholder
+          title="Карта с местоположението ни"
+          service="Google Maps"
+          className="absolute inset-0 h-full w-full pb-64 sm:pb-8 sm:pl-[26rem]"
+        />
+      )}
 
       {/* Loading skeleton */}
-      {!mapLoaded && (
+      {preferences.externalMedia && !mapLoaded && (
         <div className="absolute inset-0 bg-gradient-to-br from-[#04737d]/10 to-[#035057]/20 flex items-center justify-center">
           <div className="flex flex-col items-center gap-3">
             <div className="w-12 h-12 rounded-full border-4 border-[#04737d] border-t-transparent animate-spin" />
@@ -40,11 +56,7 @@ export default function ContactMap({ address, phone, emails = [], lat, lng }) {
           {/* Card header */}
           <div className="bg-gradient-to-r from-[#04737d] to-[#238C96] px-5 py-4">
             <div className="flex items-center gap-2">
-              {/* Animated ping marker */}
-              <div className="relative flex-shrink-0">
-                <span className="absolute inline-flex h-4 w-4 rounded-full bg-white/40 animate-ping" />
-                <MapPinIcon className="relative h-5 w-5 text-white" />
-              </div>
+              <MapPinIcon className="h-5 w-5 flex-shrink-0 text-white" />
               <h3 className="text-white font-semibold text-base">Нашето местоположение</h3>
             </div>
           </div>

@@ -4,6 +4,8 @@ import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import HealthyVolunteerForm from "../../../components/HealthyVolunteerForm";
+import ExternalMediaPlaceholder from "../../../components/ExternalMediaPlaceholder";
+import { useConsent } from "../../../contexts/ConsentContext";
 import {
   ClipboardDocumentListIcon,
   BeakerIcon,
@@ -127,8 +129,11 @@ function disableYoutubeCaptions(player) {
 
 function VolunteerVideo() {
   const hostRef = useRef(null);
+  const { preferences } = useConsent();
 
   useEffect(() => {
+    if (!preferences.externalMedia) return;
+
     let player;
     let alive = true;
 
@@ -136,6 +141,7 @@ function VolunteerVideo() {
       if (!alive || !hostRef.current || player || !window.YT?.Player) return;
       player = new window.YT.Player(hostRef.current, {
         videoId: "EyOOn3Qjz5Y",
+        host: "https://www.youtube-nocookie.com",
         width: "100%",
         height: "100%",
         playerVars: {
@@ -181,11 +187,20 @@ function VolunteerVideo() {
       alive = false;
       if (player?.destroy) player.destroy();
     };
-  }, []);
+  }, [preferences.externalMedia]);
 
   return (
     <div className="relative aspect-video w-full overflow-hidden rounded-2xl md:rounded-3xl bg-black shadow-2xl">
-      <div ref={hostRef} className="absolute inset-0 h-full w-full" />
+      {preferences.externalMedia ? (
+        <div ref={hostRef} className="absolute inset-0 h-full w-full" />
+      ) : (
+        <ExternalMediaPlaceholder
+          title="Здрав доброволец разказва за клиничните проучвания"
+          service="YouTube"
+          poster="/images/consent/youtube-EyOOn3Qjz5Y.jpg"
+          className="absolute inset-0 h-full w-full"
+        />
+      )}
     </div>
   );
 }

@@ -9,6 +9,7 @@ import BackToTop from "../components/BackToTop";
 import CallButton from "../components/CallButton";
 import NextTopLoader from "nextjs-toploader";
 import { AuthProvider } from "../contexts/AuthContext";
+import { ConsentProvider } from "../contexts/ConsentContext";
 import "../styles/globals.css";
 import { Lora } from "next/font/google";
 import { getGlobalStructuredData } from "../lib/schema";
@@ -98,16 +99,18 @@ export default function RootLayout({ children }) {
         <JsonLd id="structured-data" data={getGlobalStructuredData()} />
       </head>
       <body className={lora.className}>
-        <AuthProvider>
-        <NextTopLoader showSpinner={false} color="#129160" />
-        <BackToTop />
-        <CallButton />
-        <ImagePreloader />
-          <NavigationWrapper />
-        <main>{children}</main>
-        <CookieConsentBanner />
-        <Footer />
-        </AuthProvider>
+        <ConsentProvider>
+          <AuthProvider>
+            <NextTopLoader showSpinner={false} color="#129160" />
+            <BackToTop />
+            <CallButton />
+            <ImagePreloader />
+            <NavigationWrapper />
+            <main>{children}</main>
+            <CookieConsentBanner />
+            <Footer />
+          </AuthProvider>
+        </ConsentProvider>
       </body>
     </html>
   );

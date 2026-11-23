@@ -7,6 +7,7 @@ import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
+import ConsentAwareHtml from "./ConsentAwareHtml";
 
 export default function ProtectedContent({
   content,
@@ -39,9 +40,9 @@ export default function ProtectedContent({
   // Пълен достъп: публичен таг или потвърдена автентикация
   if (isPublicPost || (isAuthenticated && !loading)) {
     return (
-      <div
+      <ConsentAwareHtml
+        content={content}
         className="prose prose-lg max-w-none text-justify"
-        dangerouslySetInnerHTML={{ __html: content }}
       />
     );
   }
@@ -54,9 +55,9 @@ export default function ProtectedContent({
         className="relative overflow-hidden"
         style={{ maxHeight: `${previewHeight}px` }}
       >
-        <div
+        <ConsentAwareHtml
+          content={content}
           className="prose prose-lg max-w-none text-justify"
-          dangerouslySetInnerHTML={{ __html: content }}
         />
 
         {/* Gradient Overlay */}

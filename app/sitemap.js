@@ -30,6 +30,7 @@ const STATIC_ROUTES = [
   { path: "/patiat-na-patsienta", changeFrequency: "monthly", priority: 0.6 },
   { path: "/contact", changeFrequency: "yearly", priority: 0.5 },
   { path: "/privacy-policy", changeFrequency: "yearly", priority: 0.3 },
+  { path: "/cookie-policy", changeFrequency: "yearly", priority: 0.3 },
 ];
 
 function toLastModified(modified) {

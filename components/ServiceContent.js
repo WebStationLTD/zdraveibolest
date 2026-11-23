@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import ConsentAwareHtml from "./ConsentAwareHtml";
 
 /**
  * Компонент за рендиране на съдържанието на услугите
@@ -56,14 +57,12 @@ export default function ServiceContent({ content }) {
 
   return (
     <article className="mx-auto max-w-8xl w-full">
-      <div
+      <ConsentAwareHtml
         id="service-content"
+        content={content}
         className={`wordpress-content prose max-w-none leading-relaxed text-justify ${
           isVisible ? "opacity-100" : "opacity-0"
         } transition-opacity duration-300`}
-        dangerouslySetInnerHTML={{
-          __html: content,
-        }}
       />
     </article>
   );

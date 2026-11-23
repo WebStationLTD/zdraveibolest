@@ -1,4 +1,5 @@
 import ProtectedContent from "./ProtectedContent";
+import ConsentAwareHtml from "./ConsentAwareHtml";
 import { isPaywallEnabled } from "../lib/paywall";
 import { enhanceYoastFaqHtml } from "../lib/yoast-faq";
 
@@ -19,9 +20,9 @@ export default function BlogPostContent({
 
   if (!isPaywallEnabled()) {
     return (
-      <div
+      <ConsentAwareHtml
+        content={html}
         className="prose prose-lg max-w-none text-justify"
-        dangerouslySetInnerHTML={{ __html: html }}
       />
     );
   }
