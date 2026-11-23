@@ -34,19 +34,21 @@ const CookieConsentBanner = () => {
     <>
       {ready && !hasDecision && (
         <section
-          className="fixed inset-x-0 bottom-0 z-[90] max-h-[calc(100dvh-1rem)] overflow-y-auto border-t border-white/15 bg-[#035057] text-white shadow-[0_-8px_30px_rgba(0,0,0,0.18)]"
+          className="pointer-events-none fixed inset-x-0 bottom-3 z-[90] max-h-[calc(100dvh-1.5rem)] overflow-y-auto"
           aria-label="Настройки за бисквитки"
         >
-          <div className="mx-auto grid w-full max-w-7xl gap-3 px-4 py-4 sm:grid-cols-[minmax(0,1fr)_minmax(18rem,22rem)] sm:items-center sm:gap-4 sm:px-6 sm:py-3 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-6">
+          <div className="pointer-events-auto mx-auto grid w-[95%] gap-3 rounded-xl border border-gray-200 bg-white px-4 py-4 text-gray-900 shadow-[0_8px_32px_rgba(10,37,64,0.22)] sm:grid-cols-[minmax(0,1fr)_minmax(18rem,22rem)] sm:items-center sm:gap-4 sm:px-6 sm:py-3 md:w-[80%] lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-6">
             <div className="min-w-0">
-              <h2 className="text-base font-bold">Използваме бисквитки</h2>
-              <p className="mt-1 text-sm leading-5 text-white/90">
+              <h2 className="text-base font-bold text-[#035057]">
+                Използваме бисквитки
+              </h2>
+              <p className="mt-1 text-sm leading-5 text-gray-700">
                 Някои бисквитки са необходими за работата на сайта, а други
                 използваме само с Вашето съгласие. Можете да промените избора си
                 по всяко време.{" "}
                 <Link
                   href="/cookie-policy"
-                  className="font-semibold underline decoration-white/60 underline-offset-4 hover:decoration-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                  className="font-semibold text-[#04737d] underline decoration-[#04737d]/50 underline-offset-4 hover:text-[#035057] hover:decoration-[#035057] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#04737d]"
                 >
                   Научете повече
                 </Link>
@@ -57,14 +59,14 @@ const CookieConsentBanner = () => {
               <button
                 type="button"
                 onClick={rejectOptional}
-                className="min-h-11 cursor-pointer rounded-lg border border-white/70 px-3 py-2 text-sm font-semibold text-white transition-colors hover:bg-white/10 active:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                className="min-h-11 cursor-pointer rounded-lg border border-[#04737d] px-3 py-2 text-sm font-semibold text-[#04737d] transition-colors hover:bg-[#f1f8f7] active:bg-[#e2f0ee] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#04737d]"
               >
                 Само необходимите
               </button>
               <button
                 type="button"
                 onClick={openSettings}
-                className="col-span-2 min-h-11 cursor-pointer rounded-lg border border-white/70 px-3 py-2 text-sm font-semibold text-white transition-colors hover:bg-white/10 active:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white lg:col-span-1"
+                className="col-span-2 min-h-11 cursor-pointer rounded-lg border border-[#04737d] px-3 py-2 text-sm font-semibold text-[#04737d] transition-colors hover:bg-[#f1f8f7] active:bg-[#e2f0ee] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#04737d] lg:col-span-1"
               >
                 Настройки
               </button>
